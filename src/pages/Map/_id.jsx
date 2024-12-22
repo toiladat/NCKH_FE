@@ -5,9 +5,9 @@ import MapContent from './MapContent'
 function Board() {
   return (
     <Container disableGutters maxWidth={false} sx={{ height:'100vh' }}>
-      <AppBar/>
+      {/* <AppBar/>
       <BoardBar/>
-      <MapContent/>
+      <MapContent/> */}
     </Container>
   )
 }
