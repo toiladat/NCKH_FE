@@ -1,8 +1,8 @@
 import { Mail, Notifications } from '@mui/icons-material'
-import { Avatar, Badge, Box, Icon, IconButton, Tooltip } from '@mui/material'
-import React, { useState } from 'react'
+import { Avatar, Badge, Box, IconButton, Tooltip } from '@mui/material'
+import { useState } from 'react'
 import { useValue } from '~/context/ContextProvider'
-import UserMenu from '../UserMenu'
+import UserMenu from './UserMenu'
 
 const UserIcons = () => {
   const { currentUser } = useValue()

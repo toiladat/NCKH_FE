@@ -37,7 +37,7 @@ const NavBar = () => {
             You Are Welcome
           </Typography>
           {!currentUser ? (
-            <Button onClick={ () => dispatch({ type:'UPDATE_USER', payload: user })}
+            <Button onClick={ () => dispatch({ type:'OPEN_LOGIN' })}
               color='inherit'
               startIcon={<Lock/>}
             >
@@ -46,7 +46,6 @@ const NavBar = () => {
           ) : (
             <UserIcons/>
           )}
-
         </Toolbar>
       </Container>
     </AppBar>
