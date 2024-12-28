@@ -19,7 +19,7 @@ const Notification = () => {
   return (
     <Snackbar
       open={ alert.open }
-      autoHideDuration={2000}
+      autoHideDuration={5000}
       onClose={handleClose}
       anchorOrigin={{ vertical:'top', horizontal: 'center' }}
     >

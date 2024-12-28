@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useValue } from '~/context/ContextProvider'
 import PasswordField from './PasswordField'
 import GoogleOneTabLogin from './GoogleOneTabLogin'
+import { login, register } from '~/actions/user'
 
 const Login = () => {
   const {
@@ -13,6 +14,7 @@ const Login = () => {
   const [title, setTitle] = useState('Login')
   const [isRegister, setIsRegister] = useState(false)
   //useRef nên khi Rerender k bị update
+  // Dùng get data gửi BE
   const nameRef = useRef()
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -21,31 +23,30 @@ const Login = () => {
   const handleClose = () => {
     dispatch({ type: 'CLOSE_LOGIN' })
   }
+
   const handleSubmit = (e ) => {
     e.preventDefault()
-    // testing Loading
-    dispatch({
-      type:'START_LOADING'
-    })
-    setTimeout(() => {
-      dispatch({
-        type:'END_LOADING'
-      })
-    }, 1000)
-    // testing Notification
+    // handle form
+    const email = emailRef.current.value
     const password = passwordRef.current.value
+    if (!isRegister) return login({ email, password }, dispatch)
+
+    // send login request if it is not register and return
+    const name = nameRef.current.value
     const confirmPassword = confirmPasswordRef.current.value
 
     if (password !== confirmPassword ) {
-      dispatch({
-        type : 'UPDATE_ALERT',
+      return dispatch({
+        type:'UPDATE_ALERT',
         payload: {
-          open:true,
+          open: true,
           severity:'error',
-          message:'Password do not match'
+          message:'Passwords do not match'
         }
       })
     }
+    //send register request
+    register({ name, email, password }, dispatch)
   }
 
   useEffect( () => {

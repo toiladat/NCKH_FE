@@ -18,7 +18,7 @@ export const useValue = () => {
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   useEffect(() => {
-    const currentUser= JSON.parse(localStorage.getItem('currentUser'))
+    const currentUser= JSON.parse(localStorage.getItem('currentUser')) // load trang check token
     if (currentUser) {
       dispatch({
         type:'UPDATE_USER',
