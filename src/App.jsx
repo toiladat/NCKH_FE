@@ -3,7 +3,6 @@ import Notification from './components/Notification'
 import Loading from './components/user/Loading'
 import Login from './components/user/Login'
 import ContextProvider from './context/ContextProvider'
-import Board from './pages/Map/_id'
 
 function App() {
   return (

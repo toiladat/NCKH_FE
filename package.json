@@ -20,6 +20,8 @@
     "@mapbox/search-js-react": "^1.0.0-beta.24",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.13.0",
+    "@react-oauth/google": "^0.12.1",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.8.0",
     "react": "^18.2.0",

@@ -3,8 +3,10 @@ import { Avatar, Badge, Box, IconButton, Tooltip } from '@mui/material'
 import { useState } from 'react'
 import { useValue } from '~/context/ContextProvider'
 import UserMenu from './UserMenu'
+import UserCheckToken from '../hooks/userCheckToken'
 
 const UserIcons = () => {
+  UserCheckToken() // có token mới truy cập được vào cpn này
   const { currentUser } = useValue()
 
   const [anchorUserMenu, setAnchorUserMenu] =useState(null)

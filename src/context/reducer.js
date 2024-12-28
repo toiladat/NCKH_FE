@@ -1,16 +1,17 @@
 const reducer = (state, action) => {
   switch (action.type) {
   case 'UPDATE_USER':
+    localStorage.setItem('currentUser', JSON.stringify(action.payload))
     return {
       ...state,
       currentUser: action.payload // Cập nhật currentUser bằng payload
     }
-  case 'OPEN_LOGIN':
+  case 'OPEN_LOGIN': // mở model login
     return {
       ...state,
       openLogin:true
     }
-  case 'CLOSE_LOGIN':
+  case 'CLOSE_LOGIN':// đóng model login
     return {
       ...state,
       openLogin:false

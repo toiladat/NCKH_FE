@@ -12,7 +12,6 @@ const PasswordField = ({ passwordRef, id='password', label='Password' }) => {
   }
   return (
     <TextField
-      autoFocus
       margin='normal'
       variant='standard'
       id={id}
@@ -22,6 +21,7 @@ const PasswordField = ({ passwordRef, id='password', label='Password' }) => {
       inputRef={ passwordRef }
       inputProps={{ minLength:6 }}
       required
+      autoComplete='true'
       InputProps={{
         endAdornment:(
           <InputAdornment position='end'>

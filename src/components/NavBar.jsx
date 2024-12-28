@@ -4,12 +4,6 @@ import { Lock } from '@mui/icons-material'
 import { useValue } from '~/context/ContextProvider'
 import UserIcons from './user/UserIcons'
 
-
-const user = {
-  name :'dat',
-  photoURL:''
-}
-
 const NavBar = () => {
   const {
     currentUser,

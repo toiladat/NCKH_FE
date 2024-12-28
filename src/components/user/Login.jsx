@@ -12,6 +12,7 @@ const Login = () => {
   } = useValue()
   const [title, setTitle] = useState('Login')
   const [isRegister, setIsRegister] = useState(false)
+  //useRef nên khi Rerender k bị update
   const nameRef = useRef()
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -89,7 +90,7 @@ const Login = () => {
             />
           }
           <TextField
-            autoFocus={!isRegister}
+            autoFocus={ !isRegister }
             margin='normal'
             variant='standard'
             id='email'
