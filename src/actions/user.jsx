@@ -1,3 +1,4 @@
+import { fetchCloudinary } from './utils/fetchCloudinary'
 import fetchData from './utils/fetchData'
 
 const url = import.meta.env.VITE_APP_SERVER_URL + '/user'
@@ -43,4 +44,62 @@ export const login = async (user, dispatch) => {
     })
   }
   dispatch({ type:'END_LOADING' })
+}
+
+export const updateProfile = async ( currentUser, updatedFields, dispatch ) => {
+  dispatch({ type: 'START_LOADING' })
+  const { name, file } = updatedFields
+  let body = { name, id: currentUser.id, photoURL: currentUser.photoURL }
+
+  try {
+    if ( file ) {
+      // upload to cloudinary
+      const photoURL =await fetchCloudinary(file, dispatch)
+      body= { ... body, photoURL }
+    }
+    // send data to BE
+    const result = await fetchData({
+      url: url + '/updateProfile',
+      method:'PATCH',
+      body,
+      token: currentUser.token
+    }
+    )
+
+    if (result) {
+      dispatch({
+        type: 'UPDATE_USER',
+        payload:{ ...currentUser, ...result }
+      })
+      dispatch({
+        type:'UPDATE_ALERT',
+        payload:{
+          open:true,
+          severity:'success',
+          message: 'Your profile has beend updated successfully'
+        }
+      })
+      dispatch({
+        type:'UPDATE_PROFILE',
+        payload:{
+          open: false,
+          file: null,
+          photoURL: result.photoURL
+        }
+      })
+    }
+  } catch (error) {
+    dispatch({
+      type:'UPDATE_ALERT',
+      payload:{
+        open: true,
+        severity:'error',
+        message: error.message
+      }
+    })
+    console.log(error.message);
+  }
+
+  dispatch({ type: 'END_LOADING' })
+
 }

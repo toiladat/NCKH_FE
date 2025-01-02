@@ -9,6 +9,11 @@ const initialState = {
     open:false,
     severity:'infor',
     message:''
+  },
+  profile: {
+    open: false,
+    file: null,
+    photoURL: ''
   }
 }
 const Context = createContext(initialState)

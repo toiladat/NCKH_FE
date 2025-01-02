@@ -31,6 +31,11 @@ const reducer = (state, action) => {
       ...state,
       loading:false
     }
+  case 'UPDATE_PROFILE':
+    return {
+      ...state,
+      profile: action.payload
+    }
   default:
     throw new Error('no matched action')
   }
