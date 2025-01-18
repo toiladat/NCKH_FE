@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react'
+import { createContext, useContext, useEffect, useReducer } from 'react'
 import reducer from './reducer'
 
 const initialState = {
@@ -14,9 +14,12 @@ const initialState = {
     open: false,
     file: null,
     photoURL: ''
-  }
+  },
+  images:[]
 }
 const Context = createContext(initialState)
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const useValue = () => {
   return useContext(Context)
 }
@@ -30,12 +33,12 @@ const ContextProvider = ({ children }) => {
         payload:currentUser
       })
     }
-  },[])
+  }, [])
   return (
     <Context.Provider value={{ ...state, dispatch }}>
       {children}
     </Context.Provider>
-  );
-};
+  )
+}
 
 export default ContextProvider

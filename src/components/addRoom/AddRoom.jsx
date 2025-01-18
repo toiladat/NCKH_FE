@@ -1,10 +1,12 @@
 import { Container, Stepper, Step, StepButton, Stack, Button, Box } from '@mui/material'
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AddDetails from './addDetails/AddDetails'
 import AddLocation from './addLocation/AddLocation'
 import AddImages from './addImages/AddImages'
+import { useValue } from '~/context/ContextProvider'
 
 const AddRoom = () => {
+  const { images } =useValue()
   const [activeStep, setActiveStep] = useState(0)
   const [steps, setSteps] = useState([
     { label: 'Location', completed: false },
@@ -28,6 +30,20 @@ const AddRoom = () => {
       const stepIndex = findUnfinish()
       setActiveStep(stepIndex)
     }
+  }
+
+  useEffect( () => {
+    if (images.length) {
+      if (!steps[2].completed) setComplete(2, true)
+    } else {
+      setComplete(2, false)
+    }
+  }, [images, steps])
+  const setComplete = (index, status) => {
+    setSteps( steps => {
+      steps[index].completed=status
+      return [...steps]
+    })
   }
   return (
     <Container sx={{ my: 4 }}>

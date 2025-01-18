@@ -1,6 +1,6 @@
-import { fetchCloudinary } from './utils/fetchCloudinary'
+import { uploadToCloudinary } from './utils/uploadToCloudinary'
 import fetchData from './utils/fetchData'
-
+import extractPublicId from './utils/extractPublicId '
 const url = import.meta.env.VITE_APP_SERVER_URL + '/user'
 
 export const register = async (user, dispatch ) => {
@@ -54,7 +54,12 @@ export const updateProfile = async ( currentUser, updatedFields, dispatch ) => {
   try {
     if ( file ) {
       // upload to cloudinary
-      const photoURL =await fetchCloudinary(file, dispatch)
+      const photoURL =await uploadToCloudinary(file, dispatch)
+      // // delete old photo in cloudinary
+      // if (currentUser.photoURL) {
+      //   const public_id= extractPublicId(currentUser.photoURL)
+      //   await deleteInCloudinary(public_id)
+      // }
       body= { ... body, photoURL }
     }
     // send data to BE
