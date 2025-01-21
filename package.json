@@ -17,6 +17,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@mapbox/mapbox-gl-geocoder": "^5.0.3",
     "@mapbox/search-js-react": "^1.0.0-beta.24",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.13.0",
@@ -24,12 +25,12 @@
     "appwrite": "^16.1.0",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
-    "mapbox-gl": "^3.8.0",
+    "mapbox-gl": "^3.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.3.5",
     "react-leaflet": "^4.2.1",
-    "react-map-gl": "^7.1.7",
+    "react-map-gl": "^7.1.8",
     "react-mapbox-gl": "^5.1.1"
   },
   "devDependencies": {

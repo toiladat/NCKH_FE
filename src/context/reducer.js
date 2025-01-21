@@ -53,7 +53,11 @@ const reducer = (state, action) => {
         ...state.details,
         ...action.payload
       }
-
+    }
+  case 'UPDATE_LOCATION':
+    return {
+      ...state,
+      location: action.payload
     }
   default:
     throw new Error('no matched action')

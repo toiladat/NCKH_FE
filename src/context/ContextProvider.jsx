@@ -20,6 +20,9 @@ const initialState = {
     title:'',
     description:'',
     price:0
+  },
+  location:{
+    lng:0, lat:0
   }
 }
 const Context = createContext(initialState)
