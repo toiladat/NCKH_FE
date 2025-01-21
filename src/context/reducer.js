@@ -46,6 +46,15 @@ const reducer = (state, action) => {
       ...state,
       images:state.images.filter( image => image.url!==action.payload)
     }
+  case 'UPDATE_DETAILS':
+    return {
+      ...state,
+      details:{
+        ...state.details,
+        ...action.payload
+      }
+
+    }
   default:
     throw new Error('no matched action')
   }
