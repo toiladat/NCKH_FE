@@ -1,6 +1,5 @@
 import { uploadToCloudinary } from './utils/uploadToCloudinary'
 import fetchData from './utils/fetchData'
-import extractPublicId from './utils/extractPublicId '
 const url = import.meta.env.VITE_APP_SERVER_URL + '/user'
 
 export const register = async (user, dispatch ) => {
@@ -102,7 +101,8 @@ export const updateProfile = async ( currentUser, updatedFields, dispatch ) => {
         message: error.message
       }
     })
-    console.log(error.message);
+    // eslint-disable-next-line no-console
+    console.log(error.message)
   }
 
   dispatch({ type: 'END_LOADING' })

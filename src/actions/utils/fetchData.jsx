@@ -28,7 +28,8 @@ const fetchData = async (
         message: error.message
       }
     })
-    console.log(error);
+    // eslint-disable-next-line no-console
+    console.log(error)
     return null
   }
 }

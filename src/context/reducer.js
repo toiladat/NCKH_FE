@@ -59,6 +59,18 @@ const reducer = (state, action) => {
       ...state,
       location: action.payload
     }
+  case 'RESET_ROOM':
+    return {
+      ...state,
+      images:[],
+      details:{ title: '', description:'', price:0 },
+      location: { lng: 0, lat: 0 }
+    }
+  case 'UPDATE_ROOMS':
+    return {
+      ...state,
+      rooms: action.payload
+    }
   default:
     throw new Error('no matched action')
   }

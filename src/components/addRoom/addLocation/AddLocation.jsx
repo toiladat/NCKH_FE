@@ -29,8 +29,8 @@ const AddLocation = () => {
             dispatch({
               type: 'UPDATE_LOCATION',
               payload: {
-                lng: data.longitude,
-                lat: data.latitude
+                lng: longitude,
+                lat: latitude
               }
             });
           }
