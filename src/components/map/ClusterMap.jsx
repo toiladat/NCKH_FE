@@ -5,13 +5,14 @@ import ReactMapGL, { Marker } from 'react-map-gl'
 import { Avatar, Box, Paper, Tooltip } from '@mui/material'
 import Supercluster from 'supercluster'
 import './cluster.css'
+import GeocoderInput from '../sidebar/GeocoderInput'
 
 const supercluster = new Supercluster({
   radius:75,
   maxZoom:20
 })
 const ClusterMap = () => {
-  const { rooms, dispatch, mapRef } = useValue()
+  const { rooms, dispatch, mapRef, filteredRooms } = useValue()
   const [points, setPoints] = useState([])
   const [clusters, setClusters] = useState([])
   const [bounds, setBounds] = useState([-180, -85, 180, 85])
@@ -23,8 +24,10 @@ const ClusterMap = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  //Chuyển đổi danh sách rooms thành danh sách points theo chuẩn GeoJSON
+  // dùng để hiển thị hoặc gom cụm các điểm trên bản đồ.
   useEffect( () => {
-    const points = rooms.map( room => ({
+    const points = filteredRooms.map( room => ({
       type:'Feature',
       properties:{
         cluster:false,
@@ -44,15 +47,23 @@ const ClusterMap = () => {
       }
     }))
     setPoints(points)
-  }, [rooms])
+  }, [filteredRooms])
 
   useEffect(() => {
+    //nạp toàn bộ danh sách points vào Supercluster để tính toán các cụm.
     supercluster.load(points)
+    //Trả về danh sách các cụm (cluster) hoặc các điểm đơn lẻ trong phạm vi bản đồ hiện tại (bounds) và mức zoom hiện tại (zoom).
     setClusters(supercluster.getClusters(bounds, zoom))
+    //State clusters chứa danh sách các cụm hoặc điểm đơn lẻ hiện tại để hiển thị trên bản đồ.
   }, [points, zoom, bounds])
 
+
+  //Lấy phạm vi (bounds) của bản đồ hiện tại để làm dữ liệu đầu vào cho việc tính cụm (clusters).
   useEffect(() => {
     if (mapRef.current) {
+      //Lấy đối tượng bản đồ hiện tại từ thư viện Mapbox.
+      //Lấy phạm vi hiện tại của bản đồ (4 góc trái/phải, trên/dưới).
+      //Chuyển phạm vi từ đối tượng sang mảng phẳng [west, south, east, north].
       setBounds(mapRef.current.getMap().getBounds().toArray().flat())
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,6 +137,9 @@ const ClusterMap = () => {
             )
           }
         })}
+
+        {/* filter address */}
+        <GeocoderInput/>
       </ReactMapGL>
     </Box>
   )

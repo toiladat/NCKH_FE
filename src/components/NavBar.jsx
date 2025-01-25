@@ -3,19 +3,26 @@ import Menu from '@mui/icons-material/Menu'
 import { Lock } from '@mui/icons-material'
 import { useValue } from '~/context/ContextProvider'
 import UserIcons from './user/UserIcons'
+import Sidebar from './sidebar/Sidebar'
+import { useState } from 'react'
 
 const NavBar = () => {
   const {
     currentUser,
     dispatch
   } = useValue()
+  const [isOpen, setIsOpen] = useState(false)
   return (
     <>
       <AppBar>
         <Container maxWidth='lg'>
           <Toolbar disableGutters>
             <Box sx={{ mr:1 }}>
-              <IconButton size='large' color='inherit'>
+              <IconButton
+                size='large'
+                color='inherit'
+                onClick={ () => setIsOpen(true)}
+              >
                 <Menu/>
               </IconButton>
             </Box>
@@ -47,6 +54,7 @@ const NavBar = () => {
       {/* Appbar co position : fixed, nó sẽ luôn hiển thị ở trên cùng của trang web, ngay cả khi cuộn trang. */}
       {/* không thêm <Toolbar /> sau AppBar, nội dung của trang sẽ bị đẩy lên phía trên và bị AppBar che mất. */}
       <Toolbar/>
+      <Sidebar {...{ isOpen, setIsOpen }}/>
     </>
 
   )
