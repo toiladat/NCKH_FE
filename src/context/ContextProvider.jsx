@@ -38,6 +38,7 @@ export const useValue = () => {
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const mapRef = useRef()
+  //containerRef là nơi "đỡ" giao diện của Geocoder.
   const containerRef= useRef()
   useEffect(() => {
     const currentUser= JSON.parse(localStorage.getItem('currentUser')) // load trang check token

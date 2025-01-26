@@ -87,7 +87,7 @@ const reducer = (state, action) => {
       ...state,
       addressFilter: action.payload,
       filteredRooms: applyFilter(
-        state.rooms, state.filterPrice, action.payload
+        state.rooms, action.payload, state.priceFilter
       )
     }
   case 'CLEAR_ADDRESS':
@@ -108,7 +108,7 @@ const applyFilter = ( rooms, address, price ) => {
   if (address) {
     const { lng, lat } = address
     filteredRooms = filteredRooms.filter( room => {
-      const lngDifference = lng > room.lng ? lng - room.lng : room.lng - lng
+      const lngDifference = lng > room.lng ? lng - room.lng : room.lng - lng // luon > 0
       const latDifference = lat > room.lat ? lat - room.lat : room.lat - lat
       return lngDifference <=1 && latDifference<=1
     })
