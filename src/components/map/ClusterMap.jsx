@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { getRooms } from '~/actions/room'
 import { useValue } from '~/context/ContextProvider'
-import ReactMapGL, { Marker } from 'react-map-gl'
+import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { Avatar, Box, Paper, Tooltip } from '@mui/material'
 import Supercluster from 'supercluster'
 import './cluster.css'
 import GeocoderInput from '../sidebar/GeocoderInput'
+import PopupRoom from '../rooms/PopupRoom'
 
 const supercluster = new Supercluster({
   radius:75,
@@ -17,6 +18,7 @@ const ClusterMap = () => {
   const [clusters, setClusters] = useState([])
   const [bounds, setBounds] = useState([-180, -85, 180, 85])
   const [zoom, setZoom]= useState(0)
+  const [popupInfo, setPopupInfo] = useState(null)
 
   // Lấy ra thông tin các phòng ở lần ren đầu
   useEffect( () => {
@@ -131,6 +133,7 @@ const ClusterMap = () => {
                     src={cluster.properties.uPhoto}
                     component={Paper}
                     elevation={2}
+                    onClick={ () => setPopupInfo(cluster.properties)}
                   />
                 </Tooltip>
               </Marker>
@@ -140,6 +143,19 @@ const ClusterMap = () => {
 
         {/* filter address */}
         <GeocoderInput/>
+
+        {popupInfo &&
+          <Popup
+            longitude={ popupInfo.lng}
+            latitude={popupInfo.lat}
+            maxWidth='auto'
+            closeOnClick={false}
+            focusAfterOpen={false}
+            onClose={ () => { setPopupInfo(null) }}
+          >
+            <PopupRoom {...{ popupInfo }}/>
+          </Popup>
+        }
       </ReactMapGL>
     </Box>
   )

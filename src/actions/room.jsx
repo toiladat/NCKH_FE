@@ -17,6 +17,8 @@ export const createRoom = async ( room, currentUser, dispatch, setPage ) => {
     dispatch({ type: 'RESET_ROOM' })
     // Chuyển sang tổng quan
     setPage(0)
+    // Mở luôn Popup new room
+    dispatch({ type: 'UPDATE_ROOM', payload: result })
   }
   dispatch({ type:'END_LOADING' })
 }

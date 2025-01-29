@@ -1,5 +1,6 @@
 import NavBar from './components/NavBar'
 import Notification from './components/Notification'
+import Room from './components/rooms/Room'
 import BottomNav from './components/user/BottomNav'
 import Loading from './components/user/Loading'
 import Login from './components/user/Login'
@@ -14,6 +15,7 @@ function App() {
         <NavBar/>
         <Login/>
         <BottomNav/>
+        <Room/>
       </ContextProvider>
     </>
   )

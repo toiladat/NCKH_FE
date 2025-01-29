@@ -22,3 +22,32 @@
   min-width: 100%;
   margin-left: 0;
 }
+
+.mapboxgl-popup-close-button{
+  font-size: 2rem;
+  color: white;
+  opacity: 0.54;
+  z-index: 2;
+  transition: opacity 0.3s linear;
+}
+
+.mapboxgl-popup-close-button:hover{
+  opacity: 0.8;
+}
+
+.mapboxgl-popup-content{
+  padding: 0 !important;
+}
+
+.mapboxgl-popup-tip{
+  border-bottom-color: rgba(0,0,0,0.5) !important;
+  border-top-color: rgba(0,0,0,0.5) !important;
+}
+
+.swiper{
+  z-index: unset !important;
+}
+
+.swiper-pagination{
+  bottom: 25px !important;
+}

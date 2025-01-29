@@ -1,64 +1,155 @@
-import { StarBorder } from '@mui/icons-material'
-import { Avatar, Card, Container, ImageList, ImageListItem, ImageListItemBar, Rating, Tooltip } from '@mui/material'
+import { Close, StarBorder } from '@mui/icons-material'
+import { AppBar, Avatar, Box, Container, Dialog, IconButton, Rating, Slide, Stack, Toolbar, Tooltip, Typography } from '@mui/material'
+import { forwardRef, useEffect, useState } from 'react'
 import { useValue } from '~/context/ContextProvider'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
-const Room = () => {
-  const { filteredRooms } = useValue()
-  console.log(filteredRooms);
-  
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/pagination'
+
+// import required modules
+import { Pagination } from 'swiper/modules'
+import './swiper.css'
+
+
+const Transistion = forwardRef( ( props, ref ) => {
   return (
-    <Container>
-      <ImageList
-        gap={12}
-        sx={{
-          mb: 8,
-          gridTemplateColumns:
-          'repeat(auto-fill, minmax(280px, 1fr))!important'
-        }}
-      >
-        {filteredRooms && filteredRooms.length > 0 ? (
-          filteredRooms.map((room) => (
-            <Card key={room._id}>
-              <ImageListItem sx={{ height: '100% !important' }}>
-                <ImageListItemBar
-                  sx={{
-                    background:
-                      'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-                  }}
-                  title={room.price === 0 ? 'Free Stay ' : '$' + room.price}
-                  actionIcon={
-                    <Tooltip title={room?.userInfor?.name}>
-                      <Avatar src={room?.userInfor?.photoURL} sx={{ mr: '5px' }} />
-                    </Tooltip>
-                  }
-                  position="top"
-                />
-                <img
-                  src={room.images[0]}
-                  alt={room.title}
-                  loading="lazy"
-                  style={{ cursor: 'pointer' }}
-                />
-                <ImageListItemBar
-                  title={room.title}
-                  actionIcon={
-                    <Rating
-                      sx={{ color: 'rgba(255,255,255,0.8)', mr: '5px' }}
-                      name="room-rating"
-                      defaultValue={3.5} // Dữ liệu thực tế nếu có
-                      precision={0.5}
-                      emptyIcon={<StarBorder sx={{ color: 'rgba(255,255,255,0.8)' }} />}
-                    />
-                  }
-                />
-              </ImageListItem>
-            </Card>
-          ))
-        ) : (
-          <div>Không có phòng nào được tìm thấy!</div>
-        )}
-      </ImageList>
-    </Container>
+    <Slide direction='up' {...props} ref={ref}/>
+  )
+})
+const Room = () => {
+  const { room, dispatch } = useValue()
+  const handleClose = () => {
+    dispatch({ type: 'UPDATE_ROOM', payload: null })
+  }
+  const [place, setPlace] = useState()
+
+  //Lấy address bằng lng và lat
+  useEffect( () => {
+    if (room) {
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${room.lng},${room.lat}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
+      fetch(url).then( res => res.json()).then(data => setPlace(data.features[0]))
+    }
+  }, [room])
+
+  return (
+    <Dialog
+      fullScreen
+      open={Boolean(room)}
+      onClose={handleClose}
+      TransitionComponent={Transistion}
+    >
+      <AppBar position='relative'>
+        <Toolbar>
+          <Typography
+            variant='h6'
+            component='h3'
+            sx={{ ml: 2, flex:1 }}
+          >
+            {room?.title}
+          </Typography>
+          <IconButton color='inherit' onClick={handleClose}>
+            <Close/>
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
+      <Container sx={{ pt: 5, textAlign:'center' }}>
+        <Swiper
+          pagination={{
+            dynamicBullets: true
+          }}
+          modules={[Pagination]}
+        >
+          {room?.images?.map( url => (
+            <SwiperSlide key={url}>
+              <div className='room'>
+                <img src={url} alt='room'/>
+              </div>
+            </SwiperSlide>
+          ))}
+          <Tooltip
+            title= {room?.userInfor?.name || ''}
+            sx={{
+              position:'absolute',
+              bottom:'8px',
+              left:'8px',
+              zIndex:2
+            }}
+          >
+            <Avatar src={room?.userInfor?.photoURL}/>
+          </Tooltip>
+        </Swiper>
+
+        <Stack
+          sx={{ p:3 }}
+          spacing={2}
+        >
+          <Stack
+            direction='row'
+            sx={{
+              justifyContent:'space-between',
+              flexWrap:'wrap'
+            }}
+          >
+            <Box>
+              <Typography variant='h6' component='span'>{'Price per night '}</Typography>
+              <Typography component='span'>{ room?.price === 0 ? 'Free Stay': '$'+ room?.price}</Typography>
+            </Box>
+
+            <Box
+              sx={{
+                display:'flex',
+                alignItems:'center'
+              }}
+            >
+              <Typography variant='h6' component='span'>{'Rating'}</Typography>
+              <Rating
+                name='room-rating'
+                defaultValue={3.5}
+                precision={0.5}
+                emptyIcon={<StarBorder/>}
+              />
+            </Box>
+          </Stack>
+
+          <Stack
+            direction='row'
+            sx={{
+              justifyContent:'space-between',
+              flexWrap:'wrap'
+            }}
+          >
+            <Box>
+              <Typography variant='h6' component='span'>{'Place Name: '}</Typography>
+              <Typography component='span'>{place?.text}</Typography>
+            </Box>
+
+            <Box
+              sx={{
+                display:'flex',
+                alignItems:'center'
+              }}
+            >
+              <Typography variant='h6' component='span'>{'Address: '}</Typography>
+              <Typography component='span'>{place?.place_name}</Typography>
+            </Box>
+          </Stack>
+
+          <Stack
+            sx={{
+              flexWrap:'wrap',
+              alignItems:'start'
+            }}
+          >
+            <Typography variant='h6' component='span'>{'Details: '}</Typography>
+            <Typography component='span'>{room?.description}</Typography>
+          </Stack>
+
+        </Stack>
+      </Container>
+    </Dialog>
   )
 }
 

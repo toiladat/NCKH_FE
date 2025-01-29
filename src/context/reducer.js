@@ -97,6 +97,11 @@ const reducer = (state, action) => {
       priceFilter: 50,
       filteredRooms:state.rooms
     }
+  case 'UPDATE_ROOM':
+    return {
+      ...state,
+      room: action.payload
+    }
   default:
     throw new Error('no matched action')
   }

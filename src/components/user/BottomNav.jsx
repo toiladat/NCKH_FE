@@ -2,7 +2,7 @@ import { AddLocationAlt, Bed, LocationOn } from '@mui/icons-material'
 import { BottomNavigation, BottomNavigationAction, Box, Paper } from '@mui/material'
 import React, { useRef, useEffect } from 'react'
 import ClusterMap from '../map/ClusterMap'
-import Room from '../rooms/Room'
+import Rooms from '../rooms/Rooms'
 import AddRoom from '../addRoom/AddRoom'
 import Protected from '../protected/Protected'
 
@@ -17,7 +17,7 @@ const BottomNav = () => {
       {/* Object lookup */}
       {{
         0: <ClusterMap/>,
-        1: <Room/>,
+        1: <Rooms/>,
         2: <Protected><AddRoom setPage={ setValue}/></Protected>
       }[value]}
       <Paper
