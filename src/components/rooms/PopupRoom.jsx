@@ -51,7 +51,7 @@ const PopupRoom = ({ popupInfo }) => {
                   cursor:'pointer',
                   objectFit:'cover'
                 }}
-                onClick={ () => dispatch({type: 'UPDATE_ROOM', payload: popupInfo })}
+                onClick={ () => dispatch({ type: 'UPDATE_ROOM', payload: popupInfo })}
               >
 
               </Box>
