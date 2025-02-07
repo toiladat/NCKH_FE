@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
-import { getRooms } from '~/actions/room'
+import { getNeedHelpPoints } from '~/actions/needHelpPoint'
 import { useValue } from '~/context/ContextProvider'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { Avatar, Box, Paper, Tooltip } from '@mui/material'
 import Supercluster from 'supercluster'
 import './cluster.css'
 import GeocoderInput from '../sidebar/GeocoderInput'
-import PopupRoom from '../rooms/PopupRoom'
+import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
 
 const supercluster = new Supercluster({
   radius:75,
   maxZoom:20
 })
 const ClusterMap = () => {
-  const { rooms, dispatch, mapRef, filteredRooms } = useValue()
+  const { dispatch, mapRef, filteredNeedHelpPoints } = useValue()
   const [points, setPoints] = useState([])
   const [clusters, setClusters] = useState([])
   const [bounds, setBounds] = useState([-180, -85, 180, 85])
@@ -22,34 +22,34 @@ const ClusterMap = () => {
 
   // Lấy ra thông tin các phòng ở lần ren đầu
   useEffect( () => {
-    getRooms(dispatch)
+    getNeedHelpPoints(dispatch)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  //Chuyển đổi danh sách rooms thành danh sách points theo chuẩn GeoJSON
+  //Chuyển đổi danh sách needHelpPoints thành danh sách points theo chuẩn GeoJSON
   // dùng để hiển thị hoặc gom cụm các điểm trên bản đồ.
   useEffect( () => {
-    const points = filteredRooms.map( room => ({
+    const points = filteredNeedHelpPoints.map( point => ({
       type:'Feature',
       properties:{
         cluster:false,
-        roomId: room._id,
-        price: room.price,
-        title:room.title,
-        description: room.description,
-        lng:room.lng,
-        lat:room.lat,
-        images:room.images,
-        uPhoto:room.userInfor?.photoURL || '',
-        uName:room.userInfor?.name || ''
+        needHelpPointId: point._id,
+        price: point.price,
+        title:point.title,
+        description: point.description,
+        lng:point.lng,
+        lat:point.lat,
+        images:point.images,
+        uPhoto:point.userInfor?.photoURL || '',
+        uName:point.userInfor?.name || ''
       },
       geometry:{
         type:'Point',
-        coordinates:[parseFloat(room.lng), parseFloat(room.lat)]
+        coordinates:[parseFloat(point.lng), parseFloat(point.lat)]
       }
     }))
     setPoints(points)
-  }, [filteredRooms])
+  }, [filteredNeedHelpPoints])
 
   useEffect(() => {
     //nạp toàn bộ danh sách points vào Supercluster để tính toán các cụm.
@@ -70,6 +70,7 @@ const ClusterMap = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapRef?.current])
+
   return (
     <Box
       sx={{
@@ -124,7 +125,7 @@ const ClusterMap = () => {
           else {
             return (
               <Marker
-                key={`room-${cluster.properties.roomId}`}
+                key={`needHelpPoint-${cluster.properties.needHelpPointId}`}
                 longitude={longitude}
                 latitude={latitude}
               >
@@ -153,7 +154,7 @@ const ClusterMap = () => {
             focusAfterOpen={false}
             onClose={ () => { setPopupInfo(null) }}
           >
-            <PopupRoom {...{ popupInfo }}/>
+            <PopupNeedHelpPoint {...{ popupInfo }}/>
           </Popup>
         }
       </ReactMapGL>

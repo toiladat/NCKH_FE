@@ -1,9 +1,10 @@
-import { AddLocationAlt, Bed, LocationOn } from '@mui/icons-material'
+import { AddLocationAlt, LocationOn } from '@mui/icons-material'
 import { BottomNavigation, BottomNavigationAction, Box, Paper } from '@mui/material'
+import MedicationIcon from '@mui/icons-material/Medication'
 import React, { useRef, useEffect } from 'react'
 import ClusterMap from '../map/ClusterMap'
-import Rooms from '../rooms/Rooms'
-import AddRoom from '../addRoom/AddRoom'
+import NeedHelpPoints from '../needHelpPoint/NeedHelpPoints'
+import AddNeedHelp from '../addNeedHelp/AddNeedHelp'
 import Protected from '../protected/Protected'
 
 const BottomNav = () => {
@@ -17,8 +18,8 @@ const BottomNav = () => {
       {/* Object lookup */}
       {{
         0: <ClusterMap/>,
-        1: <Rooms/>,
-        2: <Protected><AddRoom setPage={ setValue}/></Protected>
+        1: <NeedHelpPoints/>,
+        2: <Protected><AddNeedHelp setPage={ setValue}/></Protected>
       }[value]}
       <Paper
         elevation={ 3 }
@@ -37,8 +38,8 @@ const BottomNav = () => {
         >
           {/* 3 icon newValue=  0-1-2 set active cho label */}
           <BottomNavigationAction label='Map' icon= { <LocationOn/> } />
-          <BottomNavigationAction label='Rooms' icon= { <Bed/> } />
-          <BottomNavigationAction label='Add' icon= { <AddLocationAlt/> } />
+          <BottomNavigationAction label='Need Help Points' icon= { <MedicationIcon/> } />
+          <BottomNavigationAction label='Add Need Help' icon= { <AddLocationAlt/> } />
 
         </BottomNavigation>
       </Paper>

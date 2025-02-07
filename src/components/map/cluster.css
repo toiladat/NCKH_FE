@@ -1,13 +1,17 @@
 .cluster-marker{
   color: #fff;
-  background: #1978c8;
+  background: #c81919;
   border-radius: 50%;
-  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s;
 }
-
+.cluster-marker:hover {
+  transform: scale(1.1);
+  z-index: 1;
+}
 .mapboxgl-ctrl-geocoder {
   width: 800px;
   min-width: 100%;
@@ -51,3 +55,5 @@
 .swiper-pagination{
   bottom: 25px !important;
 }
+
+

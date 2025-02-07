@@ -59,35 +59,35 @@ const reducer = (state, action) => {
       ...state,
       location: action.payload
     }
-  case 'RESET_ROOM':
+  case 'RESET_NEED_HELP_POINT':
     return {
       ...state,
       images:[],
       details:{ title: '', description:'', price:0 },
       location: { lng: 0, lat: 0 }
     }
-  case 'UPDATE_ROOMS':
+  case 'UPDATE_NEED_HELP_POINTS':
     return {
       ...state,
-      rooms: action.payload,
+      needHelpPoints: action.payload,
       addressFilter:null,
       priceFilter:50,
-      filteredRooms: action.payload
+      filteredNeedHelpPoints: action.payload
     }
   case 'FILTER_PRICE':
     return {
       ...state,
       priceFilter:action.payload,
-      filteredRooms: applyFilter(
-        state.rooms, state.addressFilter, action.payload
+      filteredNeedHelpPoints: applyFilter(
+        state.needHelpPoints, state.addressFilter, action.payload
       )
     }
   case 'FILTER_ADDRESS':
     return {
       ...state,
       addressFilter: action.payload,
-      filteredRooms: applyFilter(
-        state.rooms, action.payload, state.priceFilter
+      filteredNeedHelpPoints: applyFilter(
+        state.needHelpPoints, action.payload, state.priceFilter
       )
     }
   case 'CLEAR_ADDRESS':
@@ -95,12 +95,12 @@ const reducer = (state, action) => {
       ...state,
       addressFilter:null,
       priceFilter: 50,
-      filteredRooms:state.rooms
+      filteredNeedHelpPoints:state.needHelpPoints
     }
-  case 'UPDATE_ROOM':
+  case 'UPDATE_NEED_HELP_POINT':
     return {
       ...state,
-      room: action.payload
+      needHelpPoint: action.payload
     }
   default:
     throw new Error('no matched action')
@@ -108,18 +108,18 @@ const reducer = (state, action) => {
 }
 export default reducer
 
-const applyFilter = ( rooms, address, price ) => {
-  let filteredRooms = rooms
+const applyFilter = ( needHelpPoints, address, price ) => {
+  let filteredNeedHelpPoints = needHelpPoints
   if (address) {
     const { lng, lat } = address
-    filteredRooms = filteredRooms.filter( room => {
-      const lngDifference = lng > room.lng ? lng - room.lng : room.lng - lng // luon > 0
-      const latDifference = lat > room.lat ? lat - room.lat : room.lat - lat
-      return lngDifference <=1 && latDifference<=1
+    filteredNeedHelpPoints = filteredNeedHelpPoints.filter( needHelpPoint => {
+      const lngDifference = lng > needHelpPoint.lng ? lng - needHelpPoint.lng : needHelpPoint.lng - lng // luon > 0
+      const latDifference = lat > needHelpPoint.lat ? lat - needHelpPoint.lat : needHelpPoint.lat - lat
+      return lngDifference <=1 && latDifference<=1 // trả về những points gần nhất với lng và lat truyền vào
     })
   }
   if ( price < 50 ) {
-    filteredRooms= filteredRooms.filter( room => room.price <= price)
+    filteredNeedHelpPoints= filteredNeedHelpPoints.filter( needHelpPoint => needHelpPoint.price <= price)
   }
-  return filteredRooms
+  return filteredNeedHelpPoints
 }

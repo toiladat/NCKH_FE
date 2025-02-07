@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { useValue } from '~/context/ContextProvider'
 
-const PopupRoom = ({ popupInfo }) => {
+const PopupNeedHelpPoint = ({ popupInfo }) => {
   const { title, description, price, images }= popupInfo
   const { dispatch } = useValue()
   return (
@@ -42,7 +42,7 @@ const PopupRoom = ({ popupInfo }) => {
               <Box
                 component='img'
                 src={url}
-                alt='room'
+                alt='Need Help Point'
                 sx={{
                   height:255,
                   display:'block',
@@ -51,7 +51,7 @@ const PopupRoom = ({ popupInfo }) => {
                   cursor:'pointer',
                   objectFit:'cover'
                 }}
-                onClick={ () => dispatch({ type: 'UPDATE_ROOM', payload: popupInfo })}
+                onClick={ () => dispatch({ type: 'UPDATE_NEED_HELP_POINT', payload: popupInfo })}
               >
 
               </Box>
@@ -63,4 +63,4 @@ const PopupRoom = ({ popupInfo }) => {
   )
 }
 
-export default PopupRoom
+export default PopupNeedHelpPoint

@@ -18,25 +18,25 @@ const Transistion = forwardRef( ( props, ref ) => {
     <Slide direction='up' {...props} ref={ref}/>
   )
 })
-const Room = () => {
-  const { room, dispatch } = useValue()
+const NeedHelpPoint = () => {
+  const { needHelpPoint: needHelpPoint, dispatch } = useValue()
   const handleClose = () => {
-    dispatch({ type: 'UPDATE_ROOM', payload: null })
+    dispatch({ type: 'UPDATE_NEED_HELP_POINT', payload: null })
   }
   const [place, setPlace] = useState()
 
   //Lấy address bằng lng và lat
   useEffect( () => {
-    if (room) {
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${room.lng},${room.lat}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
+    if (needHelpPoint) {
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${needHelpPoint.lng},${needHelpPoint.lat}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
       fetch(url).then( res => res.json()).then(data => setPlace(data.features[0]))
     }
-  }, [room])
+  }, [needHelpPoint])
 
   return (
     <Dialog
       fullScreen
-      open={Boolean(room)}
+      open={Boolean(needHelpPoint)}
       onClose={handleClose}
       TransitionComponent={Transistion}
     >
@@ -47,7 +47,7 @@ const Room = () => {
             component='h3'
             sx={{ ml: 2, flex:1 }}
           >
-            {room?.title}
+            {needHelpPoint?.title}
           </Typography>
           <IconButton color='inherit' onClick={handleClose}>
             <Close/>
@@ -62,15 +62,15 @@ const Room = () => {
           }}
           modules={[Pagination]}
         >
-          {room?.images?.map( url => (
+          {needHelpPoint?.images?.map( url => (
             <SwiperSlide key={url}>
-              <div className='room'>
-                <img src={url} alt='room'/>
+              <div className='Point'>
+                <img src={url} alt='Need Help Point'/>
               </div>
             </SwiperSlide>
           ))}
           <Tooltip
-            title= {room?.userInfor?.name || ''}
+            title= {needHelpPoint?.userInfor?.name || ''}
             sx={{
               position:'absolute',
               bottom:'8px',
@@ -78,7 +78,7 @@ const Room = () => {
               zIndex:2
             }}
           >
-            <Avatar src={room?.userInfor?.photoURL}/>
+            <Avatar src={needHelpPoint?.userInfor?.photoURL}/>
           </Tooltip>
         </Swiper>
 
@@ -95,7 +95,7 @@ const Room = () => {
           >
             <Box>
               <Typography variant='h6' component='span'>{'Price per night '}</Typography>
-              <Typography component='span'>{ room?.price === 0 ? 'Free Stay': '$'+ room?.price}</Typography>
+              <Typography component='span'>{ needHelpPoint?.price === 0 ? 'Free Stay': '$'+ needHelpPoint?.price}</Typography>
             </Box>
 
             <Box
@@ -106,7 +106,7 @@ const Room = () => {
             >
               <Typography variant='h6' component='span'>{'Rating'}</Typography>
               <Rating
-                name='room-rating'
+                name='needHelpPoint-rating'
                 defaultValue={3.5}
                 precision={0.5}
                 emptyIcon={<StarBorder/>}
@@ -144,7 +144,7 @@ const Room = () => {
             }}
           >
             <Typography variant='h6' component='span'>{'Details: '}</Typography>
-            <Typography component='span'>{room?.description}</Typography>
+            <Typography component='span'>{needHelpPoint?.description}</Typography>
           </Stack>
 
         </Stack>
@@ -153,4 +153,4 @@ const Room = () => {
   )
 }
 
-export default Room
+export default NeedHelpPoint

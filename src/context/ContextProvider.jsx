@@ -24,11 +24,11 @@ const initialState = {
   location:{
     lng:0, lat:0
   },
-  rooms:[],
+  needHelpPoints:[],
   priceFilter: 50,
   addressFilter: null,
-  filteredRooms : [],
-  room: null
+  filteredNeedHelpPoints : [],
+  needHelpPoint: null
 }
 const Context = createContext(initialState)
 

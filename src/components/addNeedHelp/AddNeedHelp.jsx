@@ -5,9 +5,9 @@ import AddLocation from './addLocation/AddLocation'
 import AddImages from './addImages/AddImages'
 import { useValue } from '~/context/ContextProvider'
 import { Send } from '@mui/icons-material'
-import { createRoom } from '~/actions/room'
+import { createNeedHelp } from '~/actions/needHelpPoint'
 
-const AddRoom = ({ setPage }) => {
+const AddNeedHelp = ({ setPage }) => {
   const { images, details, location, currentUser, dispatch } =useValue()
   const [activeStep, setActiveStep] = useState(0)
   const [showSubmit, setShowSubmit]= useState(false)
@@ -36,7 +36,7 @@ const AddRoom = ({ setPage }) => {
   }
   const handleSubmit = () => {
     const imagesFormat = images.map(image => image.url)
-    const room = {
+    const infoNeedHelp = {
       lng: location?.lng,
       lat: location?.lat,
       price: details.price,
@@ -44,8 +44,9 @@ const AddRoom = ({ setPage }) => {
       description: details.description,
       images: imagesFormat
     }
-    createRoom(room, currentUser, dispatch, setPage)
+    createNeedHelp(infoNeedHelp, currentUser, dispatch, setPage)
   }
+
   //check complete step3: upload images
   useEffect( () => {
     if (images.length) {
@@ -53,7 +54,9 @@ const AddRoom = ({ setPage }) => {
     } else {
       setComplete(2, false)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [images])
+
   //check complete step3: upload details
   useEffect( () => {
     if (details.title.length > 4 && details.description.length > 9 ) {
@@ -61,7 +64,9 @@ const AddRoom = ({ setPage }) => {
     } else {
       setComplete(1, false)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [details])
+
   //check complete step3: upload location
   useEffect( () => {
     if (location.lng && location.lat) {
@@ -70,7 +75,9 @@ const AddRoom = ({ setPage }) => {
     else {
       setComplete(0, false)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
+
   //check showSubmit
   useEffect( () => {
     if (findUnfinish() === -1) {
@@ -78,6 +85,7 @@ const AddRoom = ({ setPage }) => {
     }
     else
       setShowSubmit(false)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [steps])
 
   const setComplete = (index, status) => {
@@ -152,4 +160,4 @@ const AddRoom = ({ setPage }) => {
 }
 
 
-export default AddRoom
+export default AddNeedHelp

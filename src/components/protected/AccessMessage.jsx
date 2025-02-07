@@ -18,7 +18,7 @@ const AccessMessage = () => {
           variant='outlined'
           sx={{ ml: 2 }}
           startIcon={<Lock/>}
-          onClick={ () => dispatch({type:'OPEN_LOGIN'})}
+          onClick={ () => dispatch({ type:'OPEN_LOGIN' })}
         >Login</Button>
       </Alert>
     </Container>
