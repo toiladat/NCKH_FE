@@ -1,9 +1,9 @@
-import NavBar from './components/NavBar'
-import Notification from './components/Notification'
+import NavBar from './components/navBar/NavBar'
+import Notification from './components/notification/Notification'
 import NeedHelpPoint from './components/needHelpPoint/NeedHelpPoint'
-import BottomNav from './components/user/BottomNav'
-import Loading from './components/user/Loading'
-import Login from './components/user/Login'
+import BottomNav from './components/bottomNav/BottomNav'
+import Loading from './components/loading/Loading'
+import Login from './components/navBar/login/Login'
 import ContextProvider from './context/ContextProvider'
 
 function App() {

@@ -5,7 +5,7 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { Avatar, Box, Paper, Tooltip } from '@mui/material'
 import Supercluster from 'supercluster'
 import './cluster.css'
-import GeocoderInput from '../sidebar/GeocoderInput'
+import GeocoderInput from '../sideBar/GeocoderInput'
 import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
 
 const supercluster = new Supercluster({
