@@ -1,6 +1,6 @@
 .cluster-marker{
   color: #fff;
-  background: #c81919;
+  /* background-color: #c81919; */
   border-radius: 50%;
   display: flex;
   justify-content: center;

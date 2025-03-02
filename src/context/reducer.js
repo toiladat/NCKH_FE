@@ -102,6 +102,58 @@ const reducer = (state, action) => {
       ...state,
       needHelpPoint: action.payload
     }
+  case 'UPDATE_LOCATION_RESCUE_START':
+    return {
+      ...state,
+      location_rescue:{
+        ...state.location_rescue,
+        start: action.payload
+      }
+    }
+  case 'UPDATE_LOCATION_RESCUE_END':
+    return {
+      ...state,
+      location_rescue:{
+        ...state.location_rescue,
+        end: action.payload
+      }
+    }
+  case 'UPDATE_DETAILS_RESCUE':
+    return {
+      ...state,
+      details_rescue:{
+        ...state.details_rescue,
+        ...action.payload
+      }
+    }
+  case 'UPDATE_IMAGES_RESCUE':
+    return {
+      ...state,
+      images_rescue: [...state.images_rescue, action.images_rescue]
+    }
+  case 'DELETE_IMAGE_RESCUE':
+    return {
+      ...state,
+      images_rescue:state.images_rescue.filter( image => image.url!==action.payload)
+    }
+  case 'RESET_RESCUE_HUB_POINT':
+    return {
+      ...state,
+      images_rescue:[],
+      details_rescue:{ description:'', timeStart: null, timeEnd:null },
+      location_rescue:{
+        start:{ lng: 0, lat: 0 },
+        end: { lng: 0, lat:0 }
+      }
+    }
+  case 'UPDATE_NEED_RESCUE_HUB_POINTS':
+    return {
+      ...state,
+      rescueHubPoints: action.payload,
+      addressFilter:null,
+      priceFilter:50,
+      filteredRescueHubPoints: action.payload
+    }
   default:
     throw new Error('no matched action')
   }
@@ -115,7 +167,7 @@ const applyFilter = ( needHelpPoints, address, price ) => {
     filteredNeedHelpPoints = filteredNeedHelpPoints.filter( needHelpPoint => {
       const lngDifference = lng > needHelpPoint.lng ? lng - needHelpPoint.lng : needHelpPoint.lng - lng // luon > 0
       const latDifference = lat > needHelpPoint.lat ? lat - needHelpPoint.lat : needHelpPoint.lat - lat
-      return lngDifference <=1 && latDifference<=1 // trả về những points gần nhất với lng và lat truyền vào
+      return lngDifference <=2 && latDifference<=2 // trả về những points gần nhất với lng và lat truyền vào
     })
   }
   if ( price < 50 ) {

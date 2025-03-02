@@ -21,8 +21,7 @@ const AddImages = () => {
     onDrop,
     accept: { 'image/*': [] }
   })
-  const { images } = useValue()
-
+  const { images_rescue } = useValue()
   return (
     <>
       <Paper
@@ -46,7 +45,7 @@ const AddImages = () => {
         </div>
       </Paper>
       <ProgressList {... { files }}/>
-      {!! images.length && <ImagesList/> }
+      {!! images_rescue.length && <ImagesList/> }
     </>
 
   )

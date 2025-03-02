@@ -5,6 +5,7 @@ import { useValue } from '~/context/ContextProvider'
 import UserIcons from './login/UserIcons'
 import Sidebar from '../sideBar/Sidebar'
 import { useState } from 'react'
+import Feature1 from './feature1/Feature1'
 
 const NavBar = () => {
   const {
@@ -17,6 +18,7 @@ const NavBar = () => {
       <AppBar>
         <Container maxWidth='lg'>
           <Toolbar disableGutters>
+
             <Box sx={{ mr:1 }}>
               <IconButton
                 size='large'
@@ -26,6 +28,7 @@ const NavBar = () => {
                 <Menu/>
               </IconButton>
             </Box>
+
             <Typography
               variant='h6' component='h1' noWrap
               sx={{
@@ -38,6 +41,11 @@ const NavBar = () => {
             >
               You Are Welcome
             </Typography>
+
+            <Box sx={{ display:{ xs:'none', md:'flex', flexGrow:5 }, gap:1 }}>
+              <Feature1/>
+            </Box>
+
             {!currentUser ? (
               <Button onClick={ () => dispatch({ type:'OPEN_LOGIN' })}
                 color='inherit'

@@ -15,8 +15,8 @@ const ProgressItem = ({ file }) => {
         setProgress(true)
         const result = await uploadToAppWrite(file)
         dispatch({
-          type: 'UPDATE_IMAGES',
-          images:result
+          type: 'UPDATE_IMAGES_RESCUE',
+          images_rescue:result
         })
         setImageURL(null)
         setProgress(false)
