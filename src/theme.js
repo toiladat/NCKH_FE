@@ -1,6 +1,8 @@
-import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
+import { experimental_extendTheme as extendTheme} from '@mui/material/styles'
+import { alpha } from '@mui/material/styles';
+import { cyan, deepOrange, orange, teal} from '@mui/material/colors'
 
-import { cyan, deepOrange, orange, teal } from '@mui/material/colors'
+const colorPrimary = alpha('#6CB1DA', 1);
 const theme = extendTheme({
   trello:{
     appBarHeight:'48px',
@@ -9,7 +11,10 @@ const theme = extendTheme({
   colorSchemes: {
     light: {
       palette: {
-        primary: teal,
+        primary: {
+          main: colorPrimary,
+        },
+        
         secondary: deepOrange
       }
     },

@@ -6,6 +6,7 @@ import UserIcons from './login/UserIcons'
 import Sidebar from '../sideBar/Sidebar'
 import { useState } from 'react'
 
+
 const NavBar = () => {
   const {
     currentUser,
@@ -17,13 +18,19 @@ const NavBar = () => {
       <AppBar>
         <Container maxWidth='lg'>
           <Toolbar disableGutters>
-            <Box sx={{ mr:1 }}>
+            <Box sx={{ mr:1, }}>
               <IconButton
                 size='large'
                 color='inherit'
                 onClick={ () => setIsOpen(true)}
               >
-                <Menu/>
+                <Menu
+                  sx={{
+                    '&:hover': {
+                      color: 'black'
+                    }
+                  }}
+                />
               </IconButton>
             </Box>
             <Typography
@@ -32,7 +39,8 @@ const NavBar = () => {
                 flexGrow:1,
                 display:{
                   sx:'none',
-                  md:'flex'
+                  md:'flex',
+                  
                 }
               }}
             >

@@ -5,13 +5,15 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { Avatar, Box, Paper, Tooltip } from '@mui/material'
 import Supercluster from 'supercluster'
 import './cluster.css'
-import GeocoderInput from '../sideBar/GeocoderInput'
-import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
+import GeocoderInput from '../../sideBar/GeocoderInput'
+import PopupNeedHelpPoint from '../../needHelpPoint/PopupNeedHelpPoint'
 
 const supercluster = new Supercluster({
   radius:75,
   maxZoom:20
 })
+
+
 const ClusterMap = () => {
   const { dispatch, mapRef, filteredNeedHelpPoints } = useValue()
   const [points, setPoints] = useState([])
@@ -74,19 +76,25 @@ const ClusterMap = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
-        width: '100vw',
+        height: '65vh',
+        width: '40vw',
         position: 'absolute',
-        top: 0,
-        left: 0
+        top:'125px',
+        left: "100px",
+        borderRadius: '20px',
+        overflow: 'hidden',
+        border: "0.5px solid #000",
+        boxShadow: "5px 5px 15px  rgba(0, 0, 0, 0.3)" 
+
       }}
     >
       <ReactMapGL
+        projection='globe'
         ref={mapRef}
         initialViewState={{ latitude: 51.5072, longitude: 0.1276 }}
-        mapStyle="mapbox://styles/mapbox/streets-v11"
+        mapStyle="mapbox://styles/mapbox/standard"
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '100%',  }}
         onZoomEnd={(e) => setZoom(Math.round(e.viewState.zoom))}
       >
         {clusters.map( cluster => {

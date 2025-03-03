@@ -43,11 +43,11 @@ const NeedHelpPoints = () => {
                   title={point.title}
                   actionIcon={
                     <Rating
-                      sx={{ color: 'rgba(255,255,255,0.8)', mr: '5px' }}
+                      sx={{ color: 'rgba(255, 215, 0, 1)', mr: '5px' }}
                       name="needHelpPoint-rating"
                       defaultValue={3.5} // Dữ liệu thực tế nếu có
                       precision={0.5}
-                      emptyIcon={<StarBorder sx={{ color: 'rgba(255,255,255,0.8)' }} />}
+                      emptyIcon={<StarBorder sx={{ color: 'rgba(255, 215, 0, 1)' }} />}
                     />
                   }
                 />
