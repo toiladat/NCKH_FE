@@ -146,7 +146,7 @@ const reducer = (state, action) => {
         end: { lng: 0, lat:0 }
       }
     }
-  case 'UPDATE_NEED_RESCUE_HUB_POINTS':
+  case 'UPDATE_RESCUE_HUB_POINTS':
     return {
       ...state,
       rescueHubPoints: action.payload,

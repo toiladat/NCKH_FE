@@ -3,10 +3,13 @@ import { ListItemIcon, Menu, MenuItem } from '@mui/material'
 import { useValue } from '~/context/ContextProvider'
 import UserCheckToken from '~/components/hooks/userCheckToken'
 import Profile from './Profile'
+import { useSelector } from 'react-redux'
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   UserCheckToken() // có token mới truy cập được vào cpn này
-  const { dispatch, currentUser } = useValue()
+  const { dispatch } = useValue()
+  const currentUser = useSelector(state => state.userReducer.currentUser)
+
   const handleCloseUserMenu= () => {
     setAnchorUserMenu(null)
   }
@@ -20,7 +23,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         onClick={handleCloseUserMenu}
       >
         {/* login bằng google thì k lưu csdl -> k check token be được */}
-        { !currentUser.google &&
+        { !currentUser?.google &&
           <MenuItem onClick={ () => {
             dispatch({
               type: 'UPDATE_PROFILE',

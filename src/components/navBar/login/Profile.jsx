@@ -1,8 +1,8 @@
-import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
+import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
 import { Close, Send } from '@mui/icons-material'
 import { useValue } from '~/context/ContextProvider'
 import { useRef } from 'react'
-import { updateProfile } from '~/actions/user'
+import { UpdateProfile } from '~/actions/user'
 
 const Profile = () => {
   const { currentUser, profile, dispatch } = useValue()
@@ -22,7 +22,7 @@ const Profile = () => {
     e.preventDefault()
     const name = nameRef.current.value
     // pass user name and photo file to new function in user actions
-    updateProfile( currentUser, { name, file: profile.file }, dispatch)
+    UpdateProfile( currentUser, { name, file: profile.file }, dispatch)
 
   }
   // change Avatar

@@ -5,12 +5,18 @@ import { CssVarsProvider } from '@mui/material/styles'
 import theme from './theme.js'
 import 'leaflet/dist/leaflet.css' // Import CSS Leaflet
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import { createStore } from 'redux'
+import allReducers from './redux/reducers/index.jsx'
+import { Provider } from 'react-redux'
 
+const store = createStore(allReducers)
 ReactDOM.createRoot(document.getElementById('root')).render(
   <CssVarsProvider theme={theme}>
     <CssBaseline>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID}>
-        <App />
+         <Provider store={store}> {/*redux */}
+          <App />
+        </Provider>
       </GoogleOAuthProvider>
     </CssBaseline>
   </CssVarsProvider>

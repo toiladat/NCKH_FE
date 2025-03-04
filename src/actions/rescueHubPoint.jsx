@@ -22,6 +22,6 @@ export const createRescueHubPoint = async (inforRescueHub, currentUser, dispatch
 export const getRescueHubPoints = async (dispatch) => {
   const result = await fetchData({ url, method:'GET' }, dispatch)
   if (result) {
-    dispatch({ type:'UPDATE_NEED_RESCUE_HUB_POINTS', payload: result })
+    dispatch({ type:'UPDATE_RESCUE_HUB_POINTS', payload: result })
   }
 }

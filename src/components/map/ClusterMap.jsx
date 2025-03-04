@@ -13,6 +13,7 @@ const supercluster = new Supercluster({ radius: 75, maxZoom: 20 })
 
 const ClusterMap = () => {
   const { dispatch, mapRef, filteredNeedHelpPoints, filteredRescueHubPoints } = useValue()
+  
   const [clusters, setClusters] = useState([])
   const [zoom, setZoom] = useState(0)
   const [popupInfo, setPopupInfo] = useState(null)
@@ -69,8 +70,6 @@ const ClusterMap = () => {
     const points =[...needHelps, ...rescueHubs]
     // Nạp dữ liệu vào Supercluster để gom cụm các điểm trên bản đồ
     supercluster.load(points)
-    console.log(supercluster);
-    
     // Lấy phạm vi bản đồ hiện tại và cập nhật danh sách cụm
     if (mapRef.current) {
       const bounds = mapRef.current.getMap().getBounds().toArray().flat()

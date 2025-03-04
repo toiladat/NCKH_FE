@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react'
 import reducer from './reducer'
-
 const initialState = {
   currentUser:null,
   openLogin:false,
@@ -54,8 +53,10 @@ const ContextProvider = ({ children }) => {
   const mapRef = useRef()
   //containerRef là nơi "đỡ" giao diện của Geocoder.
   const containerRef= useRef()
+  // const dispatch1 = useDispatch()
   useEffect(() => {
     const currentUser= JSON.parse(localStorage.getItem('currentUser')) // load trang check token
+    // dispatch1(updateUser(currentUser))
     if (currentUser) {
       dispatch({
         type:'UPDATE_USER',

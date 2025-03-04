@@ -6,12 +6,11 @@ import UserIcons from './login/UserIcons'
 import Sidebar from '../sideBar/Sidebar'
 import { useState } from 'react'
 import Feature1 from './feature1/Feature1'
-
+import { useSelector } from 'react-redux'
 const NavBar = () => {
-  const {
-    currentUser,
-    dispatch
-  } = useValue()
+  const { dispatch, currentUser } = useValue()
+  // const currentUser = useSelector(state => state.userReducer.currentUser)
+
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>

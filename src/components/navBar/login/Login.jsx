@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useValue } from '~/context/ContextProvider'
 import PasswordField from './PasswordField'
 import GoogleOneTabLogin from './GoogleOneTabLogin'
-import { login, register } from '~/actions/user'
+import { UserLogin, UserRegister } from '~/actions/user'
 
 const Login = () => {
   const {
@@ -29,7 +29,7 @@ const Login = () => {
     // handle form
     const email = emailRef.current.value
     const password = passwordRef.current.value
-    if (!isRegister) return login({ email, password }, dispatch)
+    if (!isRegister) return UserLogin({ email, password }, dispatch)
 
     // send login request if it is not register and return
     const name = nameRef.current.value
@@ -46,7 +46,7 @@ const Login = () => {
       })
     }
     //send register request
-    register({ name, email, password }, dispatch)
+    UserRegister({ name, email, password }, dispatch)
   }
 
   useEffect( () => {
