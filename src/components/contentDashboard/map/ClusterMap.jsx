@@ -7,72 +7,81 @@ import Supercluster from 'supercluster'
 import './cluster.css'
 import GeocoderInput from '../../sideBar/GeocoderInput'
 import PopupNeedHelpPoint from '../../needHelpPoint/PopupNeedHelpPoint'
+import GeocoderInput from '../sideBar/GeocoderInput'
+import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
+import { getRescueHubPoints } from '~/actions/rescueHubPoint'
 
 const supercluster = new Supercluster({
   radius:75,
   maxZoom:20
 })
 
-
 const ClusterMap = () => {
-  const { dispatch, mapRef, filteredNeedHelpPoints } = useValue()
-  const [points, setPoints] = useState([])
+  const { dispatch, mapRef, filteredNeedHelpPoints, filteredRescueHubPoints } = useValue()
   const [clusters, setClusters] = useState([])
-  const [bounds, setBounds] = useState([-180, -85, 180, 85])
-  const [zoom, setZoom]= useState(0)
+  const [zoom, setZoom] = useState(0)
   const [popupInfo, setPopupInfo] = useState(null)
 
-  // Lấy ra thông tin các phòng ở lần ren đầu
-  useEffect( () => {
+  // Fetch dữ liệu ngay từ lần đầu render
+  useEffect(() => {
     getNeedHelpPoints(dispatch)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    getRescueHubPoints(dispatch)
   }, [])
 
-  //Chuyển đổi danh sách needHelpPoints thành danh sách points theo chuẩn GeoJSON
-  // dùng để hiển thị hoặc gom cụm các điểm trên bản đồ.
-  useEffect( () => {
-    const points = filteredNeedHelpPoints.map( point => ({
-      type:'Feature',
-      properties:{
-        cluster:false,
-        needHelpPointId: point._id,
+  // Xử lý danh sách `points` và cập nhật `clusters` trong một `useEffect`
+  useEffect(() => {
+    if (!filteredNeedHelpPoints.length) return
+    const needHelps = filteredNeedHelpPoints.map(point => ({
+      type: 'Feature',
+      properties: {
+        type:'need-help-point',
+        cluster: false,
+        pointId: point._id,
         price: point.price,
-        title:point.title,
+        title: point.title,
         description: point.description,
-        lng:point.lng,
-        lat:point.lat,
-        images:point.images,
-        uPhoto:point.userInfor?.photoURL || '',
-        uName:point.userInfor?.name || ''
+        lng: point.lng,
+        lat: point.lat,
+        images: point.images,
+        uPhoto: point.userInfor?.photoURL || '',
+        uName: point.userInfor?.name || ''
       },
-      geometry:{
-        type:'Point',
-        coordinates:[parseFloat(point.lng), parseFloat(point.lat)]
+      geometry: {
+        type: 'Point',
+        coordinates: [parseFloat(point.lng), parseFloat(point.lat)]
       }
     }))
-    setPoints(points)
-  }, [filteredNeedHelpPoints])
 
-  useEffect(() => {
-    //nạp toàn bộ danh sách points vào Supercluster để tính toán các cụm.
+    const rescueHubs = filteredRescueHubPoints.map(point => ({
+      type: 'Feature',
+      properties: {
+        type:'rescue-hub-point',
+        cluster: false,
+        pointId: point._id,
+        description: point.description,
+        lng: point?.location_start?.lng,
+        lat: point?.location_start?.lat,
+        images: point.images,
+        uPhoto: point.userInfor?.photoURL || '',
+        uName: point.userInfor?.name || ''
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [parseFloat(point?.location_start?.lng), parseFloat(point?.location_start?.lat)]
+      }
+    }))
+
+    const points =[...needHelps, ...rescueHubs]
+    // Nạp dữ liệu vào Supercluster để gom cụm các điểm trên bản đồ
     supercluster.load(points)
-    //Trả về danh sách các cụm (cluster) hoặc các điểm đơn lẻ trong phạm vi bản đồ hiện tại (bounds) và mức zoom hiện tại (zoom).
-    setClusters(supercluster.getClusters(bounds, zoom))
-    //State clusters chứa danh sách các cụm hoặc điểm đơn lẻ hiện tại để hiển thị trên bản đồ.
-  }, [points, zoom, bounds])
-
-
-  //Lấy phạm vi (bounds) của bản đồ hiện tại để làm dữ liệu đầu vào cho việc tính cụm (clusters).
-  useEffect(() => {
+    console.log(supercluster);
+    
+    // Lấy phạm vi bản đồ hiện tại và cập nhật danh sách cụm
     if (mapRef.current) {
-      //Lấy đối tượng bản đồ hiện tại từ thư viện Mapbox.
-      //Lấy phạm vi hiện tại của bản đồ (4 góc trái/phải, trên/dưới).
-      //Chuyển phạm vi từ đối tượng sang mảng phẳng [west, south, east, north].
-      setBounds(mapRef.current.getMap().getBounds().toArray().flat())
+      const bounds = mapRef.current.getMap().getBounds().toArray().flat()
+      setClusters(supercluster.getClusters(bounds, zoom))
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mapRef?.current])
-
+  }, [filteredNeedHelpPoints, zoom])
   return (
     <Box
       sx={{
@@ -96,75 +105,72 @@ const ClusterMap = () => {
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
         style={{ width: '100%', height: '100%',  }}
         onZoomEnd={(e) => setZoom(Math.round(e.viewState.zoom))}
+        onMoveEnd={() => {
+          if (mapRef.current) {
+            const bounds = mapRef.current.getMap().getBounds().toArray().flat()
+            setClusters(supercluster.getClusters(bounds, zoom))
+          }
+        }}
       >
-        {clusters.map( cluster => {
+        {filteredRescueHubPoints.map( point => (
+          <Marker
+            key={point._id}
+            longitude={point?.location_start?.lng}
+            latitude={point?.location_start?.lat}
+          />
+        ))}
+
+        {clusters.map(cluster => {
           const { cluster: isCluster, point_count } = cluster.properties
           const [longitude, latitude] = cluster.geometry.coordinates
-          if ( isCluster) {
-            return (
-              <Marker
-                key={`cluster-${cluster.id}`}
-                longitude={longitude}
-                latitude={latitude}
+
+          return isCluster ? (
+            <Marker key={`cluster-${cluster.id}`} longitude={longitude} latitude={latitude}>
+              <div
+                className="cluster-marker"
+                style={{
+                  width: `${18 + (point_count / clusters.length) * 4}px`,
+                  height: `${18 + (point_count / clusters.length) * 4}px`,
+                  background: point_count < 5 ? '#f1f' : point_count < 10 ? '#51bb' : '#f28c',
+                  borderRadius: '50%'
+                }}
+                onClick={() => {
+                  const newZoom = Math.min(supercluster.getClusterExpansionZoom(cluster.id), 20)
+                  mapRef.current.flyTo({ center: [longitude, latitude], zoom: newZoom, speed: 1 })
+                }}
               >
-                <div
-                  className="cluster-marker"
-                  style={{
-                    width: `${10 + (point_count / points.length) * 20}px`,
-                    height: `${10 + (point_count / points.length) * 20}px`
-                  }}
-                  onClick={() => {
-                    const zoom = Math.min(
-                      supercluster.getClusterExpansionZoom(cluster.id),
-                      20
-                    )
-                    mapRef.current.flyTo({
-                      center: [longitude, latitude],
-                      zoom,
-                      speed: 1
-                    })
-                  }}
-                >
-                  {point_count}
-                </div>
-              </Marker>
-            )
-          }
-          else {
-            return (
-              <Marker
-                key={`needHelpPoint-${cluster.properties.needHelpPointId}`}
-                longitude={longitude}
-                latitude={latitude}
-              >
-                <Tooltip title={cluster.properties.uName}>
-                  <Avatar
-                    src={cluster.properties.uPhoto}
-                    component={Paper}
-                    elevation={2}
-                    onClick={ () => setPopupInfo(cluster.properties)}
-                  />
-                </Tooltip>
-              </Marker>
-            )
-          }
+                {point_count}
+              </div>
+            </Marker>
+          ) : (
+            <Marker key={`needHelpPoint-${cluster.properties.pointId}`} longitude={longitude} latitude={latitude}>
+              <Tooltip title={cluster.properties.uName}>
+                <Avatar
+                  src={cluster.properties.uPhoto}
+                  component={Paper}
+                  elevation={2}
+                  onClick={() => setPopupInfo(cluster.properties)}
+                />
+              </Tooltip>
+            </Marker>
+          )
         })}
 
-        {/* filter address */}
-        <GeocoderInput/>
+        {/* Bộ lọc địa chỉ */}
+        <GeocoderInput />
 
-        {popupInfo &&
+        {popupInfo && (
           <Popup
-            longitude={ popupInfo.lng}
+            longitude={popupInfo.lng}
             latitude={popupInfo.lat}
-            maxWidth='auto'
+            maxWidth="auto"
             closeOnClick={false}
             focusAfterOpen={false}
-            onClose={ () => { setPopupInfo(null) }}
+            onClose={() => setPopupInfo(null)}
           >
-            <PopupNeedHelpPoint {...{ popupInfo }}/>
+            <PopupNeedHelpPoint {...{ popupInfo }} />
           </Popup>
-        }
+        )}
       </ReactMapGL>
     </Box>
   )

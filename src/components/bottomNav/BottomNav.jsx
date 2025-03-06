@@ -1,10 +1,12 @@
 import { AddLocationAlt, LocationOn } from '@mui/icons-material'
 import { BottomNavigation, BottomNavigationAction, Box, Paper } from '@mui/material'
+import FlagIcon from '@mui/icons-material/Flag'
 import MedicationIcon from '@mui/icons-material/Medication'
 import React, { useRef, useEffect } from 'react'
 import ContentDashboard from '../contentDashboard/ContentDashboard'
 import NeedHelpPoints from '../needHelpPoint/NeedHelpPoints'
 import AddNeedHelp from '../addNeedHelp/AddNeedHelp'
+import AddRescueHub from '../addRescueHub/AddRescueHub'
 import Protected from '../protected/Protected'
 import { useTheme } from '@mui/material/styles'
 
@@ -26,7 +28,8 @@ const BottomNav = () => {
       {{
         0: <ContentDashboard/>,
         1: <NeedHelpPoints/>,
-        2: <Protected><AddNeedHelp setPage={ setValue}/></Protected>
+        2: <Protected><AddNeedHelp setPage={ setValue}/></Protected>,
+        3: <Protected><AddRescueHub/></Protected>
       }[value]}
       <Paper
         elevation={ 3 }
@@ -48,66 +51,13 @@ const BottomNav = () => {
             color: theme.palette.primary.contrastText, 
           }}
         >
-          {/* 3 icon newValue=  0-1-2 set active cho label */}
-          <BottomNavigationAction label='Map' icon= { <LocationOn/> } 
-              sx={{
-                '& .MuiBottomNavigationAction-label': {
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                },
-                '& .MuiSvgIcon-root': {
-                  fontSize: '24px',
-                },
-                '&.Mui-selected': {
-                  '& .MuiBottomNavigationAction-label': {
-                    color: '#15919B',      // Màu label khi active
-                  },
-                  '& .MuiSvgIcon-root': {
-                    color: '#15919B',      // Màu icon khi active
-                  }
-                }
-              }}
-          />
-          <BottomNavigationAction label='Need Help Points' icon= { <MedicationIcon/> } 
-            sx={{
-              '& .MuiBottomNavigationAction-label': {
-                fontSize: '14px',
-                fontWeight: 'bold',
-              },
-              '& .MuiSvgIcon-root': {
-                fontSize: '24px',
-              },
-              '&.Mui-selected': {
-                '& .MuiBottomNavigationAction-label': {
-                  color: '#15919B',      // Màu label khi active
-                },
-                '& .MuiSvgIcon-root': {
-                  color: '#15919B',      // Màu icon khi active
-                }
-              }
-            }}
-          />
-          <BottomNavigationAction label='Add Need Help' icon= { <AddLocationAlt/> } 
-            sx={{
-                '& .MuiBottomNavigationAction-label': {
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                },
-                '& .MuiSvgIcon-root': {
-                  fontSize: '24px',
-                },
-                '&.Mui-selected': {
-                  '& .MuiBottomNavigationAction-label': {
-                    color: '#15919B',      // Màu label khi active
-                  },
-                  '& .MuiSvgIcon-root': {
-                    color: '#15919B',      // Màu icon khi active
-                  }
-                }
-              }}
 
-          />
-
+          {/* 3 icon newValue=  0-1-2-3 set active cho label */}
+          <BottomNavigationAction label='Map' icon= { <LocationOn/> } />
+          <BottomNavigationAction label='Need Help Points' icon= { <MedicationIcon/> } />
+          <BottomNavigationAction label='Add Need Help' icon= { <AddLocationAlt/> } />
+          <BottomNavigationAction label='Add rescue Hub' icon= {<FlagIcon/>} />
+          
         </BottomNavigation>
       </Paper>
     </Box>

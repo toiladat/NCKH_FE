@@ -28,7 +28,20 @@ const initialState = {
   priceFilter: 50,
   addressFilter: null,
   filteredNeedHelpPoints : [],
-  needHelpPoint: null
+  needHelpPoint: null,
+
+  location_rescue:{
+    start:{ lng: 0, lat: 0 },
+    end: { lng: 0, lat:0 }
+  },
+  details_rescue: {
+    timeStart:null,
+    timeEnd:null,
+    description:''
+  },
+  images_rescue:[],
+  rescueHubPoints: [],
+  filteredRescueHubPoints :[]
 }
 const Context = createContext(initialState)
 
