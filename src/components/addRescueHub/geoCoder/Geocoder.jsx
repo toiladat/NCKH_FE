@@ -1,9 +1,9 @@
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import { useControl } from 'react-map-gl'
-import { useValue } from '~/context/ContextProvider'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
-const Geocoder = ( {target} ) => {
-  const { dispatch } = useValue()
+import { useDispatch } from 'react-redux'
+const Geocoder = ( { target } ) => {
+  const dispatch = useDispatch()
   const ctrl = new MapboxGeocoder({
     accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
     marker: false,

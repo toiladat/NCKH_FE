@@ -1,10 +1,10 @@
 import { Stack } from '@mui/material'
-import { useValue } from '~/context/ContextProvider'
 import InfoField from './infoField'
 import AddTime from './AddTime'
+import { useSelector } from 'react-redux'
 
 const AddDetails = () => {
-  const { details_rescue } =useValue()
+  const { details_rescue } = useSelector( state => state.rescueHubPointReducer)
   const { description, timeStart, timeEnd }= details_rescue
 
   return (

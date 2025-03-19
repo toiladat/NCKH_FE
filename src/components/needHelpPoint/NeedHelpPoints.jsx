@@ -1,9 +1,11 @@
 import { StarBorder } from '@mui/icons-material'
 import { Avatar, Card, Container, ImageList, ImageListItem, ImageListItemBar, Rating, Tooltip } from '@mui/material'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
 
 const NeedHelpPoints = () => {
-  const { filteredNeedHelpPoints : filteredPoint, dispatch } = useValue()
+  const { filteredNeedHelpPoints : filteredPoint } = useSelector( state => state.needHelpPointReducer)
+  const dispatch = useDispatch()
 
   return (
     <Container>
@@ -37,7 +39,7 @@ const NeedHelpPoints = () => {
                   alt={point.title}
                   loading="lazy"
                   style={{ cursor: 'pointer' }}
-                  onClick={ () => dispatch({ type:'UPDATE_NEED_HELP_POINT', payload:point })}
+                  onClick={ () => dispatch(updateNeedHelpPoint(point))}
                 />
                 <ImageListItemBar
                   title={point.title}

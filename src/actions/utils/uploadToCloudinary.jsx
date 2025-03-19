@@ -1,3 +1,5 @@
+import { updateAlert } from '~/redux/actions/util'
+
 export const uploadToCloudinary =async ( file, dispatch ) => {
   const formData = new FormData()
 
@@ -14,14 +16,11 @@ export const uploadToCloudinary =async ( file, dispatch ) => {
       .then((response) => response.json())
     return result.secure_url
   } catch (error) {
-    dispatch({
-      type:'UPDATE_ALERT',
-      payload:{
-        open: true,
-        severity: 'error',
-        message: error.message
-      }
-    })
+    dispatch(updateAlert({
+      open: true,
+      severity: 'error',
+      message: error.message
+    }))
     // eslint-disable-next-line no-console
     console.log(error)
     return null

@@ -1,3 +1,6 @@
+import { updateUser } from '~/redux/actions/user'
+import { updateAlert } from '~/redux/actions/util'
+
 const fetchData = async (
   { url, method='POST', token='', body = null },
   dispatch
@@ -15,19 +18,16 @@ const fetchData = async (
     const data = await response.json()
     if (!data.success) {
       if (response.status === 401 )
-        dispatch({ type:'UPDATE_USER', payload: null })
+        dispatch(updateUser(null))
       throw new Error(data.message) // catch sẽ bắt
     }
     return data.result
   } catch (error) {
-    dispatch({
-      type:'UPDATE_ALERT',
-      payload:{
-        open: true,
-        severity: 'error',
-        message: error.message
-      }
-    })
+    dispatch(updateAlert({
+      open: true,
+      severity: 'error',
+      message: error.message
+    }))
     // eslint-disable-next-line no-console
     console.log(error)
     return null

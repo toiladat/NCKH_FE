@@ -4,7 +4,7 @@ const initialState = {
     open: false,
     file: null,
     photoURL: ''
-  },
+  }
 
 }
 

@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import ProgressList from './progressList/ProgressList'
 import ImagesList from './ImagesList'
-import { useValue } from '~/context/ContextProvider'
+import { useSelector } from 'react-redux'
 
 const AddImages = () => {
   const [files, setfiles] = useState([])
@@ -21,7 +21,7 @@ const AddImages = () => {
     onDrop,
     accept: { 'image/*': [] }
   })
-  const { images } = useValue()
+  const { images } = useSelector( state => state.needHelpPointReducer)
 
   return (
     <>

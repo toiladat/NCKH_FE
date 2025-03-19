@@ -8,12 +8,16 @@ import './cluster.css'
 import GeocoderInput from '../sideBar/GeocoderInput'
 import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
 import { getRescueHubPoints } from '~/actions/rescueHubPoint'
+import { useDispatch, useSelector } from 'react-redux'
 
 const supercluster = new Supercluster({ radius: 75, maxZoom: 20 })
 
 const ClusterMap = () => {
-  const { dispatch, mapRef, filteredNeedHelpPoints, filteredRescueHubPoints } = useValue()
-  
+  const { mapRef } = useValue()
+  const { filteredRescueHubPoints } = useSelector( state => state.rescueHubPointReducer)
+  const { filteredNeedHelpPoints } = useSelector( state => state.needHelpPointReducer)
+  const dispatch = useDispatch()
+
   const [clusters, setClusters] = useState([])
   const [zoom, setZoom] = useState(0)
   const [popupInfo, setPopupInfo] = useState(null)

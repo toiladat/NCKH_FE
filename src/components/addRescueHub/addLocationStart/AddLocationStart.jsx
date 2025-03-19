@@ -1,11 +1,14 @@
 import { Marker } from 'react-map-gl'
 import MapBase from '../map/MapBase'
 import { useState } from 'react'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
 import { Chip } from '@mui/material'
+import { updateLocationRescueStart } from '~/redux/actions/rescueHubPoint'
 
 const AddLocationStart = () => {
-  const { location_rescue, dispatch } = useValue()
+  const { location_rescue } = useSelector( state => state.rescueHubPointReducer)
+  const dispatch = useDispatch()
+
   const [showChip, setShowChip] = useState(false)
   const marker =<Marker
     style={{
@@ -21,13 +24,10 @@ const AddLocationStart = () => {
     onDragEnd={(e) => {
       setShowChip(false)
       if (e.lngLat) {
-        dispatch({
-          type: 'UPDATE_LOCATION_RESCUE_START',
-          payload: {
-            lng: e.lngLat.lng,
-            lat: e.lngLat.lat
-          }
-        })
+        dispatch(updateLocationRescueStart({
+          lng: e.lngLat.lng,
+          lat: e.lngLat.lat
+        }))
       }
     }}>
     { showChip ? <Chip label="Điểm tập kết" size="small" color='primary' />: ''}

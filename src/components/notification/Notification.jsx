@@ -1,19 +1,19 @@
 import { Alert, Snackbar } from '@mui/material'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateAlert } from '~/redux/actions/util'
 
 const Notification = () => {
-  const { alert, dispatch }= useValue()
+  const { alert } = useSelector(state => state.utilReducer)
+  const dispatch = useDispatch()
+
   // Reason : Là lý do dẫn đến việc đóng Snackbar.
   // Event : xảy ra khi Snackbar đóng ( click away or timeout)
   const handleClose= ( event, reason) => {
     if (reason === 'clickaway') return //Điều này ngăn Snackbar đóng khi người dùng vô tình click ra ngoài
-    dispatch({
-      type : 'UPDATE_ALERT',
-      payload: {
-        ... alert,
-        open:false
-      }
-    })
+    dispatch(updateAlert({
+      ... alert,
+      open:false
+    }))
 
   }
   return (

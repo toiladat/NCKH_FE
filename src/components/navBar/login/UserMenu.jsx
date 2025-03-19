@@ -1,13 +1,13 @@
 import { Logout, Settings } from '@mui/icons-material'
 import { ListItemIcon, Menu, MenuItem } from '@mui/material'
-import { useValue } from '~/context/ContextProvider'
 import UserCheckToken from '~/components/hooks/userCheckToken'
 import Profile from './Profile'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateProfile, updateUser } from '~/redux/actions/user'
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
   UserCheckToken() // có token mới truy cập được vào cpn này
-  const { dispatch } = useValue()
+  const dispatch = useDispatch()
   const currentUser = useSelector(state => state.userReducer.currentUser)
 
   const handleCloseUserMenu= () => {
@@ -25,14 +25,11 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
         {/* login bằng google thì k lưu csdl -> k check token be được */}
         { !currentUser?.google &&
           <MenuItem onClick={ () => {
-            dispatch({
-              type: 'UPDATE_PROFILE',
-              payload:{
-                open: true,
-                file: null,
-                photoURL: currentUser?.photoURL
-              }
-            })
+            dispatch(updateProfile({
+              open: true,
+              file: null,
+              photoURL: currentUser?.photoURL
+            }))
           }}>
             <ListItemIcon>
               <Settings fontSize='small'/>
@@ -40,7 +37,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
             Profile
           </MenuItem>
         }
-        <MenuItem onClick={ () => dispatch({ type:'UPDATE_USER', payload: null })}>
+        <MenuItem onClick={ () => dispatch(updateUser(null))}>
           <ListItemIcon >
             <Logout fontSize='small'/>
           </ListItemIcon>

@@ -1,8 +1,10 @@
-import { useValue } from '~/context/ContextProvider'
+import { useSelector } from 'react-redux'
+
 import AccessMessage from './AccessMessage'
 
 const Protected = ({ children }) => {
-  const { currentUser } = useValue()
+  const { currentUser } = useSelector(state => state.userReducer)
+
   return (
     currentUser ? children : <AccessMessage/>
   )

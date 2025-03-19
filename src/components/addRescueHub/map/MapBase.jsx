@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import ReactMapGL, { Marker } from 'react-map-gl'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useEffect, useRef, useState, useMemo } from 'react'
 import Geocoder from '../geoCoder/Geocoder'
@@ -8,11 +8,14 @@ import Geocoder from '../geoCoder/Geocoder'
 import { getNeedHelpPoints } from '~/actions/needHelpPoint'
 import Supercluster from 'supercluster'
 import { Avatar, Paper, Tooltip } from '@mui/material'
+import { updateLocationRescueStart } from '~/redux/actions/rescueHubPoint'
 
 
 const MapBase = ({ marker, target }) => {
 
-  const { location_rescue, dispatch } = useValue()
+  const { location_rescue } = useSelector( state => state.rescueHubPointReducer)
+  const dispatch = useDispatch()
+
   const mapRef = useRef()
   const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
   const query = 'ip address'
@@ -24,7 +27,8 @@ const MapBase = ({ marker, target }) => {
     }), []
   )
 
-  const { needHelpPoints } = useValue()
+  const { needHelpPoints } = useSelector( state => state.needHelpPointReducer)
+
   const [points, setPoints] = useState([])
   const [clusters, setClusters] = useState([])
   const [bounds, setBounds] = useState([-180, -85, 180, 85])
@@ -46,13 +50,10 @@ const MapBase = ({ marker, target }) => {
                 essential: true // this animation is considered essential with respect to prefers-reduced-motion
               })
             }
-            dispatch({
-              type: 'UPDATE_LOCATION_RESCUE_START',
-              payload: {
-                lng: longitude,
-                lat: latitude
-              }
-            })
+            dispatch(updateLocationRescueStart({
+              lng: longitude,
+              lat: latitude
+            }))
           }
         })
         // eslint-disable-next-line no-console

@@ -1,71 +1,26 @@
-import { createContext, useContext, useEffect, useReducer, useRef } from 'react'
-import reducer from './reducer'
-const initialState = {
-  currentUser:null,
-  openLogin:false,
-  loading:false,
-  alert: {
-    open:false,
-    severity:'infor',
-    message:''
-  },
-  profile: {
-    open: false,
-    file: null,
-    photoURL: ''
-  },
-  images:[],
-  details:{
-    title:'',
-    description:'',
-    price:0
-  },
-  location:{
-    lng:0, lat:0
-  },
-  needHelpPoints:[],
-  priceFilter: 50,
-  addressFilter: null,
-  filteredNeedHelpPoints : [],
-  needHelpPoint: null,
+import { createContext, useContext, useEffect, useRef } from 'react'
+import { updateUser } from '~/redux/actions/user'
+import { useDispatch } from 'react-redux'
 
-  location_rescue:{
-    start:{ lng: 0, lat: 0 },
-    end: { lng: 0, lat:0 }
-  },
-  details_rescue: {
-    timeStart:null,
-    timeEnd:null,
-    description:''
-  },
-  images_rescue:[],
-  rescueHubPoints: [],
-  filteredRescueHubPoints :[]
-}
-const Context = createContext(initialState)
+const Context = createContext(null)
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useValue = () => {
   return useContext(Context)
 }
 const ContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
   const mapRef = useRef()
   //containerRef là nơi "đỡ" giao diện của Geocoder.
   const containerRef= useRef()
-  // const dispatch1 = useDispatch()
+  const dispatch = useDispatch()
   useEffect(() => {
     const currentUser= JSON.parse(localStorage.getItem('currentUser')) // load trang check token
-    // dispatch1(updateUser(currentUser))
     if (currentUser) {
-      dispatch({
-        type:'UPDATE_USER',
-        payload:currentUser
-      })
+      dispatch(updateUser(currentUser))
     }
   }, [])
   return (
-    <Context.Provider value={{ ...state, dispatch, mapRef, containerRef }}>
+    <Context.Provider value={{ dispatch, mapRef, containerRef }}>
       {children}
     </Context.Provider>
   )
