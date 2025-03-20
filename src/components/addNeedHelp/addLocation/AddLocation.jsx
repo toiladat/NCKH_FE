@@ -1,12 +1,16 @@
 import { Box } from '@mui/material'
 import ReactMapGL, { GeolocateControl, Marker, NavigationControl } from 'react-map-gl'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
+
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useEffect, useRef } from 'react'
 import Geocoder from './Geocoder'
+import { updateLocation } from '~/redux/actions/needHelpPoint'
 
 const AddLocation = () => {
-  const { location, dispatch } = useValue()
+  const { location } = useSelector( state => state.needHelpPointReducer)
+
+  const dispatch = useDispatch()
   const mapRef = useRef()
   const accessToken = import.meta.env.VITE_MAPBOX_TOKEN
   const query = 'ip address'
@@ -26,13 +30,10 @@ const AddLocation = () => {
                 essential: true // this animation is considered essential with respect to prefers-reduced-motion
               })
             }
-            dispatch({
-              type: 'UPDATE_LOCATION',
-              payload: {
-                lng: longitude,
-                lat: latitude
-              }
-            });
+            dispatch(updateLocation({
+              lng: longitude,
+              lat: latitude
+            }))
           }
         })
         .catch(error => console.error('Error fetching location:', error))
@@ -61,13 +62,10 @@ const AddLocation = () => {
           draggable
           onDragEnd={(e) => {
             if (e.lngLat) {
-              dispatch({
-                type: 'UPDATE_LOCATION',
-                payload: {
-                  lng: e.lngLat.lng,
-                  lat: e.lngLat.lat
-                }
-              })
+              dispatch(updateLocation({
+                lng: e.lngLat.lng,
+                lat: e.lngLat.lat
+              }))
             }
           }}
         />
@@ -75,13 +73,11 @@ const AddLocation = () => {
         <GeolocateControl
           position='top-left'
           trackUserLocation
-          onGeolocate={ e => dispatch({
-            type:'UPDATE_LOCATION',
-            payload:{
-              lng:e.coords.longitude,
-              lat:e.coords.latitude
-            }
-          })}
+          onGeolocate={ e =>
+            dispatch(updateLocation({
+              lng: e.coords.longitude,
+              lat: e.coords.latitude
+            }))}
         />
         <Geocoder/>
       </ReactMapGL>

@@ -1,34 +1,30 @@
 import { Box, CircularProgress, ImageListItem } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useValue } from '~/context/ContextProvider'
 import { uploadToAppWrite } from '~/actions/utils/fetchToAppWrite'
+import { useDispatch } from 'react-redux'
+import { updateImage } from '~/redux/actions/needHelpPoint'
+import { updateAlert } from '~/redux/actions/util'
 
 const ProgressItem = ({ file }) => {
 
   const [progress, setProgress] = useState(false)
   const [imageURL, setImageURL] = useState(null)
-  const { dispatch } = useValue()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const uploadImage = async () => {
       try {
         setProgress(true)
         const result = await uploadToAppWrite(file)
-        dispatch({
-          type: 'UPDATE_IMAGES',
-          images:result
-        })
+        dispatch(updateImage(result))
         setImageURL(null)
         setProgress(false)
       } catch (error) {
-        dispatch({
-          type:'UPDATE_ALERT',
-          payload: {
-            open: true,
-            severity:'error',
-            message:error.message
-          }
-        })
+        dispatch(updateAlert({
+          open: true,
+          severity:'error',
+          message:error.message
+        }))
         // eslint-disable-next-line no-console
         console.log(error)
       }

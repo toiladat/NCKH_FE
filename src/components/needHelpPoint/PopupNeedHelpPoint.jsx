@@ -4,12 +4,13 @@ import { Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { useDispatch } from 'react-redux'
+import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
 
-import { useValue } from '~/context/ContextProvider'
 
 const PopupNeedHelpPoint = ({ popupInfo }) => {
   const { title, description, price, images }= popupInfo
-  const { dispatch } = useValue()
+  const dispatch = useDispatch()
   return (
     <Card sx={{ maxWidth:400 }}>
       <ImageListItem sx={{ display:'block' }}>
@@ -51,7 +52,7 @@ const PopupNeedHelpPoint = ({ popupInfo }) => {
                   cursor:'pointer',
                   objectFit:'cover'
                 }}
-                onClick={ () => dispatch({ type: 'UPDATE_NEED_HELP_POINT', payload: popupInfo })}
+                onClick={ () => dispatch(updateNeedHelpPoint(popupInfo))}
               >
 
               </Box>

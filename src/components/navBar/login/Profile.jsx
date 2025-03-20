@@ -1,28 +1,28 @@
-import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
+import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
 import { Close, Send } from '@mui/icons-material'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRef } from 'react'
-import { updateProfile } from '~/actions/user'
+import { UpdateProfile } from '~/actions/user'
+import { updateProfile } from '~/redux/actions/user'
 
 const Profile = () => {
-  const { currentUser, profile, dispatch } = useValue()
+
+  const { currentUser, profile } = useSelector(state => state.userReducer)
+  const dispatch = useDispatch()
   const nameRef = useRef()
   // close dialog
   const handleClose = ( ) => {
-    dispatch({
-      type:'UPDATE_PROFILE',
-      payload: {
-        ...profile,
-        open:false
-      }
-    })
+    dispatch(updateProfile({
+      ...profile,
+      open:false
+    }))
   }
   //send to backend
   const handleSubmit = (e) => {
     e.preventDefault()
     const name = nameRef.current.value
     // pass user name and photo file to new function in user actions
-    updateProfile( currentUser, { name, file: profile.file }, dispatch)
+    UpdateProfile( currentUser, { name, file: profile.file }, dispatch)
 
   }
   // change Avatar
@@ -30,14 +30,11 @@ const Profile = () => {
     const file = e.target.files[0]
     if (file) {
       const photoURL = URL.createObjectURL(file)
-      dispatch({
-        type:'UPDATE_PROFILE',
-        payload: {
-          ...profile,
-          file,
-          photoURL
-        }
-      })
+      dispatch(updateProfile({
+        ...profile,
+        file,
+        photoURL
+      }))
     }
   }
   return (

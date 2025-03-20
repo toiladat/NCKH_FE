@@ -1,7 +1,8 @@
 import { Close, StarBorder } from '@mui/icons-material'
 import { AppBar, Avatar, Box, Container, Dialog, IconButton, Rating, Slide, Stack, Toolbar, Tooltip, Typography } from '@mui/material'
 import { forwardRef, useEffect, useState } from 'react'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
+
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Import Swiper styles
@@ -11,6 +12,7 @@ import 'swiper/css/pagination'
 // import required modules
 import { Pagination } from 'swiper/modules'
 import './swiper.css'
+import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
 
 
 const Transistion = forwardRef( ( props, ref ) => {
@@ -19,9 +21,11 @@ const Transistion = forwardRef( ( props, ref ) => {
   )
 })
 const NeedHelpPoint = () => {
-  const { needHelpPoint: needHelpPoint, dispatch } = useValue()
+  const { needHelpPoint: needHelpPoint } = useSelector( state => state.needHelpPointReducer)
+  const dispatch = useDispatch()
+
   const handleClose = () => {
-    dispatch({ type: 'UPDATE_NEED_HELP_POINT', payload: null })
+    dispatch(updateNeedHelpPoint(null))
   }
   const [place, setPlace] = useState()
 

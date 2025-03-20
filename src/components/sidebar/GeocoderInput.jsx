@@ -1,6 +1,8 @@
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { useValue } from '~/context/ContextProvider'
+import { clearAddress, filterAddress } from '~/redux/actions/needHelpPoint'
 
 const ctrl = new MapboxGeocoder({
   marker:false,
@@ -8,8 +10,8 @@ const ctrl = new MapboxGeocoder({
 
 })
 const GeocoderInput = () => {
-  const { mapRef, containerRef, dispatch } = useValue()
-
+  const { mapRef, containerRef } = useValue()
+  const dispatch = useDispatch()
   //Kiểm tra và làm sạch containerRef:
   useEffect( () => {
     if ( containerRef?.current?.children[0]) {
@@ -22,16 +24,13 @@ const GeocoderInput = () => {
     ctrl.on('result', (e) => {
       const coords = e.result.geometry.coordinates
       // lấy ra address gần với địa điểm tìm kiếm
-      dispatch({
-        type:'FILTER_ADDRESS',
-        payload:{
-          lng: coords[0],
-          lat: coords[1]
-        }
-      })
+      dispatch(filterAddress({
+        lng: coords[0],
+        lat: coords[1]
+      }))
     })
     // khi clear: gia tri da tim kiem
-    ctrl.on('clear', () => dispatch({ type: 'CLEAR_ADDRESS' }))
+    ctrl.on('clear', () => dispatch(clearAddress()))
   }, [])
   return (
     null

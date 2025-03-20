@@ -3,12 +3,15 @@ import { useEffect, useState } from 'react'
 import AddDetails from './addDetails/AddDetails'
 import AddLocation from './addLocation/AddLocation'
 import AddImages from './addImages/AddImages'
-import { useValue } from '~/context/ContextProvider'
 import { Send } from '@mui/icons-material'
 import { createNeedHelp } from '~/actions/needHelpPoint'
+import { useDispatch, useSelector } from 'react-redux'
 
 const AddNeedHelp = ({ setPage }) => {
-  const { images, details, location, currentUser, dispatch } =useValue()
+  const { currentUser } = useSelector(state => state.userReducer)
+  const { images, details, location } = useSelector( state => state.needHelpPointReducer)
+  const dispatch = useDispatch()
+
   const [activeStep, setActiveStep] = useState(0)
   const [showSubmit, setShowSubmit]= useState(false)
   const [steps, setSteps] = useState([

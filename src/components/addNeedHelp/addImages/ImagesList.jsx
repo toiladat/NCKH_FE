@@ -1,15 +1,16 @@
 import { Cancel } from '@mui/icons-material'
 import { IconButton, ImageList, ImageListItem, ImageListItemBar } from '@mui/material'
 import { deleteOnAppWrite } from '~/actions/utils/fetchToAppWrite'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteImage } from '~/redux/actions/needHelpPoint'
 
 const ImagesList = () => {
-  const { images, dispatch } = useValue()
+  const dispatch = useDispatch()
+  const { images } = useSelector( state => state.needHelpPointReducer)
+
   const handleDelete =async ( image ) => {
-    dispatch({
-      type:'DELETE_IMAGE',
-      payload:image.url
-    })
+    dispatch(deleteImage(image.url))
+
     await deleteOnAppWrite(image.uploadedFile)
   }
   return (
