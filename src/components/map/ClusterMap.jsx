@@ -31,6 +31,7 @@ const ClusterMap = () => {
   // Xử lý danh sách `points` và cập nhật `clusters` trong một `useEffect`
   useEffect(() => {
     if (!filteredNeedHelpPoints.length) return
+
     const needHelps = filteredNeedHelpPoints.map(point => ({
       type: 'Feature',
       properties: {
@@ -70,7 +71,8 @@ const ClusterMap = () => {
         coordinates: [parseFloat(point?.location_start?.lng), parseFloat(point?.location_start?.lat)]
       }
     }))
-
+    console.log(filteredRescueHubPoints);
+    
     const points =[...needHelps, ...rescueHubs]
     // Nạp dữ liệu vào Supercluster để gom cụm các điểm trên bản đồ
     supercluster.load(points)
