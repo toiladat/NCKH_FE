@@ -47,7 +47,7 @@ const BottomNav = () => {
           onChange={ (e, newValue) => setValue(newValue) }
 
           sx = {{
-            backgroundColor: theme.palette.primary.main, 
+            backgroundColor: "#ffffff", 
             color: theme.palette.primary.contrastText, 
           }}
         >

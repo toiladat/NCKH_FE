@@ -1,16 +1,17 @@
 import { Box,Typography, Button } from "@mui/material"
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"; // Import icon
+import { useTheme } from "@mui/material/styles";
+
 
 const Content = () => {
+
+    const theme = useTheme();
+
+    
     return (
-        <Box sx={{ width: "100vw", height: "100vh", overflow: "hidden" , textAlign: "center"}}>
-            <img src="src/components/contentDashboard/anh/anh2.jpg" alt=""
-            style={{
-                width: "100%",
-                height: "85%",
-                objectFit: "cover",
-            }}
-            />
+        <Box sx={{ width: "100vw", height: "85vh", overflow: "hidden" , textAlign: "center", background: 'linear-gradient(135deg, #3152BF 0%, #ffffff 100%)', marginBottom: "80px"}}>
+            
+
 
             <Typography variant="h2" component="h2" sx={{ 
                 mt: 2,
@@ -22,7 +23,7 @@ const Content = () => {
                 margin: "35px",
                 padding: "20px",
                 fontFamily: "'Poppins', sans-serif",
-                color: "#213A58",
+                color: theme.customColors.darkBlue,
                 textShadow: "4px 4px 6px rgba(0,0,0, 0.4)"
 
             }}>
@@ -40,7 +41,7 @@ const Content = () => {
                 padding: "20px",
                 fontFamily: "'Poppins', sans-serif",
                 fontStyle: "italic",
-                color: "#213A58",
+                color: theme.customColors.darkBlue,
                 
 
             }}>
@@ -49,11 +50,11 @@ const Content = () => {
 
             <Button 
             sx={{
-                backgroundColor: "#213A58", 
-                color: "#CAF0F8",
+                backgroundColor: theme.customColors.darkBlue,
+                color: "#ffffff",
                 "&:hover": { 
-                    backgroundColor: "#34729C", // Giữ nguyên màu nền khi hover
-                    color: "#CAF0F8" // Giữ nguyên màu chữ khi hover
+                    backgroundColor: theme.customColors.Primary, // Giữ nguyên màu nền khi hover
+                    color: "#ffffff" // Giữ nguyên màu chữ khi hover
                 },
                 display: "flex",
                 position: "absolute",
@@ -72,11 +73,11 @@ const Content = () => {
 
         <Button 
             sx={{
-                backgroundColor: "#213A58", 
-                color: "#CAF0F8",
+                backgroundColor: theme.customColors.darkBlue,
+                color: "#ffffff",
                 "&:hover": { 
-                    backgroundColor: "#34729C", // Giữ nguyên màu nền khi hover
-                    color: "#CAF0F8" // Giữ nguyên màu chữ khi hover
+                    backgroundColor: theme.customColors.Primary,
+                    color: "#ffffff" // Giữ nguyên màu chữ khi hover
                 },
                 display: "flex",
                 position: "absolute",

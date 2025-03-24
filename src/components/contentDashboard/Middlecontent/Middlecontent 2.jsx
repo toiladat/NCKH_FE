@@ -4,8 +4,8 @@ import "swiper/css";
 import { Navigation, Pagination} from 'swiper/modules';
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import './swiper.css';
-import { useTheme } from '@mui/material/styles'; // import useTheme
+import './swiper.css'
+import { useTheme } from "@mui/material/styles";
 
 
 const data = [
@@ -16,6 +16,7 @@ const data = [
     { title: "Thanh Hóa", description: "Ruộng đồng ngập sâu.", image: "https://files.ubdt.gov.vn/ContentFolder/ecm/source_files/2017/08/27/20205978_vov_lu_quet_o_mu_cang_chai_fnqa_17-08-27.jpg" },
 ];
 const Middlecontent = () => {
+    
     const theme = useTheme();
     return (
         <Container sx={{ pb: "50px", position: "relative", overflow: "visible" }}>
@@ -53,7 +54,6 @@ const Middlecontent = () => {
                 speed={700}
                 style={{ paddingBottom: "30px" }}
                 className="custom-swiper"
-                
 
             >
                 {data.map ((item, index) => (
@@ -72,13 +72,12 @@ const Middlecontent = () => {
                                 display: "flex",
                                 flexDirection: "column", // phần tử được sắp xếp theo chiều doc
                                 // background: "#E0DFE0",
-                                
                             }}
                         >
                             <CardMedia
                                 component= "img"
                                 image={item.image}
-                                height="420px"
+                                height="320px"
                                 alt={item.title}
                                 sx={{ 
                                     objectFit: "cover",
