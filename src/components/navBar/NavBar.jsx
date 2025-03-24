@@ -1,18 +1,17 @@
 import { AppBar, Box, Button, Container, IconButton, Toolbar, Typography } from '@mui/material'
 import Menu from '@mui/icons-material/Menu'
 import { Lock } from '@mui/icons-material'
-import { useValue } from '~/context/ContextProvider'
 import UserIcons from './login/UserIcons'
 import Sidebar from '../sideBar/Sidebar'
 import { useState } from 'react'
 import Feature1 from './feature1/Feature1'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { openLogin } from '~/redux/actions/util'
 
 const NavBar = () => {
-  const {
-    currentUser,
-    dispatch
-  } = useValue()
+  const dispatch = useDispatch()
+  const { currentUser } = useSelector(state => state.userReducer)
+
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>
@@ -55,7 +54,7 @@ const NavBar = () => {
             </Box>
 
             {!currentUser ? (
-              <Button onClick={ () => dispatch({ type:'OPEN_LOGIN' })}
+              <Button onClick={ () => dispatch(openLogin())}
                 color='inherit'
                 startIcon={<Lock/>}
               >

@@ -1,11 +1,14 @@
 import { Marker } from 'react-map-gl'
 import MapBase from '../map/MapBase'
 import { useState } from 'react'
-import { useValue } from '~/context/ContextProvider'
 import { Chip } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateLocationRescueEnd } from '~/redux/actions/rescueHubPoint'
 
 const AddLocationEnd = () => {
-  const { location_rescue, dispatch } = useValue()
+  const { location_rescue } = useSelector( state => state.rescueHubPointReducer)
+  const dispatch = useDispatch()
+
   const [showChip, setShowChip] = useState(false)
 
   const endMarker =
@@ -25,13 +28,10 @@ const AddLocationEnd = () => {
     onDragEnd={(e) => {
       setShowChip(false)
       if (e.lngLat) {
-        dispatch({
-          type: 'UPDATE_LOCATION_RESCUE_END',
-          payload: {
-            lng: e.lngLat.lng,
-            lat: e.lngLat.lat
-          }
-        })
+        dispatch(updateLocationRescueEnd({
+          lng: e.lngLat.lng,
+          lat: e.lngLat.lat
+        }))
       }
     }}>
     { showChip ? <Chip label="Điểm phân phối" size="small" color='warning' />: ''}

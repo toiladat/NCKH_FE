@@ -36,6 +36,7 @@
     "react-map-gl": "^7.1.8",
     "react-mapbox-gl": "^5.1.1",
     "react-redux": "^9.2.0",
+    "react-router-dom": "^7.3.0",
     "redux": "^5.0.1",
     "supercluster": "^8.0.1",
     "swiper": "^11.2.1"

@@ -1,52 +1,41 @@
 import { uploadToCloudinary } from './utils/uploadToCloudinary'
 import fetchData from './utils/fetchData'
+import { updateProfile, updateUser } from '~/redux/actions/user'
+import { closeLogin, endLoading, startLoading, updateAlert } from '~/redux/actions/util'
 const url = import.meta.env.VITE_APP_SERVER_URL + '/user'
-
-export const register = async (user, dispatch ) => {
-  dispatch({ type:'START_LOADING' })
+export const UserRegister = async (user, dispatch ) => {
+  dispatch(startLoading())
   //SEND RQ WITH FETCH
   const result = await fetchData({ url :url+'/register', body: user }, dispatch)
   if (result) {
-    dispatch({
-      type:'UPDATE_USER',
-      payload: result
-    })
-    dispatch({ type:'CLOSE_LOGIN' })
-    dispatch({
-      type:'UPDATE_ALERT',
-      payload: {
-        open: true,
-        severity:'success',
-        message: 'Your account has been created successfullly '
-      }
-    })
+    dispatch(updateUser(result))
+    dispatch(closeLogin())
+    dispatch(updateAlert({
+      open: true,
+      severity:'success',
+      message: 'Your account has been created successfullly '
+    }))
   }
-  dispatch({ type: 'END_LOADING' })
+  dispatch(endLoading())
 }
 
-export const login = async (user, dispatch) => {
-  dispatch({ type: 'START_LOADING' })
+export const UserLogin = async (user, dispatch) => {
+  dispatch(startLoading())
   const result = await fetchData({ url:url+'/login', body: user }, dispatch)
   if (result) {
-    dispatch({
-      type:'UPDATE_USER',
-      payload:result
-    })
-    dispatch({ type:'CLOSE_LOGIN' })
-    dispatch({
-      type:'UPDATE_ALERT',
-      payload:{
-        open:true,
-        severity:'success',
-        message:'Login successfully'
-      }
-    })
+    dispatch(updateUser(result))
+    dispatch(closeLogin())
+    dispatch(updateAlert({
+      open:true,
+      severity:'success',
+      message:'Login successfully'
+    }))
   }
-  dispatch({ type:'END_LOADING' })
+  dispatch(endLoading())
 }
 
-export const updateProfile = async ( currentUser, updatedFields, dispatch ) => {
-  dispatch({ type: 'START_LOADING' })
+export const UpdateProfile = async ( currentUser, updatedFields, dispatch ) => {
+  dispatch(startLoading())
   const { name, file } = updatedFields
   let body = { name, id: currentUser.id, photoURL: currentUser.photoURL }
 
@@ -71,40 +60,31 @@ export const updateProfile = async ( currentUser, updatedFields, dispatch ) => {
     )
 
     if (result) {
-      dispatch({
-        type: 'UPDATE_USER',
-        payload:{ ...currentUser, ...result }
-      })
-      dispatch({
-        type:'UPDATE_ALERT',
-        payload:{
-          open:true,
-          severity:'success',
-          message: 'Your profile has beend updated successfully'
-        }
-      })
-      dispatch({
-        type:'UPDATE_PROFILE',
-        payload:{
-          open: false,
-          file: null,
-          photoURL: result.photoURL
-        }
-      })
+      dispatch(updateUser({
+        ...currentUser, ...result
+      }))
+
+      dispatch(updateAlert({
+        open:true,
+        severity:'success',
+        message: 'Your profile has beend updated successfully'
+      }))
+      dispatch(updateProfile({
+        open: false,
+        file: null,
+        photoURL: result.photoURL
+      }))
     }
   } catch (error) {
-    dispatch({
-      type:'UPDATE_ALERT',
-      payload:{
-        open: true,
-        severity:'error',
-        message: error.message
-      }
-    })
+    dispatch(updateAlert({
+      open: true,
+      severity:'error',
+      message: error.message
+    }))
     // eslint-disable-next-line no-console
     console.log(error.message)
   }
 
-  dispatch({ type: 'END_LOADING' })
+  dispatch(endLoading())
 
 }

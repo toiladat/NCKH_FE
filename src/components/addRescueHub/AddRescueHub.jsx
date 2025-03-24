@@ -3,12 +3,16 @@ import { useEffect, useState } from 'react'
 import AddDetails from './addDetails/AddDetails'
 import AddLocationStart from './addLocationStart/AddLocationStart'
 import AddImages from './addImages/AddImages'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
 import { Send } from '@mui/icons-material'
 import AddLocationEnd from './addLocationEnd/AddLocationEnd'
 import { createRescueHubPoint } from '~/actions/rescueHubPoint'
 const AddRescueHub = ({ setPage }) => {
-  const { images_rescue, details_rescue, location_rescue, currentUser, dispatch } =useValue()
+
+  const { images_rescue, details_rescue, location_rescue } = useSelector( state => state.rescueHubPointReducer)
+  const { currentUser } = useSelector(state => state.userReducer)
+  const dispatch = useDispatch()
+
   const [activeStep, setActiveStep] = useState(0)
   const [showSubmit, setShowSubmit]= useState(false)
   const [steps, setSteps] = useState([

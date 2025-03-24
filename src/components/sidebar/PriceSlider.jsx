@@ -7,7 +7,7 @@ const marks=[
   { value:50, label:'$50' }
 ]
 const PriceSlider = () => {
-  const { priceFilter, dispatch } = useValue()
+  const { priceFilter } = useValue()
   return (
     <Box sx={{ mt: 5, width:232 }}>
       <Typography>Max Price : {`$ ${priceFilter}`}</Typography>
@@ -18,7 +18,8 @@ const PriceSlider = () => {
         valueLabelDisplay='auto'
         marks={marks}
         value={priceFilter}
-        onChange={(e, newPrice) => dispatch({ type: 'FILTER_PRICE', payload:newPrice })}
+        onChange={(e, newPrice) => console.log(('chua xu ly price'))
+        }
       />
     </Box>
   )

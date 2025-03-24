@@ -1,16 +1,16 @@
 import { Close, Send } from '@mui/icons-material'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, TextField, Container } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch, useSelector } from 'react-redux'
 import PasswordField from './PasswordField'
 import GoogleOneTabLogin from './GoogleOneTabLogin'
-import { login, register } from '~/actions/user'
+import { UserLogin, UserRegister } from '~/actions/user'
+import { closeLogin, updateAlert } from '~/redux/actions/util'
 
 const Login = () => {
-  const {
-    openLogin,
-    dispatch
-  } = useValue()
+
+  const { openLogin } = useSelector(state => state.utilReducer)
+  const dispatch = useDispatch()
   const [title, setTitle] = useState('Login')
   const [isRegister, setIsRegister] = useState(false)
   //useRef nên khi Rerender k bị update
@@ -21,7 +21,7 @@ const Login = () => {
   const confirmPasswordRef = useRef()
 
   const handleClose = () => {
-    dispatch({ type: 'CLOSE_LOGIN' })
+    dispatch(closeLogin())
   }
 
   const handleSubmit = (e ) => {
@@ -29,24 +29,21 @@ const Login = () => {
     // handle form
     const email = emailRef.current.value
     const password = passwordRef.current.value
-    if (!isRegister) return login({ email, password }, dispatch)
+    if (!isRegister) return UserLogin({ email, password }, dispatch)
 
     // send login request if it is not register and return
     const name = nameRef.current.value
     const confirmPassword = confirmPasswordRef.current.value
 
     if (password !== confirmPassword ) {
-      return dispatch({
-        type:'UPDATE_ALERT',
-        payload: {
-          open: true,
-          severity:'error',
-          message:'Passwords do not match'
-        }
-      })
+      return dispatch(updateAlert({
+        open: true,
+        severity:'error',
+        message:'Passwords do not match'
+      }))
     }
     //send register request
-    register({ name, email, password }, dispatch)
+    UserRegister({ name, email, password }, dispatch)
   }
 
   useEffect( () => {

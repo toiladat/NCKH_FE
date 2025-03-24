@@ -1,21 +1,21 @@
 import { Avatar, InputAdornment, TextField } from '@mui/material'
 import { useState } from 'react'
-import { useValue } from '~/context/ContextProvider'
 import pendingIcon from './icons/progress1.svg'
 import { Check } from '@mui/icons-material'
+import { useDispatch } from 'react-redux'
+import { updateDetailRescue } from '~/redux/actions/rescueHubPoint'
 const InfoField = ({ mainProps, optionalProps={}, minLength }) => {
-  const { dispatch } = useValue()
+  const dispatch = useDispatch()
   const [editing, setEditing] = useState(false)
   const [error, setError] = useState(false)
   const [success, setSuccess] = useState(false)
   let timer
   const handleChange = (e) => {
-    dispatch({
-      type:'UPDATE_DETAILS_RESCUE',
-      payload: {
-        [e.target.name]:e.target.value
-      }
-    })
+
+    dispatch(updateDetailRescue({
+      [e.target.name]:e.target.value
+    }))
+
     if (!editing ) setEditing(true)
     clearTimeout(timer)
     timer= setTimeout(() => {

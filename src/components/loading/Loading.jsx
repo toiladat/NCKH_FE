@@ -1,8 +1,8 @@
 import { Backdrop, CircularProgress } from '@mui/material'
-import { useValue } from '~/context/ContextProvider'
+import { useSelector } from 'react-redux'
 
 const Loading = () => {
-  const { loading } = useValue()
+  const { loading } = useSelector(state => state.utilReducer)
   return (
     <Backdrop
       open={ loading }

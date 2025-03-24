@@ -1,18 +1,14 @@
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { useValue } from '~/context/ContextProvider'
+import { useDispatch } from 'react-redux'
+import { updateDetailRescue } from '~/redux/actions/rescueHubPoint'
 
 const AddTime = ({ mainProps, type_payload }) => {
-  const { dispatch } = useValue( )
-
+  const dispatch = useDispatch()
   const handleChange = (newValue) => {
-
-    dispatch({
-      type:'UPDATE_DETAILS_RESCUE',
-      payload: {
-        [type_payload]: newValue
-      }
-    })
+    dispatch(updateDetailRescue({
+      [type_payload]: newValue
+    }))
   }
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

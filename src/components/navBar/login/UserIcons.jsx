@@ -1,13 +1,14 @@
 import { Mail, Notifications } from '@mui/icons-material'
 import { Avatar, Badge, Box, IconButton, Tooltip } from '@mui/material'
 import { useState } from 'react'
-import { useValue } from '~/context/ContextProvider'
+import { useSelector } from 'react-redux'
+
 import UserMenu from './UserMenu'
 import UserCheckToken from '~/components/hooks/userCheckToken'
 
 const UserIcons = () => {
   UserCheckToken() // có token mới truy cập được vào cpn này
-  const { currentUser } = useValue()
+  const { currentUser } = useSelector(state => state.userReducer)
 
   const [anchorUserMenu, setAnchorUserMenu] =useState(null)
   return (

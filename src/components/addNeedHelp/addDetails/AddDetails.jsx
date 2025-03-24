@@ -1,38 +1,26 @@
 import { FormControl, FormControlLabel, InputAdornment, Radio, RadioGroup, Stack, TextField } from '@mui/material'
 import { useState } from 'react'
-import { useValue } from '~/context/ContextProvider'
 import InfoField from './infoField'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateDetail } from '~/redux/actions/needHelpPoint'
 
 const AddDetails = () => {
-  const { details, dispatch } =useValue()
+  const dispatch = useDispatch()
+  const { details } = useSelector( state => state.needHelpPointReducer)
+
   const { title, description, price }= details
   const [costType, setCostType]= useState(price ? 1 : 0)
   const handleCostTypeChange = (e) => {
     const costType = Number(e.target.value)
     setCostType(costType)
     if (costType === 0 ) {
-      dispatch({
-        type:'UPDATE_DETAILS',
-        payload: {
-          price:0
-        }
-      })
+      dispatch(updateDetail({ price:0 }))
     } else {
-      dispatch({
-        type:'UPDATE_DETAILS',
-        payload: {
-          price:150
-        }
-      })
+      dispatch(updateDetail({ price:150 }))
     }
   }
   const handlePriceChange = ( e ) => {
-    dispatch({
-      type:'UPDATE_DETAILS',
-      payload:{
-        price: e.target.value
-      }
-    })
+    dispatch(updateDetail({ price:e.target.value }))
   }
   return (
     <Stack
