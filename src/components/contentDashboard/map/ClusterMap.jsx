@@ -7,8 +7,7 @@ import Supercluster from 'supercluster'
 import './cluster.css'
 import GeocoderInput from '../../sideBar/GeocoderInput'
 import PopupNeedHelpPoint from '../../needHelpPoint/PopupNeedHelpPoint'
-import GeocoderInput from '../sideBar/GeocoderInput'
-import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
+
 import { getRescueHubPoints } from '~/actions/rescueHubPoint'
 
 const supercluster = new Supercluster({
