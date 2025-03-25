@@ -49,7 +49,11 @@ const NeedHelpPoint = () => {
           <Typography
             variant='h6'
             component='h3'
-            sx={{ ml: 2, flex:1 }}
+            sx={{ 
+              ml: 2,
+              flex:1,
+              
+             }}
           >
             {needHelpPoint?.title}
           </Typography>
