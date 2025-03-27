@@ -4,6 +4,8 @@ import moment from 'moment'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DashBoardMain } from '~/actions/admin'
+import PiePoints from './PiePoints'
+import LineChartPoints from './LineChartPoints'
 
 
 const Main = () => {
@@ -69,10 +71,32 @@ const Main = () => {
         </Box>
       </Paper>
 
-      <Paper elevation={3} sx={{ p:2, gridColumn:3, gridRow:'1/4' }}>
+      <Paper elevation={3} sx={{ p:2, gridColumn:3, gridRow:'1/5' }}>
 
         <Box>
           <Typography>Recently Added Admin</Typography>
+          <List>
+            {admins.slice(0, 4).map((admin, i) => (
+              <Box key={admin._id}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar alt={admin?.name} src={admin?.photoURL}/>
+                  </ListItemAvatar>
+                  <ListItemText
+                    secondary={`${admin?.name || 'Unknown'} - ${admin?.role ?? 'Admin'}\nTime Created: ${admin?.createdAt ? moment(admin.createdAt).format('YYYY-MM-DD H:mm:ss') : 'N/A'}`}
+                    secondaryTypographyProps={{ style: { whiteSpace: 'pre-line' } }}
+                  />
+                </ListItem>
+                {i!==3 && <Divider variant='inset'/>}
+              </Box>
+            ))}
+          </List>
+        </Box>
+
+        <Divider sx={{ mt: 3, mb:3, opacity:0.7 }}/>
+
+        <Box>
+          <Typography>Tình nguyện viên || Quân đội ...</Typography>
           <List>
             {admins.slice(0, 4).map((admin, i) => (
               <Box key={admin._id}>
@@ -90,29 +114,23 @@ const Main = () => {
             ))}
           </List>
         </Box>
+      </Paper>
 
-        <Divider sx={{ mt: 3, mb:3, opacity:0.7 }}/>
+      <Paper elevation={3} sx={{ gridColumn:'1/3' }}>
+        <PiePoints statistic={[
+          {
+            name:'NeedHelpPoints',
+            value: needHelpPoints.length
+          },
+          {
+            name:'RescueHubPoints',
+            value: rescueHubPoints.length
+          }
+        ]}/>
+      </Paper>
 
-        <Box>
-          <Typography>Recently Added Admin</Typography>
-          <List>
-            {admins.slice(0, 4).map((admin, i) => {
-              <Box key={admin._id}>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar alt={admin?.name} src={admin?.photoURL}/>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={admin?.name}
-                    secondary={`Time Created: ${moment(admin?.createdAt).format('YYYY-MM-DD H:mm:ss')}`}
-                  />
-                </ListItem>
-                {i!==3 && <Divider variant='inset'/>}
-              </Box>
-            })}
-          </List>
-        </Box>
-
+      <Paper elevation={ 3 } sx={{ gridColumn:'1/3' }}>
+        <LineChartPoints/>
       </Paper>
     </Box>
   )
