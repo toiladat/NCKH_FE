@@ -1,4 +1,3 @@
-import { updateAdmin } from '~/redux/actions/admin'
 import { updateUser } from '~/redux/actions/user'
 import { updateAlert } from '~/redux/actions/util'
 

@@ -3,7 +3,7 @@ import { Avatar, Box, Divider, List, ListItem, ListItemAvatar, ListItemText, Pap
 import moment from 'moment'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { DashBoardMain } from '~/actions/admin'
+import { getFullAdmins, getFullNeedHelpPoints, getFullRescueHubPoints, getFullUsers } from '~/actions/admin'
 import PiePoints from './PiePoints'
 import LineChartPoints from './LineChartPoints'
 
@@ -13,8 +13,13 @@ const Main = () => {
   const { admin, admins, users, rescueHubPoints, needHelpPoints } = useSelector(state => state.adminReducer)
 
   useEffect( () => {
-    DashBoardMain(admin, dispatch)
+    if (admins.length === 0) getFullAdmins(admin, dispatch)
+    if (users.usersData.length === 0) getFullUsers(admin, dispatch)
+    if (rescueHubPoints.pointsData.length === 0) getFullRescueHubPoints(admin, dispatch)
+    if (needHelpPoints.pointsData.length === 0) getFullNeedHelpPoints(admin, dispatch)
+
   },[])
+
   return (
     <Box
       sx={{
@@ -37,7 +42,7 @@ const Main = () => {
           }}
         >
           <Group sx={{ height:100, width:100, opacity:0.3, mr:1 }}/>
-          <Typography variant='h4'>{users.length}</Typography>
+          <Typography variant='h4'>{users?.usersData?.length}</Typography>
         </Box>
       </Paper>
 
@@ -52,7 +57,7 @@ const Main = () => {
           }}
         >
           <MapsHomeWork sx={{ height:100, width:100, opacity:0.3, mr:1 }}/>
-          <Typography variant='h4'>{needHelpPoints.length}</Typography>
+          <Typography variant='h4'>{needHelpPoints?.pointsData.length}</Typography>
         </Box>
       </Paper>
 
@@ -67,7 +72,7 @@ const Main = () => {
           }}
         >
           <MapsHomeWork sx={{ height:100, width:100, opacity:0.3, mr:1 }}/>
-          <Typography variant='h4'>{rescueHubPoints.length}</Typography>
+          <Typography variant='h4'>{rescueHubPoints?.pointsData.length}</Typography>
         </Box>
       </Paper>
 
@@ -76,7 +81,7 @@ const Main = () => {
         <Box>
           <Typography>Recently Added Admin</Typography>
           <List>
-            {admins.slice(0, 4).map((admin, i) => (
+            {admins?.slice(0, 4).map((admin, i) => (
               <Box key={admin._id}>
                 <ListItem>
                   <ListItemAvatar>
@@ -98,7 +103,7 @@ const Main = () => {
         <Box>
           <Typography>Tình nguyện viên || Quân đội ...</Typography>
           <List>
-            {admins.slice(0, 4).map((admin, i) => (
+            {admins?.slice(0, 4).map((admin, i) => (
               <Box key={admin._id}>
                 <ListItem>
                   <ListItemAvatar>
@@ -120,11 +125,11 @@ const Main = () => {
         <PiePoints statistic={[
           {
             name:'NeedHelpPoints',
-            value: needHelpPoints.length
+            value: needHelpPoints.pointsData.length
           },
           {
             name:'RescueHubPoints',
-            value: rescueHubPoints.length
+            value: rescueHubPoints.pointsData.length
           }
         ]}/>
       </Paper>

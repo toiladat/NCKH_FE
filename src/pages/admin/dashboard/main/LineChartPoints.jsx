@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import moment from 'moment'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { getNeedHelpPointsByMonth, getRescueHubPointByMonth, getUserByMonth } from '~/actions/admin'
 
 const months = 5
 const today = new Date()
@@ -35,17 +36,36 @@ const LineChartPoints = () => {
     setOpacity((op) => ({ ...op, [dataKey]: 1 }))
   }
   const [data, setData] = useState([])
-  const { users, rescueHubPoints, needHelpPoints } = useSelector(state => state.adminReducer)
+  const { admin } = useSelector(state => state.adminReducer)
+  const dispatch= useDispatch()
+
+  const [users, setUsers]= useState([])
+  const [rescueHubPoints, setRescueHubPoints]= useState([])
+  const [needHelpPoints, setNeedHelpPoints]= useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const usersData = await getUserByMonth(admin, dispatch)
+      const needHelpData = await getNeedHelpPointsByMonth(admin, dispatch)
+      const rescueHubData = await getRescueHubPointByMonth(admin, dispatch)
+
+      setUsers(usersData)
+      setNeedHelpPoints(needHelpData)
+      setRescueHubPoints(rescueHubData)
+    }
+
+    fetchData()
+  }, [])
 
   useEffect( () => {
     users?.forEach(user => {
       for ( let i = 0 ; i < months ; i++ ) {
-        if ( moment(tempData[i].date).isSame(user?.createdAt, 'month')) return tempData[i].needHelpPoints++
+        if ( moment(tempData[i].date).isSame(user?.createdAt, 'month')) return tempData[i].users++
       }
     })
     needHelpPoints?.forEach(Point => {
       for ( let i = 0 ; i < months ; i++ ) {
-        if ( moment(tempData[i].date).isSame(Point?.createdAt, 'month')) return tempData[i].users++
+        if ( moment(tempData[i].date).isSame(Point?.createdAt, 'month')) return tempData[i].needHelpPoints++
       }
     })
     rescueHubPoints?.forEach(Point => {
