@@ -12,8 +12,8 @@ import 'swiper/css/pagination'
 // import required modules
 import { Pagination } from 'swiper/modules'
 import './swiper.css'
-import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
 import { evaluatePoint } from '~/actions/user'
+import { updateRescueHubPoint } from '~/redux/actions/rescueHubPoint'
 
 
 const Transistion = forwardRef( ( props, ref ) => {
@@ -21,42 +21,41 @@ const Transistion = forwardRef( ( props, ref ) => {
     <Slide direction='up' {...props} ref={ref}/>
   )
 })
-const NeedHelpPoint = () => {
-  const { needHelpPoint } = useSelector( state => state.needHelpPointReducer)
+const RescueHubPoint = () => {
+  const { rescueHubPoint } = useSelector( state => state.rescueHubPointReducer)
   const { currentUser } = useSelector (state => state.userReducer)
   const dispatch = useDispatch()
 
-  const [rating, setRating] = useState(needHelpPoint?.rating)
-
+  const [rating, setRating] = useState(rescueHubPoint?.rating)
   const handleChange = (newValue, id) => {
-    if (! newValue) return
-
+    if (!newValue) return
     let data ={
-      type:'needHelpPoint',
+      type:'rescuehubPoint',
       pointId:id,
-      ratedById: currentUser.id,
+      ratedById: currentUser?.id,
       ratePoint: newValue
     }
+
     evaluatePoint(currentUser, data, dispatch)
     setRating(newValue)
   }
   const handleClose = () => {
-    dispatch(updateNeedHelpPoint(null))
+    dispatch(updateRescueHubPoint(null))
   }
   const [place, setPlace] = useState()
 
   //Lấy address bằng lng và lat
   useEffect( () => {
-    if (needHelpPoint) {
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${needHelpPoint.lng},${needHelpPoint.lat}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
+    if (rescueHubPoint) {
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${rescueHubPoint.lng},${rescueHubPoint.lat}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
       fetch(url).then( res => res.json()).then(data => setPlace(data.features[0]))
     }
-  }, [needHelpPoint])
+  }, [rescueHubPoint])
 
   return (
     <Dialog
       fullScreen
-      open={Boolean(needHelpPoint)}
+      open={Boolean(rescueHubPoint)}
       onClose={handleClose}
       TransitionComponent={Transistion}
     >
@@ -67,7 +66,7 @@ const NeedHelpPoint = () => {
             component='h3'
             sx={{ ml: 2, flex:1 }}
           >
-            {needHelpPoint?.title}
+            {rescueHubPoint?.title}
           </Typography>
           <IconButton color='inherit' onClick={handleClose}>
             <Close/>
@@ -82,15 +81,15 @@ const NeedHelpPoint = () => {
           }}
           modules={[Pagination]}
         >
-          {needHelpPoint?.images?.map( url => (
+          {rescueHubPoint?.images?.map( url => (
             <SwiperSlide key={url}>
               <div className='Point'>
-                <img src={url} alt='Need Help Point'/>
+                <img src={url} alt='Rescue Hub Point'/>
               </div>
             </SwiperSlide>
           ))}
           <Tooltip
-            title= {needHelpPoint?.userInfor?.name || ''}
+            title= {rescueHubPoint?.userInfor?.name || ''}
             sx={{
               position:'absolute',
               bottom:'8px',
@@ -98,7 +97,7 @@ const NeedHelpPoint = () => {
               zIndex:2
             }}
           >
-            <Avatar src={needHelpPoint?.userInfor?.photoURL}/>
+            <Avatar src={rescueHubPoint?.userInfor?.photoURL}/>
           </Tooltip>
         </Swiper>
 
@@ -113,10 +112,6 @@ const NeedHelpPoint = () => {
               flexWrap:'wrap'
             }}
           >
-            <Box>
-              <Typography variant='h6' component='span'>{'Price per night '}</Typography>
-              <Typography component='span'>{ needHelpPoint?.price === 0 ? 'Free Stay': '$'+ needHelpPoint?.price}</Typography>
-            </Box>
 
             <Box
               sx={{
@@ -129,10 +124,10 @@ const NeedHelpPoint = () => {
                   <Typography variant='h6' component='span'>Rating</Typography>
                   <Rating
                     name='needHelpPoint-rating'
-                    value={rating?? needHelpPoint?.rating ?? 5}
+                    value={rating ?? rescueHubPoint?.rating ?? 5}
                     precision={0.5}
                     emptyIcon={<StarBorder />}
-                    onChange={ (event, newValue) => handleChange(newValue, needHelpPoint.pointId)}
+                    onChange={ (event, newValue) => handleChange(newValue, rescueHubPoint.pointId)}
                   />
                 </>
               )}
@@ -168,13 +163,13 @@ const NeedHelpPoint = () => {
               flexWrap:'wrap',
               alignItems:'start'
             }}
-          > 
+          >
             <Typography variant='h6' component='span'>{'Details: '}</Typography>
-            <Typography component='span'>{needHelpPoint?.description}</Typography>
+            <Typography component='span'>{rescueHubPoint?.description}</Typography>
           </Stack>
 
           {
-            needHelpPoint?.validByUsers?.length > 0 &&
+            rescueHubPoint?.validByUsers?.length > 0 &&
             (
               <Stack
                 sx={{
@@ -184,7 +179,7 @@ const NeedHelpPoint = () => {
               >
                 <Typography variant='h6' component='span'>{'Được xác minh bởi: '}</Typography>
                 {
-                  needHelpPoint.validByUsers.map( (user, index) => (
+                  rescueHubPoint.validByUsers.map( (user, index) => (
                     <Typography key={index} component='span'>{`${user.name} - ${user.userType}`}</Typography>
                   ))
                 }
@@ -198,4 +193,4 @@ const NeedHelpPoint = () => {
   )
 }
 
-export default NeedHelpPoint
+export default RescueHubPoint

@@ -88,3 +88,16 @@ export const UpdateProfile = async ( currentUser, updatedFields, dispatch ) => {
   dispatch(endLoading())
 
 }
+
+export const evaluatePoint = async (currentUser, data, dispatch) => {
+
+  const result = await fetchData({
+    url: url + '/evaluate-infor',
+    method:'PATCH',
+    body:data,
+    token: currentUser.token
+  })
+  console.log(result)
+  
+  return null
+}

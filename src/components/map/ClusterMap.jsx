@@ -6,7 +6,7 @@ import { Avatar, Box, Paper, Tooltip } from '@mui/material'
 import Supercluster from 'supercluster'
 import './cluster.css'
 import GeocoderInput from '../sideBar/GeocoderInput'
-import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
+import PopupPoint from './PopupPoint'
 import { getRescueHubPoints } from '~/actions/rescueHubPoint'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -38,14 +38,15 @@ const ClusterMap = () => {
         type:'need-help-point',
         cluster: false,
         pointId: point._id,
+        validByUsers: point.validByUsers,
         price: point.price,
         title: point.title,
         description: point.description,
         lng: point.lng,
+        rating:point.rating,
         lat: point.lat,
         images: point.images,
-        uPhoto: point.userInfor?.photoURL || '',
-        uName: point.userInfor?.name || ''
+        userInfor:point.userInfor
       },
       geometry: {
         type: 'Point',
@@ -57,22 +58,27 @@ const ClusterMap = () => {
       type: 'Feature',
       properties: {
         type:'rescue-hub-point',
+        rating:point.rating,
+        supplies: point.supplies,
+        start_time: point.start_time,
+        end_time: point.end_time,
+        location_start: point.location_start,
+        location_end: point.location_end,
         cluster: false,
         pointId: point._id,
         description: point.description,
         lng: point?.location_start?.lng,
+        validByUsers: point.validByUsers,
         lat: point?.location_start?.lat,
         images: point.images,
-        uPhoto: point.userInfor?.photoURL || '',
-        uName: point.userInfor?.name || ''
+        userInfor:point.userInfor
       },
       geometry: {
         type: 'Point',
         coordinates: [parseFloat(point?.location_start?.lng), parseFloat(point?.location_start?.lat)]
       }
     }))
-    console.log(filteredRescueHubPoints);
-    
+
     const points =[...needHelps, ...rescueHubs]
     // Nạp dữ liệu vào Supercluster để gom cụm các điểm trên bản đồ
     supercluster.load(points)
@@ -139,9 +145,9 @@ const ClusterMap = () => {
             </Marker>
           ) : (
             <Marker key={`needHelpPoint-${cluster.properties.pointId}`} longitude={longitude} latitude={latitude}>
-              <Tooltip title={cluster.properties.uName}>
+              <Tooltip title={cluster.properties.userInfor.name}>
                 <Avatar
-                  src={cluster.properties.uPhoto}
+                  src={cluster.properties.userInfor.photoURL}
                   component={Paper}
                   elevation={2}
                   onClick={() => setPopupInfo(cluster.properties)}
@@ -163,7 +169,7 @@ const ClusterMap = () => {
             focusAfterOpen={false}
             onClose={() => setPopupInfo(null)}
           >
-            <PopupNeedHelpPoint {...{ popupInfo }} />
+            <PopupPoint {...{ popupInfo }} />
           </Popup>
         )}
       </ReactMapGL>
