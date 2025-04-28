@@ -1,37 +1,33 @@
-import ClusterMap from "./map/ClusterMap"
+import ClusterMap from './map/ClusterMap'
 import Content from './content/Content'
-import { Box, Container } from "@mui/material"
-import Middlecontent from "./Middlecontent/Middlecontent"
-import BottomMiddlecontent from "./BottomMiddlecontent/BottomMiddlecontent"
-import Footer from "./Footer/Footer"
+import { Box, Container } from '@mui/material'
+import Middlecontent from './Middlecontent/Middlecontent'
+import BottomMiddlecontent from './BottomMiddlecontent/BottomMiddlecontent'
+import Footer from './Footer/Footer'
 const ContentDashboard = () => {
-    return (
+  return (
     <>
-    <Box
+      <Box
         sx={{
-            display:'flex',
-            justifyContent:'center',
-            alignItems:'center',
-            overFlow:'hidden',
+          display:'flex',
+          justifyContent:'center',
+          alignItems:'center',
+          overFlow:'hidden'
         }}
-    >
+      >
         <ClusterMap/>
         <Content/>
-       
-    </Box>
+      </Box>
 
-    <Container>
+      <Container>
         <Middlecontent/>
-    </Container>
+      </Container>
 
-    <BottomMiddlecontent/>
+      <BottomMiddlecontent/>
 
-    <Footer/>
+      <Footer/>
 
     </>
-
-   
-    
-    )
+  )
 }
 export default ContentDashboard

@@ -12,7 +12,7 @@ const initialState = {
   },
   images_rescue:[],
   rescueHubPoints: [],
-  addressFilter: null,
+  addressFilter: null ,
   filteredRescueHubPoints :[]
 }
 const applyFilter = ( rescueHubPoints, address ) => {

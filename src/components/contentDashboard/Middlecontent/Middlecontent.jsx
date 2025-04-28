@@ -6,17 +6,17 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import './swiper.css';
 import { useTheme } from '@mui/material/styles'; // import useTheme
+import { useSelector,useDispatch } from "react-redux";
+import { updateNeedHelpPoint } from "~/redux/actions/needHelpPoint";
 
 
-const data = [
-    { title: "Hà Giang", description: "Mưa lũ cần cứu trợ khẩn cấp.", image: "https://cdn-images.vtv.vn/zoom/640_400/66349b6076cb4dee98746cf1/2024/09/11/lao-2-76814329654991654407173-53934399676490566481715.jpg" },
-    { title: "Nghệ An", description: "Ngập lụt nghiêm trọng.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhPTOf9zZ-xdbzsKZkJ6I048ylLyUw9oD_EQ&s" },
-    { title: "Quảng Trị", description: "Bão lũ làm mất điện diện rộng.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRga1LXAb2adXpFWf-pv-Fa2b0__EixWj8xNA&s" },
-    { title: "Yên Bái", description: "Sạt lở cô lập bản làng.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP4BLyNLCsoQpv1Rh5_ihqGCWJkww5pvAgDr4CxcfcSULJ-HdAJSWE0whH2UqP6UTs7Rw&usqp=CAU" },
-    { title: "Thanh Hóa", description: "Ruộng đồng ngập sâu.", image: "https://files.ubdt.gov.vn/ContentFolder/ecm/source_files/2017/08/27/20205978_vov_lu_quet_o_mu_cang_chai_fnqa_17-08-27.jpg" },
-];
+
+
 const Middlecontent = () => {
+
+    const {filteredNeedHelpPoints : filterdPoints } = useSelector (state => state.needHelpPointReducer)
     const theme = useTheme();
+    const dispatch = useDispatch()
     return (
         <Container sx={{ pb: "50px", position: "relative", overflow: "visible" }}>
             <Typography variant="h3" align="center"
@@ -56,7 +56,7 @@ const Middlecontent = () => {
                 
 
             >
-                {data.map ((item, index) => (
+                {filterdPoints.map ((item, index) => (
                     <SwiperSlide key={index}>
                         <Card 
                             sx={{
@@ -77,7 +77,7 @@ const Middlecontent = () => {
                         >
                             <CardMedia
                                 component= "img"
-                                image={item.image}
+                                image={item.images}
                                 height="420px"
                                 alt={item.title}
                                 sx={{ 
@@ -94,7 +94,11 @@ const Middlecontent = () => {
                                 <Typography variant="body2" color="text.secondary">{item.description}</Typography>
                             </CardContent>
 
-                            <Button size="medium" sx={{ m: 2, borderRadius: "10px" }} variant="contained" color="primary">
+                            <Button size="medium" sx={{ m: 2, borderRadius: "10px" }} variant="contained" color="primary"
+                                onClick={ () => {
+                                    console.log("Button clicked!", item);
+                                    dispatch(updateNeedHelpPoint(item))  }}
+                            >
                                 Xem chi tiết
                             </Button>
 

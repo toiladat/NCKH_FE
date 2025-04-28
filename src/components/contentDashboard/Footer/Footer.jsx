@@ -86,6 +86,7 @@ const Footer = () => {
                                 fontSize: "14px",
                                 fontWeight: "600",
                                 borderRadius: "8px"
+                                
                             }}
                         >
                             Đăng ký ngay
