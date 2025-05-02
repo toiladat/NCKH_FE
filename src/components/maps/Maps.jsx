@@ -2,26 +2,30 @@ import { useEffect, useState } from 'react'
 import { getNeedHelpPoints } from '~/actions/needHelpPoint'
 import { useValue } from '~/context/ContextProvider'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
-import { Avatar, Box, Paper, Tooltip } from '@mui/material'
+import { Avatar, Paper, Tooltip, Box, SpeedDial, SpeedDialIcon, SpeedDialAction, Dialog, Typography } from '@mui/material'
 import Supercluster from 'supercluster'
-import './cluster.css'
-import GeocoderInput from '../../sideBar/GeocoderInput'
-import PopupNeedHelpPoint from '../../needHelpPoint/PopupNeedHelpPoint'
-
+import './map.css'
+import GeocoderInput from '../sidebar/GeocoderInput'
+import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
 import { getRescueHubPoints } from '~/actions/rescueHubPoint'
 import { useDispatch, useSelector } from 'react-redux'
+import AddIcon from '@mui/icons-material/Add'
+import ErrorBoundary from './ErrorBoundary'
+// import { HeightOutlined } from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
 
 const supercluster = new Supercluster({
   radius:75,
   maxZoom:20
 })
 
-const ClusterMap = () => {
-  const { mapRef } = useValue()
+const Maps = () => {
+  const { mapRef, containerRef } = useValue()
   const { filteredRescueHubPoints } = useSelector( state => state.rescueHubPointReducer)
   const { filteredNeedHelpPoints } = useSelector( state => state.needHelpPointReducer)
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const [clusters, setClusters] = useState([])
   const [zoom, setZoom] = useState(0)
   const [popupInfo, setPopupInfo] = useState(null)
@@ -85,18 +89,27 @@ const ClusterMap = () => {
       setClusters(supercluster.getClusters(bounds, zoom))
     }
   }, [filteredNeedHelpPoints, zoom])
+
+  const actions = [
+    { icon: <AddIcon />, name: 'Tạo chương trình cứu trợ', path: '/addrescuehub' },
+    { icon: <AddIcon />, name: 'Tạo điểm cứu trợ', path: '/addneedhelp' },
+    { icon: <HealthAndSafetyIcon />, name: 'Nhận hỗ trợ' }
+  ]
+  const [openForm, setOpenForm] = useState(false)
+
+  const handleOpenForm = () => {
+    setOpenForm(true) // Mở form khi nhấn vào "Nhận hỗ trợ"
+  }
+
+  const handleCloseForm = () => {
+    setOpenForm(false) // Đóng form
+  }
   return (
     <Box
       sx={{
-        height: '65vh',
-        width: '40vw',
-        position: 'absolute',
-        top:'125px',
-        left: '100px',
-        borderRadius: '20px',
-        overflow: 'hidden',
-        border: '0.5px solid #000',
-        boxShadow: '5px 5px 15px  rgba(0, 0, 0, 0.3)'
+        height: '93vh',
+        width: '100vw',
+        position: 'absolute'
 
       }}
     >
@@ -158,10 +171,10 @@ const ClusterMap = () => {
             </Marker>
           )
         })}
-
         {/* Bộ lọc địa chỉ */}
-        <GeocoderInput />
-
+        <ErrorBoundary>
+          <GeocoderInput />
+        </ErrorBoundary>
         {popupInfo && (
           <Popup
             longitude={popupInfo.lng}
@@ -175,8 +188,122 @@ const ClusterMap = () => {
           </Popup>
         )}
       </ReactMapGL>
+
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 40,
+          left: 40,
+          zIndex: 1,
+          borderRadius: 3,
+          overflow: 'hidden',
+          backgroundColor: 'white',
+          width: 450,
+          boxShadow: 3
+        }}
+      >
+        <Box
+          ref={containerRef}
+          sx={{
+            width: '100%',
+            '& .mapboxgl-ctrl-geocoder': {
+              width: '100% !important',
+              maxWidth: '100% !important'
+            }
+          }}
+        />
+      </Box>
+
+
+      <SpeedDial
+        ariaLabel="Thao tác bản đồ"
+        sx={{
+          position: 'absolute',
+          bottom: 40,
+          right: 40,
+          '& .MuiFab-primary': {
+            backgroundColor: '#1976d2',
+            color: 'white',
+            boxShadow: 4,
+            '&:hover': {
+              backgroundColor: '#1565c0'
+            }
+          }
+        }}
+        icon={<SpeedDialIcon />}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={() => {
+              if (action.name === 'Nhận hỗ trợ') {
+                handleOpenForm() // Mở form khi nhấn "Nhận hỗ trợ"
+              }
+            }}
+
+          />
+        ))}
+      </SpeedDial>
+
+      {openForm && (
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: 110, // nằm trên SpeedDial một chút
+            right: 40,
+            width: 600,
+            bgcolor: 'white',
+            border: '1px solid #ccc',
+            borderRadius: 2,
+            boxShadow: 4,
+            p: 2,
+            zIndex: 1300
+          }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+            <strong>Những chiến dịnh cần được hỗ trợ</strong>
+            <span
+              onClick={handleCloseForm}
+              style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: 18 }}
+            >
+              ×
+            </span>
+          </Box>
+          {/* Nội dung form bạn muốn */}
+          <Box
+            sx={{
+              borderRadius: 1,
+              boxShadow: 6,
+              backgroundColor: 'rgba(66, 165, 245, 0.4)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              padding: '32px'
+
+            }}
+          >
+            <Box sx={{ px: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography sx={{ fontWeight: '700' }}>Đang thực hiện</Typography>
+              <Typography variant="h4">0</Typography>
+            </Box>
+
+            <Box sx={{ px: 4, borderLeft: '2px solid white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography sx={{ fontWeight: '700' }}>Đạt mục tiêu</Typography>
+              <Typography variant="h4">0</Typography>
+            </Box>
+
+            <Box sx={{ px: 4, borderLeft: '2px solid white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography sx={{ fontWeight: '700' }}>Đã kết thúc</Typography>
+              <Typography variant="h4">0</Typography>
+            </Box>
+          </Box>
+
+        </Box>
+      )}
+
     </Box>
   )
 }
 
-export default ClusterMap
+export default Maps

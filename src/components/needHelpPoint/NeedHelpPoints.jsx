@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
 
 const NeedHelpPoints = () => {
-  const { filteredNeedHelpPoints : filteredPoint } = useSelector( state => state.needHelpPointReducer) 
+  const { filteredNeedHelpPoints : filteredPoint } = useSelector( state => state.needHelpPointReducer)
   const dispatch = useDispatch()
 
   return (

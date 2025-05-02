@@ -1,6 +1,7 @@
 import { Box, Typography, Button } from '@mui/material'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight' // Import icon
 import { useTheme } from '@mui/material/styles'
+import { Link } from 'react-router-dom'
 
 
 const Content = () => {
@@ -45,6 +46,8 @@ const Content = () => {
       </Typography>
 
       <Button
+        component = {Link}
+        to = '/maps'
         sx={{
           backgroundColor: theme.customColors.darkBlue,
           color: '#ffffff',

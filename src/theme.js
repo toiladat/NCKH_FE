@@ -1,9 +1,9 @@
-import { experimental_extendTheme as createTheme, alpha } from '@mui/material/styles';
-import { cyan, deepOrange, orange } from '@mui/material/colors';
+import { experimental_extendTheme as createTheme, alpha } from '@mui/material/styles'
+import { cyan, deepOrange, orange } from '@mui/material/colors'
 
 // Định nghĩa các màu custom
-const colorPrimary = alpha('#3152BF', 1);
-const colorDarkBlue = '#1B2F5C';
+const colorPrimary = alpha('#3152BF', 1)
+const colorDarkBlue = '#1B2F5C'
 
 
 const theme = createTheme({
@@ -13,7 +13,7 @@ const theme = createTheme({
   },
   customColors: {
     darkBlue: colorDarkBlue,
-    Primary: colorPrimary,
+    Primary: colorPrimary
 
   },
   colorSchemes: {
@@ -37,6 +37,6 @@ const theme = createTheme({
   typography: {
     fontFamily: 'Arial, sans-serif'
   }
-});
+})
 
-export default theme;
+export default theme
