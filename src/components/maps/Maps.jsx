@@ -253,6 +253,9 @@ const Maps = () => {
               if (action.name === 'Nhận hỗ trợ') {
                 handleOpenForm() // Mở form khi nhấn "Nhận hỗ trợ"
               }
+              else {
+                navigate(action.path)
+              }
             }}
 
           />
