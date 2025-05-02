@@ -95,6 +95,18 @@ const Maps = () => {
     { icon: <AddIcon />, name: 'Tạo điểm cứu trợ', path: '/addneedhelp' },
     { icon: <HealthAndSafetyIcon />, name: 'Nhận hỗ trợ' }
   ]
+
+  const newsArticles = [
+    {
+      title: 'Một tia hy vọng mới cho anh bảy và gia đình sau cơn bão Yagi',
+      link: 'https://www.unicef.org/vietnam/vi/nh%E1%BB%AFng-c%C3%A2u-chuy%E1%BB%87n/m%E1%BB%99t-tia-hy-v%E1%BB%8Dng-m%E1%BB%9Bi-cho-anh-b%E1%BA%A3y-v%C3%A0-gia-%C4%91%C3%ACnh-sau-c%C6%A1n-b%C3%A3o-yagi'
+    },
+    {
+      title: '431 triệu trẻ em phải chuyển cho ở do các thảm họa liên quan đến thời tiết',
+      link: 'https://www.unicef.org/vietnam/vi/thong-cao-bao-chi/431-trieu-tre-em-phai-chuyen-cho-o-o-do-cac-tham-hoa-lien-quan-den-thoi-tiet'
+    }
+    // Thêm các bài báo khác nếu có
+  ]
   const [openForm, setOpenForm] = useState(false)
 
   const handleOpenForm = () => {
@@ -296,6 +308,23 @@ const Maps = () => {
             <Box sx={{ px: 4, borderLeft: '2px solid white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography sx={{ fontWeight: '700' }}>Đã kết thúc</Typography>
               <Typography variant="h4">0</Typography>
+            </Box>
+          </Box>
+
+          <Box sx={{ p: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+              Tin tức liên quan:
+            </Typography>
+            <Box sx={{ mt: 2 }}>
+              {newsArticles.map((article, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
+                  <Typography variant="body1" sx={{ mt: 1 }}>
+                    <a href={article.link} target="_blank" rel="noopener noreferrer">
+                      {article.title}
+                    </a>
+                  </Typography>
+                </Box>
+              ))}
             </Box>
           </Box>
 
