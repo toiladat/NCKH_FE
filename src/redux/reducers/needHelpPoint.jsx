@@ -7,7 +7,7 @@ const initialState = {
     price:0
   },
   location:{
-    lng:0, lat:0
+    lng:105.8542, lat:21.0285, address:''
   },
   needHelpPoints:[],
   addressFilter: null,

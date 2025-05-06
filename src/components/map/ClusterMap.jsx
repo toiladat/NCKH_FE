@@ -81,11 +81,11 @@ const ClusterMap = () => {
 
     const points =[...needHelps, ...rescueHubs]
     // Nạp dữ liệu vào Supercluster để gom cụm các điểm trên bản đồ
-    supercluster.load(points)
+    supercluster?.load(points)
     // Lấy phạm vi bản đồ hiện tại và cập nhật danh sách cụm
     if (mapRef.current) {
       const bounds = mapRef.current.getMap().getBounds().toArray().flat()
-      setClusters(supercluster.getClusters(bounds, zoom))
+      setClusters(supercluster?.getClusters(bounds, zoom))
     }
   }, [filteredNeedHelpPoints, zoom])
   return (

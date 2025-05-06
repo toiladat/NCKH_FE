@@ -37,12 +37,13 @@ const AddNeedHelp = ({ setPage }) => {
       setActiveStep(stepIndex)
     }
   }
+
   const handleSubmit = () => {
     const imagesFormat = images.map(image => image.url)
     const infoNeedHelp = {
       lng: location?.lng,
       lat: location?.lat,
-      price: details.price,
+      address:location?.address,
       title: details.title,
       description: details.description,
       images: imagesFormat

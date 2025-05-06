@@ -4,12 +4,14 @@ import utilReducer from './util'
 import needHelpPointReducer from './needHelpPoint'
 import rescueHubPointReducer from './rescueHubPoint'
 import adminReducer from './admin'
+import evaluatedPointReducer from './evaluatedPoint'
 
 const allReducers = combineReducers({
   userReducer,
   utilReducer,
   needHelpPointReducer,
   rescueHubPointReducer,
-  adminReducer
+  adminReducer,
+  evaluatedPointReducer
 })
 export default allReducers
