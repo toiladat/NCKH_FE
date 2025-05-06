@@ -4,6 +4,7 @@ import { Box, Container } from '@mui/material'
 import Middlecontent from './Middlecontent/Middlecontent'
 import BottomMiddlecontent from './BottomMiddlecontent/BottomMiddlecontent'
 import Footer from './Footer/Footer'
+import ContentRescueHub from './ContentRescueHub/ContentRescueHub'
 const ContentDashboard = () => {
   return (
     <>
@@ -24,6 +25,8 @@ const ContentDashboard = () => {
       </Container>
 
       <BottomMiddlecontent/>
+
+      <ContentRescueHub/>
 
       <Footer/>
 
