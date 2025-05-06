@@ -2,8 +2,8 @@
 
 const initialState = {
   location_rescue:{
-    start:{ lng: 0, lat: 0 },
-    end: { lng: 0, lat:0 }
+    start:{ lng: 105.8542, lat: 21.0285, address:'' },
+    end: { lng: 0, lat:0, address:'' }
   },
   details_rescue: {
     timeStart:null,
@@ -13,7 +13,8 @@ const initialState = {
   images_rescue:[],
   rescueHubPoints: [],
   addressFilter: null,
-  filteredRescueHubPoints :[]
+  filteredRescueHubPoints :[],
+  rescueHubPoint:null
 }
 const applyFilter = ( rescueHubPoints, address ) => {
   let filteredRescueHubPoints = rescueHubPoints
@@ -88,6 +89,11 @@ const rescueHubPointReducer = (state = initialState, action ) => {
       filteredRescueHubPoints: applyFilter(
         state.rescueHubPoints, action.payload
       )
+    }
+  case 'UPDATE_RESCUE_HUB_POINT':
+    return {
+      ...state,
+      rescueHubPoint: action.payload
     }
   default:
     return state

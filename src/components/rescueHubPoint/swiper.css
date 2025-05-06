@@ -1,0 +1,21 @@
+.swiper{
+  background:transparent;
+  height: fit-content;
+  overflow: hidden;
+}
+
+.swiper-wrapper{
+  align-items: center;
+}
+
+.swiper-slide img {
+  width: auto;
+  min-width: 400px;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.swiper-pagination span{
+  background-color: aliceblue;
+  opacity: 0.5;
+}

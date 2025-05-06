@@ -3,10 +3,10 @@ import { Avatar, Card, Container, ImageList, ImageListItem, ImageListItemBar, Ra
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { evaluatePoint } from '~/actions/user'
-import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
+import { updateRescueHubPoint } from '~/redux/actions/rescueHubPoint'
 
-const NeedHelpPoints = () => {
-  const { filteredNeedHelpPoints : filteredPoint } = useSelector( state => state.needHelpPointReducer)
+const RescueHubPoints = () => {
+  const { filteredRescueHubPoints : filteredPoint } = useSelector( state => state.rescueHubPointReducer)
   const { currentUser } = useSelector( state => state.userReducer)
   // State lưu rating theo point id
   const [localRatings, setLocalRatings] = useState({})
@@ -14,7 +14,7 @@ const NeedHelpPoints = () => {
   const dispatch = useDispatch()
   const handleChange = (newValue, id) => {
     let data ={
-      type:'needHelpPoint',
+      type:'rescueHubPoint',
       pointId:id,
       ratedById: currentUser.id,
       ratePoint: newValue
@@ -59,7 +59,7 @@ const NeedHelpPoints = () => {
                   alt={point.title}
                   loading="lazy"
                   style={{ cursor: 'pointer' }}
-                  onClick={ () => dispatch(updateNeedHelpPoint(point))}
+                  onClick={ () => dispatch(updateRescueHubPoint(point))}
                 />
                 <ImageListItemBar
                   title={point.title}
@@ -80,11 +80,11 @@ const NeedHelpPoints = () => {
             </Card>
           ))
         ) : (
-          <div>Have no need help points are found</div>
+          <div>Have no rescuehub points are found</div>
         )}
       </ImageList>
     </Container>
   )
 }
 
-export default NeedHelpPoints
+export default RescueHubPoints
