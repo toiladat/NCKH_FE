@@ -65,7 +65,10 @@ const NeedHelpPoint = () => {
           <Typography
             variant='h6'
             component='h3'
-            sx={{ ml: 2, flex:1 }}
+            sx={{
+              ml: 2,
+              flex:1
+            }}
           >
             {needHelpPoint?.title}
           </Typography>
@@ -168,7 +171,7 @@ const NeedHelpPoint = () => {
               flexWrap:'wrap',
               alignItems:'start'
             }}
-          > 
+          >
             <Typography variant='h6' component='span'>{'Details: '}</Typography>
             <Typography component='span'>{needHelpPoint?.description}</Typography>
           </Stack>

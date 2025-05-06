@@ -1,5 +1,5 @@
 import { Close, Send } from '@mui/icons-material'
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, TextField } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, TextField, Container } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PasswordField from './PasswordField'
@@ -54,13 +54,16 @@ const Login = () => {
       open={openLogin}
       onClose={handleClose}
     >
+
+
       <DialogTitle>
         {title}
         <IconButton
           sx={{
             position:'absolute',
             top:8,
-            right:8
+            right:8,
+            
           }}
           onClick={handleClose}
         >
@@ -69,7 +72,11 @@ const Login = () => {
       </DialogTitle>
 
       <form onSubmit={handleSubmit}>
-        <DialogContent dividers>
+        <DialogContent dividers
+          sx={{
+            
+          }}
+        >
           <DialogContentText>
             Plese fill your information in the fields below:
           </DialogContentText>
@@ -117,7 +124,13 @@ const Login = () => {
           p:'5px 24px'
         }}
       >
-        <Box sx={{alignItems:'center', justifyContent:'center' }}>
+        <Box 
+        sx={{
+          alignItems:'center',
+          justifyContent:'center',
+          
+
+         }}>
           {isRegister ? 'Sign in now' : ' Create one now'}
           <Button size='small' onClick={ () => setIsRegister(!isRegister)}>
             {isRegister ? 'Login' : 'Register'}
@@ -128,7 +141,7 @@ const Login = () => {
 
       <DialogActions sx={{
         justifyContent:'center',
-        py:'24' //padding top - button
+        py:'24', //padding top - button
       }}>
         <GoogleOneTabLogin/>
       </DialogActions>

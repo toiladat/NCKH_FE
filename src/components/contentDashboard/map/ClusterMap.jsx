@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
-import { getNeedHelpPoints } from '~/actions/needHelpPoint'
 import { useValue } from '~/context/ContextProvider'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { Avatar, Box, Paper, Tooltip } from '@mui/material'
 import Supercluster from 'supercluster'
 import './cluster.css'
-import GeocoderInput from '../sideBar/GeocoderInput'
+// import GeocoderInput from '../sideBar/GeocoderInput'
 import PopupPoint from './PopupPoint'
-import { getRescueHubPoints } from '~/actions/rescueHubPoint'
 import { useDispatch, useSelector } from 'react-redux'
 
-const supercluster = new Supercluster({ radius: 75, maxZoom: 20 })
+const supercluster = new Supercluster({
+  radius:75,
+  maxZoom:20
+})
 
 const ClusterMap = () => {
   const { mapRef } = useValue()
@@ -23,10 +24,10 @@ const ClusterMap = () => {
   const [popupInfo, setPopupInfo] = useState(null)
 
   // Fetch dữ liệu ngay từ lần đầu render
-  useEffect(() => {
-    getNeedHelpPoints(dispatch)
-    getRescueHubPoints(dispatch)
-  }, [])
+  // useEffect(() => {
+  //   getNeedHelpPoints(dispatch)
+  //   getRescueHubPoints(dispatch)
+  // }, [])
 
   // Xử lý danh sách `points` và cập nhật `clusters` trong một `useEffect`
   useEffect(() => {
@@ -78,7 +79,6 @@ const ClusterMap = () => {
         coordinates: [parseFloat(point?.location_start?.lng), parseFloat(point?.location_start?.lat)]
       }
     }))
-
     const points =[...needHelps, ...rescueHubs]
     // Nạp dữ liệu vào Supercluster để gom cụm các điểm trên bản đồ
     supercluster?.load(points)
@@ -91,18 +91,23 @@ const ClusterMap = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
-        width: '100vw',
+        height: '65vh',
+        width: '40vw',
         position: 'absolute',
-        top: 0,
-        left: 0
+        top:'125px',
+        left: '100px',
+        borderRadius: '20px',
+        overflow: 'hidden',
+        border: '0.5px solid #000',
+        boxShadow: '5px 5px 15px  rgba(0, 0, 0, 0.3)'
+
       }}
     >
       <ReactMapGL
         projection='globe'
         ref={mapRef}
         initialViewState={{ latitude: 51.5072, longitude: 0.1276 }}
-        mapStyle="mapbox://styles/mapbox/standard"
+        mapStyle='mapbox://styles/mapbox/standard'
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
         style={{ width: '100%', height: '100%' }}
         onZoomEnd={(e) => setZoom(Math.round(e.viewState.zoom))}
@@ -128,7 +133,7 @@ const ClusterMap = () => {
           return isCluster ? (
             <Marker key={`cluster-${cluster.id}`} longitude={longitude} latitude={latitude}>
               <div
-                className="cluster-marker"
+                className='cluster-marker'
                 style={{
                   width: `${18 + (point_count / clusters.length) * 4}px`,
                   height: `${18 + (point_count / clusters.length) * 4}px`,
@@ -158,13 +163,13 @@ const ClusterMap = () => {
         })}
 
         {/* Bộ lọc địa chỉ */}
-        <GeocoderInput />
+        {/* <GeocoderInput /> */}
 
         {popupInfo && (
           <Popup
             longitude={popupInfo.lng}
             latitude={popupInfo.lat}
-            maxWidth="auto"
+            maxWidth='auto'
             closeOnClick={false}
             focusAfterOpen={false}
             onClose={() => setPopupInfo(null)}
