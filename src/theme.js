@@ -1,3 +1,4 @@
+
 import { experimental_extendTheme as createTheme, alpha } from '@mui/material/styles'
 import { cyan, deepOrange, orange } from '@mui/material/colors'
 
@@ -14,7 +15,6 @@ const theme = createTheme({
   customColors: {
     darkBlue: colorDarkBlue,
     Primary: colorPrimary
-
   },
   colorSchemes: {
     light: {
@@ -40,3 +40,4 @@ const theme = createTheme({
 })
 
 export default theme
+

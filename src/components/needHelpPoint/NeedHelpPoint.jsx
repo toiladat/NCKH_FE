@@ -13,6 +13,7 @@ import 'swiper/css/pagination'
 import { Pagination } from 'swiper/modules'
 import './swiper.css'
 import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
+import { evaluatePoint } from '~/actions/user'
 
 
 const Transistion = forwardRef( ( props, ref ) => {
@@ -21,9 +22,24 @@ const Transistion = forwardRef( ( props, ref ) => {
   )
 })
 const NeedHelpPoint = () => {
-  const { needHelpPoint: needHelpPoint } = useSelector( state => state.needHelpPointReducer)
+  const { needHelpPoint } = useSelector( state => state.needHelpPointReducer)
+  const { currentUser } = useSelector (state => state.userReducer)
   const dispatch = useDispatch()
 
+  const [rating, setRating] = useState(needHelpPoint?.rating)
+
+  const handleChange = (newValue, id) => {
+    if (! newValue) return
+
+    let data ={
+      type:'needHelpPoint',
+      pointId:id,
+      ratedById: currentUser.id,
+      ratePoint: newValue
+    }
+    evaluatePoint(currentUser, data, dispatch)
+    setRating(newValue)
+  }
   const handleClose = () => {
     dispatch(updateNeedHelpPoint(null))
   }
@@ -49,11 +65,10 @@ const NeedHelpPoint = () => {
           <Typography
             variant='h6'
             component='h3'
-            sx={{ 
+            sx={{
               ml: 2,
-              flex:1,
-              
-             }}
+              flex:1
+            }}
           >
             {needHelpPoint?.title}
           </Typography>
@@ -112,13 +127,19 @@ const NeedHelpPoint = () => {
                 alignItems:'center'
               }}
             >
-              <Typography variant='h6' component='span'>{'Rating'}</Typography>
-              <Rating
-                name='needHelpPoint-rating'
-                defaultValue={3.5}
-                precision={0.5}
-                emptyIcon={<StarBorder/>}
-              />
+              {currentUser && (
+                <>
+                  <Typography variant='h6' component='span'>Rating</Typography>
+                  <Rating
+                    name='needHelpPoint-rating'
+                    value={rating?? needHelpPoint?.rating ?? 5}
+                    precision={0.5}
+                    emptyIcon={<StarBorder />}
+                    onChange={ (event, newValue) => handleChange(newValue, needHelpPoint.pointId)}
+                  />
+                </>
+              )}
+
             </Box>
           </Stack>
 
@@ -154,6 +175,25 @@ const NeedHelpPoint = () => {
             <Typography variant='h6' component='span'>{'Details: '}</Typography>
             <Typography component='span'>{needHelpPoint?.description}</Typography>
           </Stack>
+
+          {
+            needHelpPoint?.validByUsers?.length > 0 &&
+            (
+              <Stack
+                sx={{
+                  flexWrap:'wrap',
+                  alignItems:'start'
+                }}
+              >
+                <Typography variant='h6' component='span'>{'Được xác minh bởi: '}</Typography>
+                {
+                  needHelpPoint.validByUsers.map( (user, index) => (
+                    <Typography key={index} component='span'>{`${user.name} - ${user.userType}`}</Typography>
+                  ))
+                }
+              </Stack>
+            )
+          }
 
         </Stack>
       </Container>

@@ -1,12 +1,32 @@
 import { StarBorder } from '@mui/icons-material'
 import { Avatar, Card, Container, ImageList, ImageListItem, ImageListItemBar, Rating, Tooltip } from '@mui/material'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { evaluatePoint } from '~/actions/user'
 import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
 
 const NeedHelpPoints = () => {
   const { filteredNeedHelpPoints : filteredPoint } = useSelector( state => state.needHelpPointReducer)
-  const dispatch = useDispatch()
+  const { currentUser } = useSelector( state => state.userReducer)
+  // State lưu rating theo point id
+  const [localRatings, setLocalRatings] = useState({})
 
+  const dispatch = useDispatch()
+  const handleChange = (newValue, id) => {
+    let data ={
+      type:'needHelpPoint',
+      pointId:id,
+      ratedById: currentUser.id,
+      ratePoint: newValue
+    }
+    evaluatePoint(currentUser, data, dispatch)
+
+    // Update rating local
+    setLocalRatings(prev => ({
+      ...prev,
+      [id]: newValue
+    }))
+  }
   return (
     <Container>
       <ImageList
@@ -44,13 +64,16 @@ const NeedHelpPoints = () => {
                 <ImageListItemBar
                   title={point.title}
                   actionIcon={
-                    <Rating
-                      sx={{ color: 'rgba(255, 215, 0, 1)', mr: '5px' }}
-                      name="needHelpPoint-rating"
-                      defaultValue={3.5} // Dữ liệu thực tế nếu có
-                      precision={0.5}
-                      emptyIcon={<StarBorder sx={{ color: 'rgba(255, 215, 0, 1)' }} />}
-                    />
+                    ( currentUser &&
+                      <Rating
+                        sx={{ color: 'rgba(255,255,255,0.8)', mr: '5px' }}
+                        name="needHelpPoint-rating"
+                        value={localRatings[point._id] ?? point.rating ?? 5} // ưu tiên state trước
+                        precision={0.5}
+                        emptyIcon={<StarBorder sx={{ color: 'rgba(255,255,255,0.8)' }} />}
+                        onChange={ (event, newValue) => handleChange(newValue, point._id)}
+                      />
+                    )
                   }
                 />
               </ImageListItem>

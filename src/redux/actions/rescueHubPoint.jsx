@@ -40,3 +40,10 @@ export const updateRescueHubPoints = (value) => {
   }
 }
 
+export const updateRescueHubPoint = (value) => {
+  return {
+    type:'UPDATE_RESCUE_HUB_POINT',
+    payload: value
+  }
+}
+

@@ -7,6 +7,7 @@ import Maps from '~/components/maps/Maps'
 import Error404 from '~/pages/error/Error404'
 import AddRescueHub from '~/components/addRescueHub/AddRescueHub'
 import AddNeedHelp from '~/components/addNeedHelp/AddNeedHelp'
+import EvaluateLevel from '~/components/evaluateLevel/EvaluateLevel'
 
 export const ClientRoute = [
   {
@@ -33,6 +34,10 @@ export const ClientRoute = [
         path: 'addneedhelp',
         element: <AddNeedHelp />
       },
+      {
+        path: 'evaluate-level',
+        element: <EvaluateLevel/>
+      }
     ]
   },
   {

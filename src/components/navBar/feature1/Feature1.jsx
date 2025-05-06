@@ -15,17 +15,16 @@ const Feature1 = () => {
       items: [
         { label: 'Điểm cứu trợ', path: '/needhelppoint' },
         { label: 'Chương trình cứu trợ', path: '/relief-program' },
-        { label: 'Đồng hành', path: '/partner' },
         { label: 'Tình nguyện viên', path: '/volunteers' }
       ]
     },
     {
       title: 'Khám phá',
       items: [
-        { label: 'Bản đồ thiện nguyện', path: '/map' },
-        { label: 'Sự kiện thiện nguyện', path: '/events' },
-        { label: 'Bản tin', path: '/newsletters' },
-        { label: 'Tin tức', path: '/news' }
+        { label: 'Bản đồ thiện nguyện', path: '/maps' },
+        { label: 'Đánh giá', path: '/evaluate-level' },
+        { label: 'Tạo chương trình cứu trợ', path: '/addrescuehub' },
+        { label: 'Tạo điểm cứu trợ', path: '/addneedhelp' }
       ]
     },
     {

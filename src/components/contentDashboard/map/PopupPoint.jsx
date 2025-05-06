@@ -6,11 +6,31 @@ import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useDispatch } from 'react-redux'
 import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
+import { updateRescueHubPoint } from '~/redux/actions/rescueHubPoint'
 
 
-const PopupNeedHelpPoint = ({ popupInfo }) => {
-  const { title, description, price, images }= popupInfo
+const PopupPoint = ({ popupInfo }) => {
+  const { title, description, type, images }= popupInfo
   const dispatch = useDispatch()
+  const name = {
+    'need-help-point':'Nơi cần cứu trợ',
+    'rescue-hub-point':'Chương trình cứu trợ',
+    'information-point':'Điểm thông tin hữu ích'
+  }
+  const handleClick = () => {
+    switch (type) {
+    case 'need-help-point':
+      dispatch(updateNeedHelpPoint(popupInfo))
+      break
+    case 'rescue-hub-point':
+      dispatch(updateRescueHubPoint(popupInfo))
+      break
+    case 'information-point':
+      console.log('information-point')
+      break
+
+    }
+  }
   return (
     <Card sx={{ maxWidth:400 }}>
       <ImageListItem sx={{ display:'block' }}>
@@ -20,11 +40,10 @@ const PopupNeedHelpPoint = ({ popupInfo }) => {
             'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
             zIndex:2
           }}
-          title={price === 0 ? 'Free Stay': '$'+price }
           position='top'
         />
         <ImageListItemBar
-          title={title}
+          title={ name[`${type}`]}
           subtitle={description.substr(0, 30)+'...'}
           sx={{ zIndex:2 }}
         />
@@ -52,7 +71,7 @@ const PopupNeedHelpPoint = ({ popupInfo }) => {
                   cursor:'pointer',
                   objectFit:'cover'
                 }}
-                onClick={ () => dispatch(updateNeedHelpPoint(popupInfo))}
+                onClick={ () => handleClick()}
               >
 
               </Box>
@@ -64,4 +83,4 @@ const PopupNeedHelpPoint = ({ popupInfo }) => {
   )
 }
 
-export default PopupNeedHelpPoint
+export default PopupPoint

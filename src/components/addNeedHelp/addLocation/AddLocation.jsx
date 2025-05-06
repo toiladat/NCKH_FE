@@ -3,9 +3,11 @@ import ReactMapGL, { GeolocateControl, Marker, NavigationControl } from 'react-m
 import { useDispatch, useSelector } from 'react-redux'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Geocoder from './Geocoder'
 import { updateLocation } from '~/redux/actions/needHelpPoint'
+import { updateAlert } from '~/redux/actions/util'
+import handleUpdateSite from '~/utils/HandleUpdateSite'
 
 const AddLocation = () => {
   const { location } = useSelector( state => state.needHelpPointReducer)
@@ -39,6 +41,8 @@ const AddLocation = () => {
         .catch(error => console.error('Error fetching location:', error))
     }
   }, [])
+  const [markerKey, setMarkerKey] = useState(0)
+
   return (
     <Box
       sx={{
@@ -57,15 +61,13 @@ const AddLocation = () => {
         mapStyle="mapbox://styles/mapbox/streets-v11"
       >
         <Marker
+          key={markerKey}
           latitude={location?.lat || 0}
           longitude={location?.lng || 0}
           draggable
           onDragEnd={(e) => {
             if (e.lngLat) {
-              dispatch(updateLocation({
-                lng: e.lngLat.lng,
-                lat: e.lngLat.lat
-              }))
+              handleUpdateSite(dispatch, updateAlert, setMarkerKey, 'need-help-point', e.lngLat)
             }
           }}
         />
@@ -73,13 +75,15 @@ const AddLocation = () => {
         <GeolocateControl
           position='top-left'
           trackUserLocation
-          onGeolocate={ e =>
-            dispatch(updateLocation({
+          onGeolocate={ e => {
+            const lngLat= {
               lng: e.coords.longitude,
               lat: e.coords.latitude
-            }))}
+            }
+            handleUpdateSite(dispatch, updateAlert, setMarkerKey, 'need-help-point', lngLat)
+          } }
         />
-        <Geocoder/>
+        <Geocoder {...{ dispatch, updateAlert, setMarkerKey }}/>
       </ReactMapGL>
     </Box>
   )

@@ -6,7 +6,7 @@ import { Avatar, Paper, Tooltip, Box, SpeedDial, SpeedDialIcon, SpeedDialAction,
 import Supercluster from 'supercluster'
 import './map.css'
 import GeocoderInput from '../sidebar/GeocoderInput'
-import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
+// import PopupNeedHelpPoint from '../needHelpPoint/PopupNeedHelpPoint'
 import { getRescueHubPoints } from '~/actions/rescueHubPoint'
 import { useDispatch, useSelector } from 'react-redux'
 import AddIcon from '@mui/icons-material/Add'
@@ -196,7 +196,7 @@ const Maps = () => {
             focusAfterOpen={false}
             onClose={() => setPopupInfo(null)}
           >
-            <PopupNeedHelpPoint {...{ popupInfo }} />
+            {/* <PopupNeedHelpPoint {...{ popupInfo }} /> */}
           </Popup>
         )}
       </ReactMapGL>
