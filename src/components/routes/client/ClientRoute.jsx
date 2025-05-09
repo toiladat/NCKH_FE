@@ -1,6 +1,6 @@
 import ContentDashboard from '~/components/contentDashboard/ContentDashboard'
 import LayoutDefault from '~/components/layout/client/LayoutDefault'
-import NeedHelpPoints from '~/components/needHelpPoint/NeedHelpPoints'
+// import NeedHelpPoints from '~/components/needHelpPoint/NeedHelpPoints'
 import Maps from '~/components/maps/Maps'
 
 
@@ -8,7 +8,9 @@ import Error404 from '~/pages/error/Error404'
 import AddRescueHub from '~/components/addRescueHub/AddRescueHub'
 import AddNeedHelp from '~/components/addNeedHelp/AddNeedHelp'
 import EvaluateLevel from '~/components/evaluateLevel/EvaluateLevel'
-
+// import RescueHubPoints from '~/components/rescueHubPoint/RescueHubPoints'
+import TabNeedHelpPoint from '../../needHelpPoint/TabNeedHelpPoint'
+import TabRescueHubPoint from '../../rescueHubPoint/TabRescueHubPoint'
 export const ClientRoute = [
   {
     path:'/',
@@ -20,7 +22,7 @@ export const ClientRoute = [
       },
       {
         path: 'needhelppoint',
-        element: <NeedHelpPoints/>
+        element: <TabNeedHelpPoint/>
       },
       {
         path: 'maps',
@@ -28,7 +30,7 @@ export const ClientRoute = [
       },
       {
         path: 'addrescuehub',
-        element: <AddRescueHub />
+        element: <AddRescueHub/>
       },
       {
         path: 'addneedhelp',
@@ -37,6 +39,10 @@ export const ClientRoute = [
       {
         path: 'evaluate-level',
         element: <EvaluateLevel/>
+      },
+      {
+        path: 'relief-program',
+        element: <TabRescueHubPoint/>
       }
     ]
   },

@@ -27,7 +27,7 @@ const NeedHelpPoint = () => {
   const dispatch = useDispatch()
 
   const [rating, setRating] = useState(needHelpPoint?.rating)
-
+  // console.log(needHelpPoint)
   const handleChange = (newValue, id) => {
     if (! newValue) return
 
@@ -60,20 +60,24 @@ const NeedHelpPoint = () => {
       onClose={handleClose}
       TransitionComponent={Transistion}
     >
-      <AppBar position='relative'>
+      <AppBar position="sticky" sx={{ backgroundColor: '#1976d2', boxShadow: 3 }}>
         <Toolbar>
           <Typography
-            variant='h6'
-            component='h3'
+            variant="h6"
+            component="h3"
             sx={{
               ml: 2,
-              flex:1
+              flex: 1,
+              fontWeight: 600,
+              color: 'white',
+              textTransform: 'uppercase', // Chữ in hoa để tạo cảm giác mạnh mẽ
+              letterSpacing: 1 // Khoảng cách giữa các chữ để dễ đọc hơn
             }}
           >
-            {needHelpPoint?.title}
+            Chi tiết điểm cứu trợ
           </Typography>
-          <IconButton color='inherit' onClick={handleClose}>
-            <Close/>
+          <IconButton color="inherit" onClick={handleClose} sx={{ transition: 'all 0.3s ease' }}>
+            <Close sx={{ fontSize: 30 }} />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -88,7 +92,7 @@ const NeedHelpPoint = () => {
           {needHelpPoint?.images?.map( url => (
             <SwiperSlide key={url}>
               <div className='Point'>
-                <img src={url} alt='Need Help Point'/>
+                <img src={url} alt='Need Help Point' style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
               </div>
             </SwiperSlide>
           ))}

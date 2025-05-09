@@ -14,6 +14,7 @@ import ErrorBoundary from './ErrorBoundary'
 // import { HeightOutlined } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
+import PopupPoint from './PopupPoint'
 
 const supercluster = new Supercluster({
   radius:75,
@@ -128,7 +129,7 @@ const Maps = () => {
       <ReactMapGL
         projection='globe'
         ref={mapRef}
-        initialViewState={{ latitude: 51.5072, longitude: 0.1276 }}
+        initialViewState={{ latitude: 21.0285, longitude: 105.8542, zoom: 3.5 }}
         mapStyle='mapbox://styles/mapbox/standard'
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
         style={{ width: '100%', height: '100%' }}
@@ -196,7 +197,7 @@ const Maps = () => {
             focusAfterOpen={false}
             onClose={() => setPopupInfo(null)}
           >
-            {/* <PopupNeedHelpPoint {...{ popupInfo }} /> */}
+            <PopupPoint {...{ popupInfo }} />
           </Popup>
         )}
       </ReactMapGL>
