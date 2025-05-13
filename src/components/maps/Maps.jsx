@@ -176,7 +176,7 @@ const Maps = () => {
           ) : (
 
             <Marker
-              key={`needHelpPoint-${cluster.properties.pointId}`}
+              key={`needHelpPoint-${cluster.properties._id}`}
               longitude={longitude}
               latitude={latitude}
               onClick={() => setPopupInfo(cluster.properties)}
