@@ -95,7 +95,7 @@ const Footer = () => {
         >
           <List sx={{ color: '#ffffff', display: 'flex', gap: '20px', fontSize: '15px', width: '40%', fontWeight: '500' }}>
             <ListItem disablePadding>
-                \<Link href='#' underline='none' color='inherit'>Trang Chủ</Link>
+              <Link href='#' underline='none' color='inherit'>Trang Chủ</Link>
             </ListItem>
             <ListItem disablePadding>
               <Link href='#' underline='none' color='inherit'>Danh Mục</Link>

@@ -1,4 +1,4 @@
-import { Container, Typography, Card, CardContent, CardMedia, Button } from '@mui/material'
+import { Container, Typography, Card, CardContent, CardMedia, Button, Rating, Box, Avatar } from '@mui/material'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import { Navigation, Pagination } from 'swiper/modules'
@@ -8,7 +8,7 @@ import './swiper.css'
 import { useTheme } from '@mui/material/styles' // import useTheme
 import { useSelector, useDispatch } from 'react-redux'
 import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
-
+import { StarBorder } from '@mui/icons-material'
 
 const Middlecontent = () => {
   const { filteredNeedHelpPoints : filterdPoints } = useSelector (state => state.needHelpPointReducer)
@@ -70,23 +70,97 @@ const Middlecontent = () => {
                 // background: '#E0DFE0',
               }}
             >
-              <CardMedia
-                component="img"
-                image={item?.images?.[0] || 'default-image-url.jpg'}
-                height="420px"
-                alt={item?.title || 'Default Title'}
-                sx={{
-                  objectFit: 'cover',
-                  width: '100%',
-                  maxHeight: '420px'
-                }}
-              />
+              <Box width="100%" height={300} position="relative">
+                <CardMedia
+                  component="img"
+                  image={item?.images?.[0] || 'default-image-url.jpg'}
+                  alt={item?.title || 'Default Title'}
+                  sx={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    borderRadius: 2,
+                    backgroundColor: '#f0f0f0' // để tránh nền trắng xấu nếu ảnh nhỏ
+                  }}
+                />
+              </Box>
 
-              <CardContent sx={{
-                flexGrow: 1 }}>
-                <Typography gutterBottom variant='h6' fontWeight='700'>{item.title}</Typography>
 
-                <Typography variant='body2' color='text.secondary'>{item.description}</Typography>
+              <CardContent sx={{ flexGrow: 1, px: 2, pt: 2, pb: 1 }}>
+                <Box display="flex" alignItems="center" gap={1} mb={1}>
+                  <Avatar
+                    src={item?.userInfor?.photoURL}
+                    alt={item?.userInfor?.name}
+                    sx={{ width: 40, height: 40 }}
+                  />
+
+                  <Typography
+                    variant="subtitle2"
+                    fontWeight={600}
+                    noWrap
+                    display="flex"
+                    alignItems="center"
+                    gap={0.5}
+                  >
+                    {item?.userInfor?.name || 'Người đăng ẩn danh'}
+                    {item?.userInfor?.name && item?.userInfor?.level !== 1 && (
+                      <Box
+                        component="span"
+                        sx={{
+                          width: 16,
+                          height: 16,
+                          bgcolor: 'green',
+                          color: 'white',
+                          borderRadius: '50%',
+                          fontSize: 12,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          ml: 0.5
+                        }}
+                      >
+                        ✓
+                      </Box>
+                    )}
+
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" mt="3">
+                  <Typography
+                    variant="h6"
+                    fontWeight={600}
+                    fontSize="15px"
+                    sx={{ flex: 1, pr: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                  >
+                    {item.title || 'Chưa có tiêu đề'}
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    fontWeight={600}
+                    fontSize="15px"
+                    sx={{ flexShrink: 0 }}
+                  >
+                    Địa chỉ: {item.address || 'Địa chỉ không rõ'}
+                  </Typography>
+                </Box>
+
+
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                  <Typography variant="body2" color="text.secondary" sx={{ p: 0 }} gutterBottom noWrap>
+                    Số lượt quan tâm: {item.validByUsers.length || 0}
+                  </Typography>
+                  <Rating
+                    name="needHelpPoint-rating"
+                    value={item?.rating ?? 5}
+                    precision={0.5}
+                    readOnly
+                    emptyIcon={<StarBorder fontSize="inherit" />}
+                    sx={{ fontSize: '20px' }}
+                  />
+                </Box>
               </CardContent>
 
               <Button size='medium' sx={{ m: 2, borderRadius: '10px' }} variant='contained' color='primary'

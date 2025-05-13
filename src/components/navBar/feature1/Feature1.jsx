@@ -3,12 +3,13 @@ import { Box, Button, Menu, MenuItem, ListItemText, Typography } from '@mui/mate
 import { Link } from 'react-router-dom'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useSelector } from 'react-redux'
 
 const Feature1 = () => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [menuIndex, setMenuIndex] = React.useState(null)
   const closeTimeout = React.useRef(null)
-
+  const currentUser = useSelector((state) => state.userReducer.currentUser) // Assuming currentUser is stored in the Redux store
   const menuData = [
     {
       title: 'Ủng hộ',
@@ -22,7 +23,7 @@ const Feature1 = () => {
       title: 'Khám phá',
       items: [
         { label: 'Bản đồ thiện nguyện', path: '/maps' },
-        { label: 'Đánh giá', path: '/evaluate-level' },
+        ...(currentUser?.level === 3 ? [{ label: 'Đánh giá', path: '/evaluate-level' }] : []), // Conditionally include 'Đánh giá'
         { label: 'Tạo chương trình cứu trợ', path: '/addrescuehub' },
         { label: 'Tạo điểm cứu trợ', path: '/addneedhelp' }
       ]

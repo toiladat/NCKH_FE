@@ -19,7 +19,7 @@ const ImagesList = () => {
     >
       {images.map( (image, index) => (
         <ImageListItem key={ index }>
-          <img src={ image.url } alt='Image' loading='lazy' style={{ width:'100%', height: '100%', objectFit:'cover' }}/>
+          <img src={ image?.url } alt='Image' loading='lazy' style={{ width:'100%', height: '100%', objectFit:'cover' }}/>
           <ImageListItemBar
             position='top'
             sx={{

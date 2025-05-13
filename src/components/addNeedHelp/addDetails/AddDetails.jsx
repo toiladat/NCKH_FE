@@ -40,8 +40,6 @@ const AddDetails = () => {
           row
           onChange={handleCostTypeChange}
         >
-          <FormControlLabel value={0} control={<Radio/> } label='Free Stay'/>
-          <FormControlLabel value={1} control={<Radio/> } label='Nomal fee'/>
           {Boolean(costType) && (
             <TextField
               sx={{
@@ -63,7 +61,7 @@ const AddDetails = () => {
 
       </FormControl>
       <InfoField
-        mainProps={{ name:'title', label:'Title', value:title }}
+        mainProps={{ name:'title', label:'Thông tin liên hệ', value: title }}
         minLength={5}
       />
       <InfoField

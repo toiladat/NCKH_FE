@@ -7,6 +7,8 @@ import './cluster.css'
 // import GeocoderInput from '../sideBar/GeocoderInput'
 import PopupPoint from './PopupPoint'
 import { useDispatch, useSelector } from 'react-redux'
+import { getNeedHelpPoints } from '~/actions/needHelpPoint'
+import { getRescueHubPoints } from '~/actions/rescueHubPoint'
 
 const supercluster = new Supercluster({
   radius:75,
@@ -24,21 +26,20 @@ const ClusterMap = () => {
   const [popupInfo, setPopupInfo] = useState(null)
 
   // Fetch dữ liệu ngay từ lần đầu render
-  // useEffect(() => {
-  //   getNeedHelpPoints(dispatch)
-  //   getRescueHubPoints(dispatch)
-  // }, [])
+  useEffect(() => {
+    getNeedHelpPoints(dispatch)
+    getRescueHubPoints(dispatch)
+  }, [dispatch])
 
   // Xử lý danh sách `points` và cập nhật `clusters` trong một `useEffect`
   useEffect(() => {
     if (!filteredNeedHelpPoints.length) return
-
     const needHelps = filteredNeedHelpPoints.map(point => ({
       type: 'Feature',
       properties: {
         type:'need-help-point',
         cluster: false,
-        pointId: point._id,
+        _id: point._id,
         validByUsers: point.validByUsers,
         price: point.price,
         title: point.title,
@@ -66,7 +67,7 @@ const ClusterMap = () => {
         location_start: point.location_start,
         location_end: point.location_end,
         cluster: false,
-        pointId: point._id,
+        _id: point._id,
         description: point.description,
         lng: point?.location_start?.lng,
         validByUsers: point.validByUsers,
