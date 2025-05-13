@@ -34,13 +34,12 @@ const ClusterMap = () => {
   // Xử lý danh sách `points` và cập nhật `clusters` trong một `useEffect`
   useEffect(() => {
     if (!filteredNeedHelpPoints.length) return
-
     const needHelps = filteredNeedHelpPoints.map(point => ({
       type: 'Feature',
       properties: {
         type:'need-help-point',
         cluster: false,
-        pointId: point._id,
+        _id: point._id,
         validByUsers: point.validByUsers,
         price: point.price,
         title: point.title,
@@ -68,7 +67,7 @@ const ClusterMap = () => {
         location_start: point.location_start,
         location_end: point.location_end,
         cluster: false,
-        pointId: point._id,
+        _id: point._id,
         description: point.description,
         lng: point?.location_start?.lng,
         validByUsers: point.validByUsers,

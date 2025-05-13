@@ -15,6 +15,8 @@ import ErrorBoundary from './ErrorBoundary'
 import { useNavigate } from 'react-router-dom'
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
 import PopupPoint from './PopupPoint'
+import AddLocationIcon from '@mui/icons-material/AddLocation'
+import RoomIcon from '@mui/icons-material/Room';
 
 const supercluster = new Supercluster({
   radius:75,
@@ -40,21 +42,22 @@ const Maps = () => {
   // Xử lý danh sách `points` và cập nhật `clusters` trong một `useEffect`
   useEffect(() => {
     if (!filteredNeedHelpPoints.length) return
-
     const needHelps = filteredNeedHelpPoints.map(point => ({
       type: 'Feature',
       properties: {
         type:'need-help-point',
         cluster: false,
-        pointId: point._id,
+        _id: point._id,
+        validByUsers: point.validByUsers,
         price: point.price,
         title: point.title,
         description: point.description,
         lng: point.lng,
+        rating:point.rating,
         lat: point.lat,
         images: point.images,
-        uPhoto: point.userInfor?.photoURL || '',
-        uName: point.userInfor?.name || ''
+        userInfor:point.userInfor,
+        createdAt:point.createdAt
       },
       geometry: {
         type: 'Point',
@@ -66,28 +69,34 @@ const Maps = () => {
       type: 'Feature',
       properties: {
         type:'rescue-hub-point',
+        rating:point.rating,
+        supplies: point.supplies,
+        start_time: point.start_time,
+        end_time: point.end_time,
+        location_start: point.location_start,
+        location_end: point.location_end,
         cluster: false,
-        pointId: point._id,
+        _id: point._id,
         description: point.description,
         lng: point?.location_start?.lng,
+        validByUsers: point.validByUsers,
         lat: point?.location_start?.lat,
         images: point.images,
-        uPhoto: point.userInfor?.photoURL || '',
-        uName: point.userInfor?.name || ''
+        userInfor:point.userInfor,
+        createdAt:point.createdAt
       },
       geometry: {
         type: 'Point',
         coordinates: [parseFloat(point?.location_start?.lng), parseFloat(point?.location_start?.lat)]
       }
     }))
-    // console.log(filteredRescueHubPoints)
     const points =[...needHelps, ...rescueHubs]
     // Nạp dữ liệu vào Supercluster để gom cụm các điểm trên bản đồ
-    supercluster.load(points)
+    supercluster?.load(points)
     // Lấy phạm vi bản đồ hiện tại và cập nhật danh sách cụm
     if (mapRef.current) {
       const bounds = mapRef.current.getMap().getBounds().toArray().flat()
-      setClusters(supercluster.getClusters(bounds, zoom))
+      setClusters(supercluster?.getClusters(bounds, zoom))
     }
   }, [filteredNeedHelpPoints, zoom])
 
@@ -141,13 +150,6 @@ const Maps = () => {
           }
         }}
       >
-        {filteredRescueHubPoints.map( point => (
-          <Marker
-            key={point._id}
-            longitude={point?.location_start?.lng}
-            latitude={point?.location_start?.lat}
-          />
-        ))}
 
         {clusters.map(cluster => {
           const { cluster: isCluster, point_count } = cluster.properties
@@ -172,16 +174,29 @@ const Maps = () => {
               </div>
             </Marker>
           ) : (
-            <Marker key={`needHelpPoint-${cluster.properties.pointId}`} longitude={longitude} latitude={latitude}>
-              <Tooltip title={cluster.properties.uName}>
-                <Avatar
-                  src={cluster.properties.uPhoto}
-                  component={Paper}
-                  elevation={2}
-                  onClick={() => setPopupInfo(cluster.properties)}
-                />
-              </Tooltip>
+
+            <Marker
+              key={`needHelpPoint-${cluster.properties.pointId}`}
+              longitude={longitude}
+              latitude={latitude}
+              onClick={() => setPopupInfo(cluster.properties)}
+            >
+              <RoomIcon
+                sx={{
+                  fontSize: 45,
+                  cursor: 'pointer',
+                  color: cluster.properties.type === 'need-help-point' ? '#C62828' : 'blue', // đỏ thẫm
+                  filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2))', // Bóng nhẹ dưới icon
+                  transition: 'transform 0.2s ease, filter 0.2s ease',
+                  '&:hover': {
+                    transform: 'scale(1.2)',
+                    filter: 'drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5))', // Bóng đậm hơn khi hover
+                  }
+                }}
+              />
             </Marker>
+
+
           )
         })}
         {/* Bộ lọc địa chỉ */}

@@ -15,6 +15,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@date-io/date-fns": "^3.2.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mapbox/mapbox-gl-geocoder": "^5.0.3",
@@ -22,9 +23,10 @@
     "@mui/icons-material": "6.0.0",
     "@mui/material": "6.0.0",
     "@mui/x-data-grid": "^7.28.2",
-    "@mui/x-date-pickers": "^7.27.0",
+    "@mui/x-date-pickers": "^8.3.0",
     "@react-oauth/google": "^0.12.1",
     "appwrite": "^16.1.0",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "jwt-decode": "^4.0.0",
