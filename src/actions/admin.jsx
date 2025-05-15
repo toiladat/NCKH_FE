@@ -85,4 +85,33 @@ export const AdminLogin = async (admin, dispatch, navigate) => {
 
 }
 
+export const createUser = async ( admin, dispatch, data) => {
+  dispatch(startLoading())
+  const result = await fetchData({ url :url+'/user/create-user', token: admin?.token, body:data }, dispatch )
+
+  if (result) {
+    dispatch(updateAlert({
+      open:true,
+      severity:'success',
+      message:'Tạo người người dùng thành công'
+    }))
+  }
+  dispatch(endLoading())
+
+}
+
+export const updateUser = async ( admin, dispatch, data) => {
+  dispatch(startLoading())
+  const result = await fetchData({ url :url+'/user/update-user', method:'PATCH', token: admin?.token, body:data }, dispatch )
+
+  if (result) {
+    dispatch(updateAlert({
+      open:true,
+      severity:'success',
+      message:'Cập nhật thành công'
+    }))
+  }
+  dispatch(endLoading())
+
+}
 

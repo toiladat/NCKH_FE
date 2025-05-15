@@ -1,7 +1,8 @@
 import { Close, FavoriteBorder, StarBorder } from '@mui/icons-material'
 import {
   AppBar, Avatar, Box, Container, Dialog, IconButton,
-  Rating, Slide, Stack, TextField, Toolbar, Tooltip, Typography, Divider
+  Rating, Slide, Stack, TextField, Toolbar, Tooltip, Typography, Divider,
+  Button
 } from '@mui/material'
 import { forwardRef, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,7 +30,7 @@ const RescueHubPoint = () => {
   const handleChange = (newValue, id) => {
     if (!newValue) return
     const data = {
-      type: 'needHelpPoint',
+      type: 'rescuehubPoint',
       pointId: id,
       ratedById: currentUser.id,
       ratePoint: newValue
@@ -186,12 +187,31 @@ const RescueHubPoint = () => {
                   mt: 1.3
                 }}
               >
-                {rescueHubPoint?.createdAt ? new Date(rescueHubPoint.createdAt).toLocaleDateString('vi-VN', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                }) : 'Ngày không xác định'}
+                {rescueHubPoint?.createdAt
+                  ? (() => {
+                    const date = new Date(rescueHubPoint.createdAt)
+                    const time = date.toLocaleTimeString('vi-VN', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })
+                    const day = date.getDate()
+                    const month = date.getMonth() + 1
+                    const year = date.getFullYear()
+                    return (
+                      <>
+                        <Box sx={{
+                          display: 'flex',
+                          gap: 5
+                        }}>
+                          <Box>Lúc {time}</Box>
+                          <Box>Ngày {day} tháng {month} năm {year}</Box>
+                        </Box>
+                      </>
+                    )
+                  })()
+                  : 'Ngày không xác định'}
               </Typography>
+
 
             </Box>
             <Stack >
@@ -240,22 +260,47 @@ const RescueHubPoint = () => {
 
                 <Box sx={{ mt: '20px' }}>
                   <Typography variant="h6" fontWeight={600} fontSize="16px" component="span">Thông tin liên hệ: </Typography>
-                  <Typography component="span">{place?.text}</Typography>
+                  <Typography component="span">{rescueHubPoint?.contact}</Typography>
                 </Box>
                 <Box sx={{ mt: 4, p: 2, border: '1px solid #e0e0e0', borderRadius: 2, backgroundColor: '#f9f9f9' }}>
                   {/* Điểm bắt đầu */}
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                     <Box sx={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#1976d2', mr: 2 }} />
                     <Box>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '240px' }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '100px' }}>
                         <Typography variant="subtitle1" fontWeight={600}>Điểm bắt đầu</Typography>
-                        <Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: 'gray',
+                            fontStyle: 'italic',
+                            fontSize: '0.875rem',
+                            textAlign: 'right',
+                            mt: 1.3
+                          }}
+                        >
                           {rescueHubPoint?.start_time
-                            ? new Date(rescueHubPoint.start_time).toLocaleDateString('vi-VN', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            })
+                            ? (() => {
+                              const date = new Date(rescueHubPoint.start_time)
+                              const time = date.toLocaleTimeString('vi-VN', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })
+                              const day = date.getDate()
+                              const month = date.getMonth() + 1
+                              const year = date.getFullYear()
+                              return (
+                                <>
+                                  <Box sx={{
+                                    display: 'flex',
+                                    gap:3
+                                  }}>
+                                    <Box>{time}</Box>
+                                    <Box>Ngày {day} tháng {month} năm {year}</Box>
+                                  </Box>
+                                </>
+                              )
+                            })()
                             : 'Ngày không xác định'}
                         </Typography>
                       </Box>
@@ -272,15 +317,40 @@ const RescueHubPoint = () => {
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Box sx={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#d32f2f', mr: 2 }} />
                     <Box>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '240px' }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '100px' }}>
                         <Typography variant="subtitle1" fontWeight={600}>Điểm kết thúc</Typography>
-                        <Typography>
-                          {rescueHubPoint?.start_time
-                            ? new Date(rescueHubPoint.end_time).toLocaleDateString('vi-VN', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            })
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: 'gray',
+                            fontStyle: 'italic',
+                            fontSize: '0.875rem',
+                            textAlign: 'right',
+                            mt: 1.3
+                          }}
+                        >
+                          {rescueHubPoint?.end_time
+                            ? (() => {
+                              const date = new Date(rescueHubPoint.end_time)
+                              const time = date.toLocaleTimeString('vi-VN', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })
+                              const day = date.getDate()
+                              const month = date.getMonth() + 1
+                              const year = date.getFullYear()
+                              return (
+                                <>
+                                  <Box sx={{
+                                    display: 'flex',
+                                    gap:3
+                                  }}>
+                                    <Box>{time}</Box>
+                                    <Box>Ngày {day} tháng {month} năm {year}</Box>
+                                  </Box>
+                                </>
+                              )
+                            })()
                             : 'Ngày không xác định'}
                         </Typography>
                       </Box>
@@ -303,6 +373,20 @@ const RescueHubPoint = () => {
                 </Box>
               )}
             </Stack>
+            <Button onClick={() => {
+              if (place?.geometry?.coordinates?.[0] && place?.geometry?.coordinates?.[1]) {
+                const latitude = rescueHubPoint.location_start.lat // Vĩ độ
+                const longitude = rescueHubPoint.location_start.lng // Kinh độ
+                const end_latitude = rescueHubPoint.location_end.lat // Vĩ độ
+                const end_longitude = rescueHubPoint.location_end.lng // Kinh độ
+                const mapUrl = `/maps?lat=${latitude}&lng=${longitude}&end_latitude=${end_latitude}&end_longitude=${end_longitude}`
+                window.location.href = mapUrl
+              } else {
+                alert('Không có')
+              }
+            }}>
+              Xem map
+            </Button>
           </Box>
         </Box>
       </Container>

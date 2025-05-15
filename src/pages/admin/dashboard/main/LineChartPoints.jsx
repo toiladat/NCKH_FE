@@ -48,7 +48,6 @@ const LineChartPoints = () => {
       const usersData = await getUserByMonth(admin, dispatch)
       const needHelpData = await getNeedHelpPointsByMonth(admin, dispatch)
       const rescueHubData = await getRescueHubPointByMonth(admin, dispatch)
-
       setUsers(usersData)
       setNeedHelpPoints(needHelpData)
       setRescueHubPoints(rescueHubData)

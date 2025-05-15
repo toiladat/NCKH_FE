@@ -47,7 +47,7 @@ const PiePoints = ({ statistic }) => {
       width: '100%',
       height:'100%'
     }}>
-      <PieChart width={600} height={250}>
+      <PieChart width={550} height={275}>
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}

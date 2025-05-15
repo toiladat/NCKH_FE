@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getNeedHelpPoints } from '~/actions/needHelpPoint'
 import { useValue } from '~/context/ContextProvider'
-import ReactMapGL, { Marker, Popup } from 'react-map-gl'
+import ReactMapGL, { Layer, Marker, Popup, Source } from 'react-map-gl'
 import { Avatar, Paper, Tooltip, Box, SpeedDial, SpeedDialIcon, SpeedDialAction, Typography } from '@mui/material'
 import Supercluster from 'supercluster'
 import './map.css'
@@ -12,11 +12,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import AddIcon from '@mui/icons-material/Add'
 import ErrorBoundary from './ErrorBoundary'
 // import { HeightOutlined } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
 import PopupPoint from './PopupPoint'
-import AddLocationIcon from '@mui/icons-material/AddLocation'
-import RoomIcon from '@mui/icons-material/Room';
 
 const supercluster = new Supercluster({
   radius:75,
@@ -32,6 +30,9 @@ const Maps = () => {
   const [clusters, setClusters] = useState([])
   const [zoom, setZoom] = useState(0)
   const [popupInfo, setPopupInfo] = useState(null)
+  const [routeGeoJSON, setRouteGeoJSON] = useState(null)
+  const [locationEnd, setLocationEnd] = useState(null)
+  const [locationStart, setLocationStart] = useState(null)
 
   // Fetch dữ liệu ngay từ lần đầu render
   useEffect(() => {
@@ -120,12 +121,59 @@ const Maps = () => {
   const [openForm, setOpenForm] = useState(false)
 
   const handleOpenForm = () => {
-    setOpenForm(true) // Mở form khi nhấn vào "Nhận hỗ trợ"
+    setOpenForm(true) // Mở form khi nhấn vào 'Nhận hỗ trợ'
   }
 
   const handleCloseForm = () => {
     setOpenForm(false) // Đóng form
   }
+  const location = useLocation()
+
+  const showRoute = async (start, end) => {
+    if (!start || !end) return
+    const response = await fetch(
+      `https://api.mapbox.com/directions/v5/mapbox/driving/${start.lng},${start.lat};${end.lng},${end.lat}?geometries=geojson&access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
+    )
+    const data = await response.json()
+    setRouteGeoJSON(data.routes[0].geometry)
+    setLocationEnd(end)
+  }
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search)
+    const lat = parseFloat(searchParams.get('lat'))
+    const lng = parseFloat(searchParams.get('lng'))
+    const end_lat = parseFloat(searchParams.get('end_latitude'))
+    const end_lng = parseFloat(searchParams.get('end_longitude'))
+
+    const waitForMap = () => {
+      if (mapRef.current) {
+        mapRef.current.flyTo({
+          center: [lng, lat],
+          zoom: 10,
+          speed: 1.2,
+          curve: 1
+        })
+
+        if (end_lat && end_lng) {
+          setLocationStart({ lng, lat })
+          showRoute({
+            lng, lat
+          }, {
+            lng: end_lng,
+            lat: end_lat
+          })
+        }
+      } else {
+        requestAnimationFrame(waitForMap)
+      }
+    }
+
+    if (lat && lng) {
+      waitForMap()
+    }
+  }, [location])
+
   return (
     <Box
       sx={{
@@ -150,7 +198,7 @@ const Maps = () => {
           }
         }}
       >
-
+        {/* points */}
         {clusters.map(cluster => {
           const { cluster: isCluster, point_count } = cluster.properties
           const [longitude, latitude] = cluster.geometry.coordinates
@@ -180,22 +228,9 @@ const Maps = () => {
               longitude={longitude}
               latitude={latitude}
               onClick={() => setPopupInfo(cluster.properties)}
-            >
-              <RoomIcon
-                sx={{
-                  fontSize: 45,
-                  cursor: 'pointer',
-                  color: cluster.properties.type === 'need-help-point' ? '#C62828' : 'blue', // đỏ thẫm
-                  filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2))', // Bóng nhẹ dưới icon
-                  transition: 'transform 0.2s ease, filter 0.2s ease',
-                  '&:hover': {
-                    transform: 'scale(1.2)',
-                    filter: 'drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5))', // Bóng đậm hơn khi hover
-                  }
-                }}
-              />
-            </Marker>
+              color={cluster.properties.type ==='need-help-point' ?'red':'blue'}
 
+            />
 
           )
         })}
@@ -203,6 +238,27 @@ const Maps = () => {
         <ErrorBoundary>
           <GeocoderInput />
         </ErrorBoundary>
+
+        {/* điểm kết thúc */}
+        {
+          locationEnd && (
+            <Marker key={`cluster-${locationEnd.lng}`} longitude={locationEnd.lng} latitude={locationEnd.lat} />
+          )
+        }
+        {
+          locationStart && (
+            <Marker key={`cluster-${locationStart.lng}`} longitude={locationStart.lng} latitude={locationStart.lat} />
+          )
+        }
+
+        {/* routing */}
+        { routeGeoJSON && (
+          <Source id='route' type='geojson' data={{ type: 'Feature', geometry: routeGeoJSON }} >
+            <Layer id='route-layer' type='line' paint={{ 'line-color': '#000', 'line-width': 4 }} />
+          </Source>
+        )}
+
+        {/* popup infor */}
         {popupInfo && (
           <Popup
             longitude={popupInfo.lng}
@@ -244,7 +300,7 @@ const Maps = () => {
 
 
       <SpeedDial
-        ariaLabel="Thao tác bản đồ"
+        ariaLabel='Thao tác bản đồ'
         sx={{
           position: 'absolute',
           bottom: 40,
@@ -267,7 +323,7 @@ const Maps = () => {
             tooltipTitle={action.name}
             onClick={() => {
               if (action.name === 'Nhận hỗ trợ') {
-                handleOpenForm() // Mở form khi nhấn "Nhận hỗ trợ"
+                handleOpenForm() // Mở form khi nhấn 'Nhận hỗ trợ'
               }
               else {
                 navigate(action.path)
@@ -316,29 +372,29 @@ const Maps = () => {
           >
             <Box sx={{ px: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography sx={{ fontWeight: '700' }}>Đang thực hiện</Typography>
-              <Typography variant="h4">0</Typography>
+              <Typography variant='h4'>0</Typography>
             </Box>
 
             <Box sx={{ px: 4, borderLeft: '2px solid white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography sx={{ fontWeight: '700' }}>Đạt mục tiêu</Typography>
-              <Typography variant="h4">0</Typography>
+              <Typography variant='h4'>0</Typography>
             </Box>
 
             <Box sx={{ px: 4, borderLeft: '2px solid white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography sx={{ fontWeight: '700' }}>Đã kết thúc</Typography>
-              <Typography variant="h4">0</Typography>
+              <Typography variant='h4'>0</Typography>
             </Box>
           </Box>
 
           <Box sx={{ p: 2 }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+            <Typography variant='h6' sx={{ fontWeight: 'bold' }}>
               Tin tức liên quan:
             </Typography>
             <Box sx={{ mt: 2 }}>
               {newsArticles.map((article, index) => (
                 <Box key={index} sx={{ mb: 2 }}>
-                  <Typography variant="body1" sx={{ mt: 1 }}>
-                    <a href={article.link} target="_blank" rel="noopener noreferrer">
+                  <Typography variant='body1' sx={{ mt: 1 }}>
+                    <a href={article.link} target='_blank' rel='noopener noreferrer'>
                       {article.title}
                     </a>
                   </Typography>

@@ -8,7 +8,8 @@ const initialState = {
   details_rescue: {
     timeStart:null,
     timeEnd:null,
-    description:''
+    description:'',
+    contact: ''
   },
   images_rescue:[],
   rescueHubPoints: [],

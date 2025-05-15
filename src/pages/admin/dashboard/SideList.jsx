@@ -10,10 +10,11 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import MuiDrawer from '@mui/material/Drawer'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import { styled, useTheme } from '@mui/material/styles'
 import { Avatar, Tooltip } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { AddLocationAlt, Dashboard, Logout, MarkChatRead, Medication, NotificationsActive, PeopleAlt } from '@mui/icons-material'
+import { AddLocationAlt, Dashboard, Logout, Medication, NotificationsActive, PeopleAlt } from '@mui/icons-material'
 import { updateAdmin } from '~/redux/actions/admin'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
@@ -79,8 +80,8 @@ const SideList = ({ open, setOpen }) => {
     { title: 'Users', icon:<PeopleAlt/>, link: 'users' },
     { title: 'Need Help Points', icon:<Medication/>, link: 'need-help-points' },
     { title: 'Rescue Hub Points', icon:<AddLocationAlt/>, link: 'rescue-hub-points'},
-    { title: 'Requests', icon:<NotificationsActive/>, link: 'requests' },
-    { title: 'Messages', icon:<MarkChatRead/>, link: 'messages' }
+    { title: 'Regions', icon:<NotificationsActive/>, link: 'regions' },
+    { title: 'Add Users', icon:<GroupAddIcon/>, link: 'create-user' }
   ], [admin])
 
   // Theo dõi route hiện tại để cập nhật `selectedLink`

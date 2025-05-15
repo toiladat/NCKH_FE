@@ -1,13 +1,13 @@
 import ProtectedAdmin from '~/components/protected/ProtectedAdmin'
 import DashBoard from '~/pages/admin/dashboard/DashBoard'
 import Main from '~/pages/admin/dashboard/main/Main'
-import Message from '~/pages/admin/dashboard/messages/Message'
+import AddUser from '~/pages/admin/dashboard/addUser/AddUser'
 import NeedHelpPoints from '~/pages/admin/dashboard/needHelpPoints/NeedHelpPoints'
-import Request from '~/pages/admin/dashboard/requests/Request'
 import RescueHubPoints from '~/pages/admin/dashboard/rescueHubPoints/RescueHubPoints'
 import Users from '~/pages/admin/dashboard/users/Users'
 import Login from '~/pages/admin/login/Login'
 import Error404 from '~/pages/error/Error404'
+import Regions from '~/pages/admin/dashboard/regions/Regions'
 
 export const AdminRoute = [
   {
@@ -22,8 +22,8 @@ export const AdminRoute = [
           { path: 'users', element: <Users /> },
           { path: 'need-help-points', element: <NeedHelpPoints /> },
           { path: 'rescue-hub-points', element: <RescueHubPoints /> },
-          { path: 'requests', element: <Request /> },
-          { path: 'messages', element: <Message /> }
+          { path: 'regions', element: <Regions /> },
+          { path: 'create-user', element: <AddUser /> }
         ]
       }
     ]

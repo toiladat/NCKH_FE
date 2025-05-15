@@ -47,7 +47,8 @@ const AddRescueHub = ({ setPage }) => {
       start_time: details_rescue.timeStart,
       end_time:details_rescue.timeEnd,
       description:details_rescue.description,
-      images:imagesFormat
+      images:imagesFormat,
+      contact: details_rescue.contact
     }
 
     createRescueHubPoint(inforRescueHub, currentUser, dispatch, setPage)
@@ -65,7 +66,7 @@ const AddRescueHub = ({ setPage }) => {
 
   //check complete step3: upload details
   useEffect( () => {
-    if (details_rescue.description.length > 9 && details_rescue.timeEnd && details_rescue.timeStart) {
+    if (details_rescue.description.length > 9 && details_rescue.timeEnd && details_rescue.timeStart && details_rescue.contact) {
       if (!steps[2].completed) setComplete(2, true)
     } else {
       setComplete(2, false)

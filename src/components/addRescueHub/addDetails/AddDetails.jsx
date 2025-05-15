@@ -4,7 +4,7 @@ import AddTime from './AddTime'
 import { useSelector } from 'react-redux'
 const AddDetails = () => {
   const { details_rescue } = useSelector( state => state.rescueHubPointReducer)
-  const { description, timeStart, timeEnd, title }= details_rescue
+  const { description, timeStart, timeEnd, contact }= details_rescue
 
   return (
     <Stack
@@ -41,7 +41,7 @@ const AddDetails = () => {
 
 
       <InfoField
-        mainProps={{ name:'title', label:'Thông tin liên hệ', value: title }}
+        mainProps={{ name:'contact', label:'Thông tin liên hệ', value: contact }}
         minLength={5}
       />
       <InfoField

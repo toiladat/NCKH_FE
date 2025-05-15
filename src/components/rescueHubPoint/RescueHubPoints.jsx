@@ -25,19 +25,6 @@ const RescueHubPoints = ({ filterType = 'all' }) => {
     getRescueHubPoints(dispatch, filterType)
   }, [dispatch, filterType])
 
-  const handleChange = (newValue, id) => {
-    const data = {
-      type: 'needHelpPoint',
-      pointId: id,
-      ratedById: currentUser.id,
-      ratePoint: newValue
-    }
-    evaluatePoint(currentUser, data, dispatch)
-    setLocalRatings(prev => ({
-      ...prev,
-      [id]: newValue
-    }))
-  }
 
   const dataNeedHelpPoit = () => {
     let result = [...points] || []

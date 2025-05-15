@@ -150,7 +150,7 @@ const ClusterMap = () => {
               </div>
             </Marker>
           ) : (
-            <Marker key={`needHelpPoint-${cluster.properties.pointId}`} longitude={longitude} latitude={latitude}>
+            <Marker key={`needHelpPoint-${cluster.properties._id}`} longitude={longitude} latitude={latitude}>
               <Tooltip title={cluster.properties.userInfor.name}>
                 <Avatar
                   src={cluster.properties.userInfor.photoURL}

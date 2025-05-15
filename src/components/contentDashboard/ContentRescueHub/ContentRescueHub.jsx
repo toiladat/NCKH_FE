@@ -166,7 +166,7 @@ const ContentRescueHub = () => {
 
               <Button size='medium' sx={{ m: 2, borderRadius: '10px' }} variant='contained' color='primary'
                 onClick={ () => {
-                  console.log('Button clicked!', item)
+                  // console.log('Button clicked!', item)
                   dispatch(updateRescueHubPoint(item))}}
               >
                   Xem chi tiết

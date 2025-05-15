@@ -1,6 +1,6 @@
 import { Close, FavoriteBorder, StarBorder } from '@mui/icons-material'
 import {
-  AppBar, Avatar, Box, Container, Dialog, IconButton,
+  AppBar, Avatar, Box, Button, Container, Dialog, IconButton,
   Rating, Slide, Stack, TextField, Toolbar, Tooltip, Typography
 } from '@mui/material'
 import { forwardRef, useEffect, useState } from 'react'
@@ -21,7 +21,6 @@ const Transistion = forwardRef((props, ref) => (
 
 const NeedHelpPoint = () => {
   const { needHelpPoint } = useSelector(state => state.needHelpPointReducer)
-  console.log(needHelpPoint)
   const { currentUser } = useSelector(state => state.userReducer)
   const dispatch = useDispatch()
   const theme = useTheme()
@@ -188,11 +187,29 @@ const NeedHelpPoint = () => {
                   mt: 1.3
                 }}
               >
-                {needHelpPoint?.createdAt ? new Date(needHelpPoint.createdAt).toLocaleDateString('vi-VN', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                }) : 'Ngày không xác định'}
+                {needHelpPoint?.createdAt
+                  ? (() => {
+                    const date = new Date(needHelpPoint.createdAt)
+                    const time = date.toLocaleTimeString('vi-VN', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })
+                    const day = date.getDate()
+                    const month = date.getMonth() + 1
+                    const year = date.getFullYear()
+                    return (
+                      <>
+                        <Box sx={{
+                          display: 'flex',
+                          gap: 5
+                        }}>
+                          <Box>{time}</Box>
+                          <Box>Ngày {day} tháng {month} năm {year}</Box>
+                        </Box>
+                      </>
+                    )
+                  })()
+                  : 'Ngày không xác định'}
               </Typography>
 
             </Box>
@@ -261,6 +278,19 @@ const NeedHelpPoint = () => {
                 </Box>
               )}
             </Stack>
+            <Button onClick={() => {
+              if (place?.geometry?.coordinates?.[0] && place?.geometry?.coordinates?.[1]) {
+                const latitude = place.geometry.coordinates[1] // Vĩ độ
+                const longitude = place.geometry.coordinates[0] // Kinh độ
+                const mapUrl = `/maps?lat=${latitude}&lng=${longitude}`
+                window.location.href = mapUrl // 🔄 Dùng tab hiện tại
+              } else {
+                alert('Không có')
+              }
+            }}>
+              Xem map
+            </Button>
+
           </Box>
         </Box>
       </Container>
