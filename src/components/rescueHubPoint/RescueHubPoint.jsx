@@ -71,7 +71,7 @@ const RescueHubPoint = () => {
               letterSpacing: 1
             }}
           >
-            Chi tiết điểm cứu trợ
+            Chi tiết chương trình cứu trợ
           </Typography>
           <IconButton color="inherit" onClick={handleClose}>
             <Close sx={{ fontSize: 30 }} />
@@ -79,7 +79,12 @@ const RescueHubPoint = () => {
         </Toolbar>
       </AppBar>
 
-      <Container sx={{ pt: 10 }}>
+      <Container sx={{
+        pt: 10,
+        maxHeight: 'calc(100vh - 64px)', // 64px là chiều cao AppBar mặc định
+        overflowY: 'auto',
+        pb: 10
+      }}>
         {/* Box ngoài bọc ảnh và content */}
         <Box sx={{ display: 'flex', width: '100%', gap: '50px' }}>
           {/* Box ảnh */}
@@ -363,7 +368,33 @@ const RescueHubPoint = () => {
 
               </Stack>
 
-
+              <Button onClick={() => {
+                if (place?.geometry?.coordinates?.[0] && place?.geometry?.coordinates?.[1]) {
+                  const latitude = rescueHubPoint.location_start.lat // Vĩ độ
+                  const longitude = rescueHubPoint.location_start.lng // Kinh độ
+                  const end_latitude = rescueHubPoint.location_end.lat // Vĩ độ
+                  const end_longitude = rescueHubPoint.location_end.lng // Kinh độ
+                  const mapUrl = `/maps?lat=${latitude}&lng=${longitude}&end_latitude=${end_latitude}&end_longitude=${end_longitude}`
+                  window.location.href = mapUrl
+                } else {
+                  alert('Không có')
+                }
+              }}
+              sx={{
+                backgroundColor: theme.customColors.darkBlue,
+                color: '#ffffff',
+                '&:hover': {
+                  backgroundColor: theme.customColors.Primary,
+                  color: '#ffffff' // Giữ nguyên màu chữ khi hover
+                },
+                borderRadius: '10px',
+                width: '30%',
+                height: '45px',
+                mt: 2
+              }}
+              >
+                Xem đường đi
+              </Button>
               {rescueHubPoint?.validByUsers?.length > 0 && (
                 <Box sx={{ mt: '20px' }}>
                   <Typography variant="h6" fontWeight={600} fontSize="16px">Được xác minh bởi:</Typography>
@@ -373,20 +404,6 @@ const RescueHubPoint = () => {
                 </Box>
               )}
             </Stack>
-            <Button onClick={() => {
-              if (place?.geometry?.coordinates?.[0] && place?.geometry?.coordinates?.[1]) {
-                const latitude = rescueHubPoint.location_start.lat // Vĩ độ
-                const longitude = rescueHubPoint.location_start.lng // Kinh độ
-                const end_latitude = rescueHubPoint.location_end.lat // Vĩ độ
-                const end_longitude = rescueHubPoint.location_end.lng // Kinh độ
-                const mapUrl = `/maps?lat=${latitude}&lng=${longitude}&end_latitude=${end_latitude}&end_longitude=${end_longitude}`
-                window.location.href = mapUrl
-              } else {
-                alert('Không có')
-              }
-            }}>
-              Xem map
-            </Button>
           </Box>
         </Box>
       </Container>

@@ -8,16 +8,11 @@ import {
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRescueHubPoints } from '~/actions/rescueHubPoint'
-import { evaluatePoint } from '~/actions/user'
 import { updateRescueHubPoint } from '~/redux/actions/rescueHubPoint'
 
 const RescueHubPoints = ({ filterType = 'all' }) => {
   const dispatch = useDispatch()
   const { filteredRescueHubPoints: points } = useSelector( (state) => state.rescueHubPointReducer )
-  const { currentUser } = useSelector((state) => state.userReducer)
-
-
-  const [localRatings, setLocalRatings] = useState({})
   const [page, setPage] = useState(1)
   const itemsPerPage = 9 // 9 items for 3 items per row
 

@@ -8,7 +8,7 @@ const EvaluateLevel = () => {
     <Box
       sx={{
         display: 'flex',
-        height: 500,
+        // height: 500,
         mt: 4,
         overflowY: 'auto'
       }}

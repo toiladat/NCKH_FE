@@ -11,6 +11,7 @@ import EvaluateLevel from '~/components/evaluateLevel/EvaluateLevel'
 // import RescueHubPoints from '~/components/rescueHubPoint/RescueHubPoints'
 import TabNeedHelpPoint from '../../needHelpPoint/TabNeedHelpPoint'
 import TabRescueHubPoint from '../../rescueHubPoint/TabRescueHubPoint'
+import Mission from '~/components/mission/Mission'
 
 
 export const ClientRoute = [
@@ -45,6 +46,10 @@ export const ClientRoute = [
       {
         path: 'relief-program',
         element: <TabRescueHubPoint/>
+      },
+      {
+        path: '/mission',
+        element: <Mission/>
       }
     ]
   },

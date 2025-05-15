@@ -266,6 +266,32 @@ const NeedHelpPoint = () => {
                   <Typography variant="h6" fontWeight={600} fontSize="16px" component="span">Địa chỉ:  </Typography>
                   <Typography component="span">{place?.place_name}</Typography>
                 </Box>
+
+                <Button onClick={() => {
+                  if (place?.geometry?.coordinates?.[0] && place?.geometry?.coordinates?.[1]) {
+                    const latitude = place.geometry.coordinates[1] // Vĩ độ
+                    const longitude = place.geometry.coordinates[0] // Kinh độ
+                    const mapUrl = `/maps?lat=${latitude}&lng=${longitude}`
+                    window.location.href = mapUrl // 🔄 Dùng tab hiện tại
+                  } else {
+                    alert('Không có')
+                  }
+                }}
+                sx={{
+                  backgroundColor: theme.customColors.darkBlue,
+                  color: '#ffffff',
+                  '&:hover': {
+                    backgroundColor: theme.customColors.Primary,
+                    color: '#ffffff' // Giữ nguyên màu chữ khi hover
+                  },
+                  borderRadius: '10px',
+                  width: '120px',
+                  height: '45px',
+                  mt: 2
+                }}
+                >
+                  Xem map
+                </Button>
               </Stack>
 
 
@@ -278,18 +304,6 @@ const NeedHelpPoint = () => {
                 </Box>
               )}
             </Stack>
-            <Button onClick={() => {
-              if (place?.geometry?.coordinates?.[0] && place?.geometry?.coordinates?.[1]) {
-                const latitude = place.geometry.coordinates[1] // Vĩ độ
-                const longitude = place.geometry.coordinates[0] // Kinh độ
-                const mapUrl = `/maps?lat=${latitude}&lng=${longitude}`
-                window.location.href = mapUrl // 🔄 Dùng tab hiện tại
-              } else {
-                alert('Không có')
-              }
-            }}>
-              Xem map
-            </Button>
 
           </Box>
         </Box>
