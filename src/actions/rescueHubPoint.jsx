@@ -10,7 +10,7 @@ export const createRescueHubPoint = async (inforRescueHub, currentUser, dispatch
     dispatch(updateAlert({
       open:true,
       severity:'success',
-      message:'The Rescue Hub has been added successfully'
+      message:'Tạo chương trình cứu trợ thành công!'
     }))
     dispatch(resetRescueHubPoint())
     // // Chuyển sang tổng quan

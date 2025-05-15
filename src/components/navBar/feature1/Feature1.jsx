@@ -31,9 +31,7 @@ const Feature1 = () => {
     {
       title: 'Giới thiệu',
       items: [
-        { label: 'Tầm nhìn', path: '/about/vision' },
         { label: 'Sứ mệnh', path: '/mission' },
-        { label: 'Câu chuyện', path: '/about/story' },
         { label: 'Đội ngũ', path: '/about/team' }
       ]
     },

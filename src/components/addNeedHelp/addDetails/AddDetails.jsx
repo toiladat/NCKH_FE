@@ -65,7 +65,7 @@ const AddDetails = () => {
         minLength={5}
       />
       <InfoField
-        mainProps={{ name:'description', label:'Description', value:description }}
+        mainProps={{ name:'description', label:'Mô tả chi tiết', value:description }}
         minLength={10}
         optionalProps={{ multiline: true, rows: 4 }}
       />

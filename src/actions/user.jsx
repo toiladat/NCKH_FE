@@ -14,7 +14,7 @@ export const UserRegister = async (user, dispatch ) => {
     dispatch(updateAlert({
       open: true,
       severity:'success',
-      message: 'Your account has been created successfullly '
+      message: 'Tài khoản của bạn đã đăng ký thành công!'
     }))
   }
   dispatch(endLoading())
@@ -29,7 +29,7 @@ export const UserLogin = async (user, dispatch) => {
     dispatch(updateAlert({
       open:true,
       severity:'success',
-      message:'Login successfully'
+      message:'Đăng nhập thành công!'
     }))
   }
   dispatch(endLoading())

@@ -34,14 +34,14 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => {
             <ListItemIcon>
               <Settings fontSize='small'/>
             </ListItemIcon>
-            Profile
+            Thông tin cá nhân
           </MenuItem>
         }
         <MenuItem onClick={ () => dispatch(updateUser(null))}>
           <ListItemIcon >
             <Logout fontSize='small'/>
           </ListItemIcon>
-          Logout
+          Đăng xuất
         </MenuItem>
       </Menu>
       <Profile/>

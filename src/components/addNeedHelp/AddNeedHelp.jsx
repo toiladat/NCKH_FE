@@ -15,9 +15,9 @@ const AddNeedHelp = ({ setPage }) => {
   const [activeStep, setActiveStep] = useState(0)
   const [showSubmit, setShowSubmit]= useState(false)
   const [steps, setSteps] = useState([
-    { label: 'Location', completed: false },
-    { label: 'Details', completed: false },
-    { label: 'Images', completed: false }
+    { label: 'Điểm', completed: false },
+    { label: 'Thông tin chi tiết', completed: false },
+    { label: 'Ảnh', completed: false }
   ])
   const findUnfinish = () => {
     return steps.findIndex(step => !step.completed)
@@ -135,14 +135,14 @@ const AddNeedHelp = ({ setPage }) => {
             disabled= { !activeStep }
             onClick = { ( ) => setActiveStep( activeStep - 1) }
           >
-            Back
+            Quay lại
           </Button>
 
           <Button
             disabled = { checkDisabled() }
             onClick={ handleNext }
           >
-            Next
+            Tiếp
           </Button>
         </Stack>
         { showSubmit && (
@@ -153,7 +153,7 @@ const AddNeedHelp = ({ setPage }) => {
               endIcon={<Send/>}
               onClick={handleSubmit}
             >
-              Submit
+              Gửi
             </Button>
           </Stack>
         )}

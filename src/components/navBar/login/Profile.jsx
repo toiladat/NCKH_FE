@@ -90,7 +90,7 @@ const Profile = () => {
 
         <DialogActions sx={{ px:'19px' }}>
           <Button type='submit'variant='contained' endIcon={<Send/>}>
-            Update
+            Cập nhật
           </Button>
         </DialogActions>
       </form>

@@ -11,7 +11,7 @@ export const createNeedHelp = async ( infoNeedHelp, currentUser, dispatch, setPa
     dispatch(updateAlert({
       open:true,
       severity:'success',
-      message:'The Need Help area has been added successfully'
+      message:'Tạo điểm cứu trợ thành công!'
     }))
     dispatch(resetNeedHelpPoint())
     // Chuyển sang tổng quan

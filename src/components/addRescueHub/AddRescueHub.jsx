@@ -16,10 +16,10 @@ const AddRescueHub = ({ setPage }) => {
   const [activeStep, setActiveStep] = useState(0)
   const [showSubmit, setShowSubmit]= useState(false)
   const [steps, setSteps] = useState([
-    { label: 'Location Start', completed: false },
-    { label: 'Location End', completed: false },
-    { label: 'Details', completed: false },
-    { label: 'Images', completed: false }
+    { label: 'Điểm bắt đầu', completed: false },
+    { label: 'Điểm kết thúc', completed: false },
+    { label: 'Thông tin chi tiết', completed: false },
+    { label: 'Ảnh', completed: false }
   ])
   const findUnfinish = () => {
     return steps.findIndex(step => !step.completed)
@@ -150,14 +150,14 @@ const AddRescueHub = ({ setPage }) => {
             disabled= { !activeStep }
             onClick = { ( ) => setActiveStep( activeStep - 1) }
           >
-            Back
+            Quay lại
           </Button>
 
           <Button
             disabled = { checkDisabled() }
             onClick={ handleNext }
           >
-            Next
+            Tiếp
           </Button>
         </Stack>
         { showSubmit && (
@@ -168,7 +168,7 @@ const AddRescueHub = ({ setPage }) => {
               endIcon={<Send/>}
               onClick={handleSubmit}
             >
-              Submit
+              Gửi
             </Button>
           </Stack>
         )}

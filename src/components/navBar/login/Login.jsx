@@ -39,7 +39,7 @@ const Login = () => {
       return dispatch(updateAlert({
         open: true,
         severity:'error',
-        message:'Passwords do not match'
+        message:'Mật khẩu không phù hợp'
       }))
     }
     //send register request
@@ -47,7 +47,7 @@ const Login = () => {
   }
 
   useEffect( () => {
-    isRegister ? setTitle('Register') : setTitle('Login')
+    isRegister ? setTitle('Đăng ký') : setTitle('Đăng nhập')
   }, [isRegister])
   return (
     <Dialog
@@ -62,8 +62,7 @@ const Login = () => {
           sx={{
             position:'absolute',
             top:8,
-            right:8,
-            
+            right:8
           }}
           onClick={handleClose}
         >
@@ -74,19 +73,15 @@ const Login = () => {
       <form onSubmit={handleSubmit}>
         <DialogContent dividers
           sx={{
-            
           }}
         >
-          <DialogContentText>
-            Plese fill your information in the fields below:
-          </DialogContentText>
           {isRegister &&
             <TextField
               autoFocus
               margin='normal'
               variant='standard'
               id='name'
-              label='Name'
+              label='Họ và tên'
               type='text'
               fullWidth
               inputRef={ nameRef }
@@ -107,13 +102,13 @@ const Login = () => {
           />
           <PasswordField {...{ passwordRef }}/>
           {isRegister &&
-            <PasswordField passwordRef={confirmPasswordRef} id='confirmPassword' label='Confirm Password'/>
+            <PasswordField passwordRef={confirmPasswordRef} id='confirmPassword' label='Xác nhận mật khẩu'/>
           }
         </DialogContent>
 
         <DialogActions sx={{ px:'19px' }}>
           <Button type='submit'variant='contained' endIcon={<Send/>}>
-            Submit
+            Đăng ký
           </Button>
         </DialogActions>
       </form>
@@ -125,15 +120,14 @@ const Login = () => {
         }}
       >
         <Box 
-        sx={{
-          alignItems:'center',
-          justifyContent:'center',
-          
+          sx={{
+            alignItems:'center',
+            justifyContent:'center'
 
-         }}>
-          {isRegister ? 'Sign in now' : ' Create one now'}
+          }}>
+          {isRegister ? 'Đăng nhập tại đây' : 'Đăng ký tại đây'}
           <Button size='small' onClick={ () => setIsRegister(!isRegister)}>
-            {isRegister ? 'Login' : 'Register'}
+            {isRegister ? 'Đăng nhập' : 'Đăng ký'}
           </Button>
         </Box>
 
