@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { getNeedHelpPoints } from '~/actions/needHelpPoint'
 import { useValue } from '~/context/ContextProvider'
 import ReactMapGL, { Layer, Marker, Popup, Source } from 'react-map-gl'
-import { Avatar, Paper, Tooltip, Box, SpeedDial, SpeedDialIcon, SpeedDialAction, Typography } from '@mui/material'
+import { Box, SpeedDial, SpeedDialIcon, SpeedDialAction, Typography, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, IconButton, LinearProgress, Collapse} from '@mui/material'
 import Supercluster from 'supercluster'
 import './map.css'
 import GeocoderInput from '../sidebar/GeocoderInput'
@@ -15,6 +15,25 @@ import ErrorBoundary from './ErrorBoundary'
 import { useLocation, useNavigate } from 'react-router-dom'
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
 import PopupPoint from './PopupPoint'
+import { DataGrid } from '@mui/x-data-grid'
+import { getRegion } from '~/actions/regions'
+import { useTheme } from '@emotion/react'
+import moment from 'moment'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+
+const row = [
+  { id: 1, region: 'Hà Nội', needHelpPoint: 'Điểm A', resCueHubPoint: 'Trạm 1', evaluateLevel: 'Nặng', startTime: '2025-05-01', endTime: '2025-05-10' },
+  { id: 2, region: 'Hải Phòng', needHelpPoint: 'Điểm B', resCueHubPoint: 'Trạm 2', evaluateLevel: 'Trung bình', startTime: '2025-05-02', endTime: '2025-05-11' },
+  { id: 3, region: 'Quảng Ninh', needHelpPoint: 'Điểm C', resCueHubPoint: 'Trạm 3', evaluateLevel: 'Nhẹ', startTime: '2025-05-03', endTime: '2025-05-12' },
+  { id: 4, region: 'Thái Bình', needHelpPoint: 'Điểm D', resCueHubPoint: 'Trạm 4', evaluateLevel: 'Nặng', startTime: '2025-05-04', endTime: '2025-05-13' },
+  { id: 5, region: 'Nam Định', needHelpPoint: 'Điểm E', resCueHubPoint: 'Trạm 5', evaluateLevel: 'Trung bình', startTime: '2025-05-05', endTime: '2025-05-14' },
+  { id: 6, region: 'Thái Nguyên', needHelpPoint: 'Điểm F', resCueHubPoint: 'Trạm 6', evaluateLevel: 'Nhẹ', startTime: '2025-05-06', endTime: '2025-05-15' },
+  { id: 7, region: 'Vĩnh Phúc', needHelpPoint: 'Điểm G', resCueHubPoint: 'Trạm 7', evaluateLevel: 'Nặng', startTime: '2025-05-07', endTime: '2025-05-16' },
+  { id: 8, region: 'Bắc Ninh', needHelpPoint: 'Điểm H', resCueHubPoint: 'Trạm 8', evaluateLevel: 'Trung bình', startTime: '2025-05-08', endTime: '2025-05-17' },
+  { id: 9, region: 'Hưng Yên', needHelpPoint: 'Điểm I', resCueHubPoint: 'Trạm 9', evaluateLevel: 'Nhẹ', startTime: '2025-05-09', endTime: '2025-05-18' },
+  { id: 10, region: 'Hà Nam', needHelpPoint: 'Điểm J', resCueHubPoint: 'Trạm 10', evaluateLevel: 'Nặng', startTime: '2025-05-10', endTime: '2025-05-19' }
+]
+
 
 const supercluster = new Supercluster({
   radius:75,
@@ -106,18 +125,6 @@ const Maps = () => {
     { icon: <AddIcon />, name: 'Tạo điểm cứu trợ', path: '/addneedhelp' },
     { icon: <HealthAndSafetyIcon />, name: 'Nhận hỗ trợ' }
   ]
-
-  const newsArticles = [
-    {
-      title: 'Một tia hy vọng mới cho anh bảy và gia đình sau cơn bão Yagi',
-      link: 'https://www.unicef.org/vietnam/vi/nh%E1%BB%AFng-c%C3%A2u-chuy%E1%BB%87n/m%E1%BB%99t-tia-hy-v%E1%BB%8Dng-m%E1%BB%9Bi-cho-anh-b%E1%BA%A3y-v%C3%A0-gia-%C4%91%C3%ACnh-sau-c%C6%A1n-b%C3%A3o-yagi'
-    },
-    {
-      title: '431 triệu trẻ em phải chuyển cho ở do các thảm họa liên quan đến thời tiết',
-      link: 'https://www.unicef.org/vietnam/vi/thong-cao-bao-chi/431-trieu-tre-em-phai-chuyen-cho-o-o-do-cac-tham-hoa-lien-quan-den-thoi-tiet'
-    }
-    // Thêm các bài báo khác nếu có
-  ]
   const [openForm, setOpenForm] = useState(false)
 
   const handleOpenForm = () => {
@@ -174,6 +181,30 @@ const Maps = () => {
     }
   }, [location])
 
+  const theme = useTheme()
+  const [regions, setRegions] = useState([])
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+  // console.log(regions)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getRegion()
+      setRegions(result)
+    }
+    fetchData()
+  }, [])
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
+
+  const paginatedRegions = regions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
   return (
     <Box
       sx={{
@@ -338,9 +369,9 @@ const Maps = () => {
         <Box
           sx={{
             position: 'fixed',
-            bottom: 110, // nằm trên SpeedDial một chút
-            right: 40,
-            width: 600,
+            bottom: 60, // nằm trên SpeedDial một chút
+            right: 100,
+            width: 1000,
             bgcolor: 'white',
             border: '1px solid #ccc',
             borderRadius: 2,
@@ -350,59 +381,56 @@ const Maps = () => {
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-            <strong>Những chiến dịnh cần được hỗ trợ</strong>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', my: 2 }}>
+              <strong style={{ fontSize: '24px', color: '#1976d2' }}>
+                Những vùng bị thiệt hại
+              </strong>
+            </Box>
             <span
               onClick={handleCloseForm}
               style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: 18 }}
             >
               ×
             </span>
+            {/* Bảng dữ liệu test */}
           </Box>
           {/* Nội dung form bạn muốn */}
-          <Box
-            sx={{
-              borderRadius: 1,
-              boxShadow: 6,
-              backgroundColor: 'rgba(66, 165, 245, 0.4)',
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '32px'
+          <Paper sx={{ borderRadius: 3, overflow: 'hidden' }}>
+            <TableContainer>
+              <Table size="small">
+                <TableHead sx={{ backgroundColor: theme.palette.primary.main }}>
+                  <TableRow>
+                    <TableCell />
+                    <TableCell sx={{ color: 'white' }} align="center">Tên vùng</TableCell>
+                    <TableCell sx={{ color: 'white' }} align="center">Điểm cần cứu trợ</TableCell>
+                    <TableCell sx={{ color: 'white' }} align="center">Điểm cứu trợ</TableCell>
+                    <TableCell sx={{ color: 'white' }} align="center">Mức độ thiệt hại</TableCell>
+                    <TableCell sx={{ color: 'white' }} align="center">Cập nhật lần cuối</TableCell>
+                    <TableCell sx={{ color: 'white' }} align="center">Thời gian</TableCell>
+                    <TableCell sx={{ color: 'white' }} align="center">Thời gian hết hạn</TableCell>
 
-            }}
-          >
-            <Box sx={{ px: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Typography sx={{ fontWeight: '700' }}>Đang thực hiện</Typography>
-              <Typography variant='h4'>0</Typography>
-            </Box>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {paginatedRegions.map((region) => (
+                    <Row key={region.code} row={region} />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
 
-            <Box sx={{ px: 4, borderLeft: '2px solid white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Typography sx={{ fontWeight: '700' }}>Đạt mục tiêu</Typography>
-              <Typography variant='h4'>0</Typography>
-            </Box>
-
-            <Box sx={{ px: 4, borderLeft: '2px solid white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Typography sx={{ fontWeight: '700' }}>Đã kết thúc</Typography>
-              <Typography variant='h4'>0</Typography>
-            </Box>
-          </Box>
-
-          <Box sx={{ p: 2 }}>
-            <Typography variant='h6' sx={{ fontWeight: 'bold' }}>
-              Tin tức liên quan:
-            </Typography>
-            <Box sx={{ mt: 2 }}>
-              {newsArticles.map((article, index) => (
-                <Box key={index} sx={{ mb: 2 }}>
-                  <Typography variant='body1' sx={{ mt: 1 }}>
-                    <a href={article.link} target='_blank' rel='noopener noreferrer'>
-                      {article.title}
-                    </a>
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-
+            {/* Pagination */}
+            <TablePagination
+              component="div"
+              count={regions.length}
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              rowsPerPageOptions={[5, 10, 20, 50]}
+              labelRowsPerPage="Số dòng mỗi trang:"
+            />
+          </Paper>
         </Box>
       )}
 
@@ -411,3 +439,121 @@ const Maps = () => {
 }
 
 export default Maps
+
+function Row({ row }) {
+  const theme = useTheme()
+  const [open, setOpen] = useState(false)
+
+  // Tính điểm thiệt hại tổng (ví dụ: trung bình cộng level của các tiêu chí)
+  const totalLevel = row.criteria.reduce((sum, c) => sum + c.level, 0)
+  const averageLevel = totalLevel / row.criteria.length
+  const percent = (averageLevel / 10) * 100
+  const updatedAt = row.updatedAt
+
+  const getColor = (value) => {
+    if (value <= 2) return '#4caf50'
+    if (value <= 4) return '#ffc107'
+    if (value <= 6) return '#ff9800'
+    if (value <= 8) return '#f44336'
+    return '#b71c1c'
+  }
+
+  return (
+    <>
+      <TableRow hover>
+        <TableCell>
+          <IconButton
+            size="small"
+            onClick={() => setOpen(!open)}
+            sx={{
+              transition: 'transform 0.3s',
+              transform: open ? 'rotate(180deg)' : 'none'
+            }}
+          >
+            <KeyboardArrowUpIcon />
+          </IconButton>
+        </TableCell>
+        <TableCell>{row.name}</TableCell>
+        <TableCell align="center">{row.needHelpPointCount}</TableCell>
+        <TableCell align="center">{row.rescueHubPointCount}</TableCell>
+        <TableCell align="center">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <LinearProgress
+              variant="determinate"
+              value={percent}
+              sx={{
+                height: 6,
+                borderRadius: 3,
+                flexGrow: 1,
+                backgroundColor: theme.palette.grey[200],
+                '& .MuiLinearProgress-bar': {
+                  borderRadius: 3,
+                  backgroundColor: getColor(averageLevel)
+                }
+              }}
+            />
+            <Typography variant="caption" color="text.secondary">
+              {averageLevel.toFixed(1)}/10
+            </Typography>
+          </Box>
+        </TableCell>
+        <TableCell>{row.updatedBy?.name || '-'}</TableCell>
+        <TableCell>{moment(updatedAt).format('HH:mm DD/MM/YYYY')}</TableCell>
+        <TableCell>{moment(row.expiredAt).format('HH:mm DD/MM/YYYY')}</TableCell>
+      </TableRow>
+
+      {/* Chi tiết đánh giá */}
+      <TableRow>
+        <TableCell colSpan={8} sx={{ p: 0 }}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ m: 1.5 }}>
+              <Typography
+                variant="subtitle2"
+                gutterBottom
+                sx={{ fontWeight: 400, fontSize: '0.9rem' }}
+              >
+                Chi tiết đánh giá
+              </Typography>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                  gap: 1.5,
+                  mt: 1
+                }}
+              >
+                {row.criteria.map((c, i) => (
+                  <Box
+                    key={i}
+                    sx={{
+                      p: 1.5,
+                      borderLeft: `3px solid ${getColor(c.level)}`,
+                      backgroundColor: theme.palette.background.paper,
+                      borderRadius: 1.5,
+                      boxShadow: theme.shadows[1],
+                      display: 'flex',
+                      flexDirection: 'column',
+                      minHeight: 60
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ mb: 0.5 }}
+                    >
+                      {c.name}
+                    </Typography>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 500, fontSize: '0.9rem' }}>
+                      {c.level}/10
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+
+    </>
+  )
+}
