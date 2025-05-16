@@ -285,7 +285,7 @@ const Maps = () => {
         {/* routing */}
         { routeGeoJSON && (
           <Source id='route' type='geojson' data={{ type: 'Feature', geometry: routeGeoJSON }} >
-            <Layer id='route-layer' type='line' paint={{ 'line-color': '#000', 'line-width': 4 }} />
+            <Layer id='route-layer' type='line' paint={{ 'line-color': 'blue', 'line-width': 4 }} />
           </Source>
         )}
 

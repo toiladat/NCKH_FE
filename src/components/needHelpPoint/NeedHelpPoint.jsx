@@ -252,7 +252,7 @@ const NeedHelpPoint = () => {
                 </Box>
                 <Box sx={{ mt: '20px', display: 'flex', alignItems: 'center' }}>
                   <Typography variant="h6" fontWeight={600} fontSize="16px" component="span" mr={1}>
-                    Lượt quan tâm:
+                    Lượt đánh giá:
                   </Typography>
                   <Tooltip title="Lượt quan tâm">
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
