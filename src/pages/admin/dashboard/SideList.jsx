@@ -78,8 +78,8 @@ const SideList = ({ open, setOpen }) => {
   const list = useMemo( () => [
     { title: 'Main', icon:<Dashboard/>, link: '' },
     { title: 'Users', icon:<PeopleAlt/>, link: 'users' },
-    { title: 'Need Help Points', icon:<Medication/>, link: 'need-help-points' },
-    { title: 'Rescue Hub Points', icon:<AddLocationAlt/>, link: 'rescue-hub-points'},
+    // { title: 'Need Help Points', icon:<Medication/>, link: 'need-help-points' },
+    // { title: 'Rescue Hub Points', icon:<AddLocationAlt/>, link: 'rescue-hub-points'},
     { title: 'Regions', icon:<NotificationsActive/>, link: 'regions' },
     { title: 'Add Users', icon:<GroupAddIcon/>, link: 'create-user' }
   ], [admin])

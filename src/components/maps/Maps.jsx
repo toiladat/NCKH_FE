@@ -21,19 +21,6 @@ import { useTheme } from '@emotion/react'
 import moment from 'moment'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
-const row = [
-  { id: 1, region: 'Hà Nội', needHelpPoint: 'Điểm A', resCueHubPoint: 'Trạm 1', evaluateLevel: 'Nặng', startTime: '2025-05-01', endTime: '2025-05-10' },
-  { id: 2, region: 'Hải Phòng', needHelpPoint: 'Điểm B', resCueHubPoint: 'Trạm 2', evaluateLevel: 'Trung bình', startTime: '2025-05-02', endTime: '2025-05-11' },
-  { id: 3, region: 'Quảng Ninh', needHelpPoint: 'Điểm C', resCueHubPoint: 'Trạm 3', evaluateLevel: 'Nhẹ', startTime: '2025-05-03', endTime: '2025-05-12' },
-  { id: 4, region: 'Thái Bình', needHelpPoint: 'Điểm D', resCueHubPoint: 'Trạm 4', evaluateLevel: 'Nặng', startTime: '2025-05-04', endTime: '2025-05-13' },
-  { id: 5, region: 'Nam Định', needHelpPoint: 'Điểm E', resCueHubPoint: 'Trạm 5', evaluateLevel: 'Trung bình', startTime: '2025-05-05', endTime: '2025-05-14' },
-  { id: 6, region: 'Thái Nguyên', needHelpPoint: 'Điểm F', resCueHubPoint: 'Trạm 6', evaluateLevel: 'Nhẹ', startTime: '2025-05-06', endTime: '2025-05-15' },
-  { id: 7, region: 'Vĩnh Phúc', needHelpPoint: 'Điểm G', resCueHubPoint: 'Trạm 7', evaluateLevel: 'Nặng', startTime: '2025-05-07', endTime: '2025-05-16' },
-  { id: 8, region: 'Bắc Ninh', needHelpPoint: 'Điểm H', resCueHubPoint: 'Trạm 8', evaluateLevel: 'Trung bình', startTime: '2025-05-08', endTime: '2025-05-17' },
-  { id: 9, region: 'Hưng Yên', needHelpPoint: 'Điểm I', resCueHubPoint: 'Trạm 9', evaluateLevel: 'Nhẹ', startTime: '2025-05-09', endTime: '2025-05-18' },
-  { id: 10, region: 'Hà Nam', needHelpPoint: 'Điểm J', resCueHubPoint: 'Trạm 10', evaluateLevel: 'Nặng', startTime: '2025-05-10', endTime: '2025-05-19' }
-]
-
 
 const supercluster = new Supercluster({
   radius:75,
@@ -189,11 +176,17 @@ const Maps = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getRegion()
-      setRegions(result)
-    }
-    fetchData()
-  }, [])
+      try {
+        const response = await getRegion(); // đợi dữ liệu trả về
+        const result = response.filter(region => region.averageLevel > 0); // lọc sau
+        setRegions(result);
+      } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu vùng:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -405,10 +398,6 @@ const Maps = () => {
                     <TableCell sx={{ color: 'white' }} align="center">Điểm cần cứu trợ</TableCell>
                     <TableCell sx={{ color: 'white' }} align="center">Điểm cứu trợ</TableCell>
                     <TableCell sx={{ color: 'white' }} align="center">Mức độ thiệt hại</TableCell>
-                    <TableCell sx={{ color: 'white' }} align="center">Cập nhật lần cuối</TableCell>
-                    <TableCell sx={{ color: 'white' }} align="center">Thời gian</TableCell>
-                    <TableCell sx={{ color: 'white' }} align="center">Thời gian hết hạn</TableCell>
-
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -497,9 +486,6 @@ function Row({ row }) {
             </Typography>
           </Box>
         </TableCell>
-        <TableCell>{row.updatedBy?.name || '-'}</TableCell>
-        <TableCell>{moment(updatedAt).format('HH:mm DD/MM/YYYY')}</TableCell>
-        <TableCell>{moment(row.expiredAt).format('HH:mm DD/MM/YYYY')}</TableCell>
       </TableRow>
 
       {/* Chi tiết đánh giá */}

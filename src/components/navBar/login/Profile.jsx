@@ -10,6 +10,9 @@ const Profile = () => {
   const { currentUser, profile } = useSelector(state => state.userReducer)
   const dispatch = useDispatch()
   const nameRef = useRef()
+  const phoneRef = useRef()
+  const addressRef = useRef()
+
   // close dialog
   const handleClose = ( ) => {
     dispatch(updateProfile({
@@ -21,8 +24,10 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const name = nameRef.current.value
+    const phone = phoneRef.current.value
+    const address = addressRef.current.value
     // pass user name and photo file to new function in user actions
-    UpdateProfile( currentUser, { name, file: profile.file }, dispatch)
+    UpdateProfile( currentUser, { name, file: profile.file, phone, address }, dispatch)
 
   }
   // change Avatar
@@ -43,7 +48,7 @@ const Profile = () => {
       onClose={handleClose}
     >
       <DialogTitle>
-        Profile
+        Thông tin người dùng
         <IconButton
           sx={{
             position:'absolute',
@@ -64,7 +69,7 @@ const Profile = () => {
             margin='normal'
             variant='standard'
             id='name'
-            label='Name'
+            label='Tên/Tổ chức'
             type='text'
             fullWidth
             inputRef={ nameRef }
@@ -72,7 +77,32 @@ const Profile = () => {
             required
             defaultValue={ currentUser?.name }
           />
-
+          <TextField
+            autoFocus
+            margin='normal'
+            variant='standard'
+            id='phone'
+            label='Liên hệ'
+            type='text'
+            fullWidth
+            inputRef={ phoneRef }
+            inputProps={{ minLength:2 }}
+            required
+            defaultValue={ currentUser?.phone }
+          />
+          <TextField
+            autoFocus
+            margin='normal'
+            variant='standard'
+            id='address'
+            label='Địa chỉ'
+            type='text'
+            fullWidth
+            inputRef={ addressRef }
+            inputProps={{ minLength:2 }}
+            required
+            defaultValue={ currentUser?.address }
+          />
           <label htmlFor='profilePhoto'>
             <input
               accept='image/*'

@@ -13,6 +13,7 @@ import './swiper.css'
 import { updateRescueHubPoint } from '~/redux/actions/rescueHubPoint'
 import { evaluatePoint } from '~/actions/user'
 import { useTheme } from '@mui/material/styles'
+import moment from 'moment'
 
 
 const Transistion = forwardRef((props, ref) => (
@@ -251,17 +252,58 @@ const RescueHubPoint = () => {
                     variant="outlined"
                   />
                 </Box>
-                <Box sx={{ mt: '20px', display: 'flex', alignItems: 'center' }}>
-                  <Typography variant="h6" fontWeight={600} fontSize="16px" component="span" mr={1}>
-                    Lượt quan tâm:
+                <Box
+                  sx={{
+                    mt: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%'
+                  }}
+                >
+                  {/* Lượt quan tâm */}
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography
+                      variant="h6"
+                      fontWeight={600}
+                      fontSize="16px"
+                      component="span"
+                      mr={1}
+                    >
+                      Lượt quan tâm:
+                    </Typography>
+                    <Tooltip title="Lượt quan tâm">
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <FavoriteBorder
+                          sx={{ color: theme.palette.primary.main, marginRight: '5px' }}
+                        />
+                        <Typography component="span">
+                          {rescueHubPoint?.ratingCount?.length || '0'}
+                        </Typography>
+                      </Box>
+                    </Tooltip>
+                  </Box>
+
+                  {/* Ngày kết thúc */}
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    fontWeight={600}
+                    fontSize="15px"
+                    sx={{ flexShrink: 0, color: '#d32f2f' }}
+                  >
+                    {rescueHubPoint?.end_time ? (
+                      moment(rescueHubPoint.end_time).isBefore(moment()) ? (
+                        'Thời gian đã hết hạn'
+                      ) : (
+                        `Ngày kết thúc: ${new Date(rescueHubPoint.end_time).toLocaleDateString('vi-VN')}`
+                      )
+                    ) : (
+                      'Không rõ ngày kết thúc'
+                    )}
                   </Typography>
-                  <Tooltip title="Lượt quan tâm">
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <FavoriteBorder sx={{ color: theme.palette.primary.main, marginRight: '5px' }} />
-                      <Typography component="span">{rescueHubPoint?.ratingCount?.length || '0'}</Typography>
-                    </Box>
-                  </Tooltip>
                 </Box>
+
 
                 <Box sx={{ mt: '20px' }}>
                   <Typography variant="h6" fontWeight={600} fontSize="16px" component="span">Thông tin liên hệ: </Typography>
@@ -368,6 +410,44 @@ const RescueHubPoint = () => {
 
               </Stack>
 
+              {rescueHubPoint?.validByUsers?.length > 0 && (
+                <Box sx={{ mt: '20px' }}>
+                  <Typography variant="h6" fontWeight={600} fontSize="16px">
+                    Được xác minh bởi:
+                  </Typography>
+                  {rescueHubPoint.validByUsers.map((user, idx) => (
+                    <Box key={idx} display="flex" alignItems="center" gap={1} mt={1}>
+                      <Avatar
+                        src={user.photoURL}
+                        alt={user.name}
+                        sx={{ width: 40, height: 40 }}
+                      />
+                      <Typography fontWeight={700} display="flex" alignItems="center" gap={0.5}>
+                        {`${user.name || 'Người dùng ẩn danh'} - ${user.userType}`}
+                        {user.name && user.level !== 1 && (
+                          <Box
+                            component="span"
+                            sx={{
+                              width: 16,
+                              height: 16,
+                              bgcolor: 'green',
+                              color: 'white',
+                              borderRadius: '50%',
+                              fontSize: 12,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            ✓
+                          </Box>
+                        )}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              )}
+
               <Button onClick={() => {
                 if (place?.geometry?.coordinates?.[0] && place?.geometry?.coordinates?.[1]) {
                   const latitude = rescueHubPoint.location_start.lat // Vĩ độ
@@ -395,14 +475,6 @@ const RescueHubPoint = () => {
               >
                 Xem đường đi
               </Button>
-              {rescueHubPoint?.validByUsers?.length > 0 && (
-                <Box sx={{ mt: '20px' }}>
-                  <Typography variant="h6" fontWeight={600} fontSize="16px">Được xác minh bởi:</Typography>
-                  {rescueHubPoint.validByUsers.map((user, idx) => (
-                    <Typography key={idx}>{`${user.name} - ${user.userType}`}</Typography>
-                  ))}
-                </Box>
-              )}
             </Stack>
           </Box>
         </Box>

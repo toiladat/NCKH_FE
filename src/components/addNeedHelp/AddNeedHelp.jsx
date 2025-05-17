@@ -6,12 +6,13 @@ import AddImages from './addImages/AddImages'
 import { Send } from '@mui/icons-material'
 import { createNeedHelp } from '~/actions/needHelpPoint'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const AddNeedHelp = ({ setPage }) => {
   const { currentUser } = useSelector(state => state.userReducer)
   const { images, details, location } = useSelector( state => state.needHelpPointReducer)
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const [activeStep, setActiveStep] = useState(0)
   const [showSubmit, setShowSubmit]= useState(false)
   const [steps, setSteps] = useState([
@@ -48,7 +49,7 @@ const AddNeedHelp = ({ setPage }) => {
       description: details.description,
       images: imagesFormat
     }
-    createNeedHelp(infoNeedHelp, currentUser, dispatch, setPage)
+    createNeedHelp(infoNeedHelp, currentUser, dispatch, navigate)
   }
 
   //check complete step3: upload images

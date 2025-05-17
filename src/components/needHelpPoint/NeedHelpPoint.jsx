@@ -5,10 +5,8 @@ import {
 } from '@mui/material'
 import { forwardRef, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'
-import { Pagination } from 'swiper/modules'
 import './swiper.css'
 import { updateNeedHelpPoint } from '~/redux/actions/needHelpPoint'
 import { evaluatePoint } from '~/actions/user'
@@ -248,7 +246,7 @@ const NeedHelpPoint = () => {
 
                 <Box sx={{ mt: '20px' }}>
                   <Typography variant="h6" fontWeight={600} fontSize="16px" component="span">Thông tin liên hệ: </Typography>
-                  <Typography component="span">{place?.text}</Typography>
+                  <Typography component="span">{needHelpPoint?.title}</Typography>
                 </Box>
                 <Box sx={{ mt: '20px', display: 'flex', alignItems: 'center' }}>
                   <Typography variant="h6" fontWeight={600} fontSize="16px" component="span" mr={1}>
@@ -267,6 +265,43 @@ const NeedHelpPoint = () => {
                   <Typography component="span">{place?.place_name}</Typography>
                 </Box>
 
+                {needHelpPoint?.validByUsers?.length > 0 && (
+                  <Box sx={{ mt: '20px' }}>
+                    <Typography variant="h6" fontWeight={600} fontSize="16px">
+                      Được xác minh bởi:
+                    </Typography>
+                    {needHelpPoint.validByUsers.map((user, idx) => (
+                      <Box key={idx} display="flex" alignItems="center" gap={1} mt={1}>
+                        <Avatar
+                          src={user?.photoURL}
+                          alt={user?.name}
+                          sx={{ width: 40, height: 40 }}
+                        />
+                        <Typography fontWeight={700} display="flex" alignItems="center" gap={0.5}>
+                          {`${user.name || 'Người dùng ẩn danh'} - ${user.userType}`}
+                          {user.name && user.level !== 1 && (
+                            <Box
+                              component="span"
+                              sx={{
+                                width: 16,
+                                height: 16,
+                                bgcolor: 'green',
+                                color: 'white',
+                                borderRadius: '50%',
+                                fontSize: 12,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                              }}
+                            >
+                              ✓
+                            </Box>
+                          )}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                )}
                 <Button onClick={() => {
                   if (place?.geometry?.coordinates?.[0] && place?.geometry?.coordinates?.[1]) {
                     const latitude = place.geometry.coordinates[1] // Vĩ độ
@@ -293,16 +328,6 @@ const NeedHelpPoint = () => {
                   Xem map
                 </Button>
               </Stack>
-
-
-              {needHelpPoint?.validByUsers?.length > 0 && (
-                <Box sx={{ mt: '20px' }}>
-                  <Typography variant="h6" fontWeight={600} fontSize="16px">Được xác minh bởi:</Typography>
-                  {needHelpPoint.validByUsers.map((user, idx) => (
-                    <Typography key={idx}>{`${user.name} - ${user.userType}`}</Typography>
-                  ))}
-                </Box>
-              )}
             </Stack>
 
           </Box>

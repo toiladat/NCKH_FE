@@ -7,12 +7,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Send } from '@mui/icons-material'
 import AddLocationEnd from './addLocationEnd/AddLocationEnd'
 import { createRescueHubPoint } from '~/actions/rescueHubPoint'
+import { useNavigate } from 'react-router-dom'
 const AddRescueHub = ({ setPage }) => {
 
   const { images_rescue, details_rescue, location_rescue } = useSelector( state => state.rescueHubPointReducer)
   const { currentUser } = useSelector(state => state.userReducer)
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const [activeStep, setActiveStep] = useState(0)
   const [showSubmit, setShowSubmit]= useState(false)
   const [steps, setSteps] = useState([
@@ -51,7 +52,7 @@ const AddRescueHub = ({ setPage }) => {
       contact: details_rescue.contact
     }
 
-    createRescueHubPoint(inforRescueHub, currentUser, dispatch, setPage)
+    createRescueHubPoint(inforRescueHub, currentUser, dispatch, navigate )
   }
 
   //check complete step3: upload images

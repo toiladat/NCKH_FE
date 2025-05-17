@@ -7,7 +7,7 @@ import { updateDetail } from '~/redux/actions/needHelpPoint'
 const AddDetails = () => {
   const dispatch = useDispatch()
   const { details } = useSelector( state => state.needHelpPointReducer)
-
+  const { currentUser } = useSelector(state => state.userReducer)
   const { title, description, price }= details
   const [costType, setCostType]= useState(price ? 1 : 0)
   const handleCostTypeChange = (e) => {

@@ -108,7 +108,7 @@ const Login = () => {
 
         <DialogActions sx={{ px:'19px' }}>
           <Button type='submit'variant='contained' endIcon={<Send/>}>
-            Đăng ký
+            Đăng nhập
           </Button>
         </DialogActions>
       </form>

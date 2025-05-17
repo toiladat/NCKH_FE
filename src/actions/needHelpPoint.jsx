@@ -3,7 +3,7 @@ import fetchData from './utils/fetchData'
 import { endLoading, startLoading, updateAlert } from '~/redux/actions/util'
 
 const url= import.meta.env.VITE_APP_SERVER_URL + '/need-help'
-export const createNeedHelp = async ( infoNeedHelp, currentUser, dispatch, setPage ) => {
+export const createNeedHelp = async ( infoNeedHelp, currentUser, dispatch, navigate ) => {
   dispatch(startLoading())
 
   const result = await fetchData({ url, body: infoNeedHelp, token: currentUser?.token }, dispatch)
@@ -14,12 +14,12 @@ export const createNeedHelp = async ( infoNeedHelp, currentUser, dispatch, setPa
       message:'Tạo điểm cứu trợ thành công!'
     }))
     dispatch(resetNeedHelpPoint())
-    // Chuyển sang tổng quan
-    setPage(0)
     // Mở luôn Popup new needHelpPoint
     dispatch(updateNeedHelpPoint(result))
   }
   dispatch(endLoading())
+  const mapUrl = `/maps?lat=${infoNeedHelp.lat}&lng=${infoNeedHelp.lng}`
+  window.location.href = mapUrl
 }
 
 export const getNeedHelpPoints = async ( dispatch) => {

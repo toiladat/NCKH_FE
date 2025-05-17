@@ -107,7 +107,11 @@ const ClusterMap = () => {
       <ReactMapGL
         projection='globe'
         ref={mapRef}
-        initialViewState={{ latitude: 51.5072, longitude: 0.1276 }}
+        initialViewState={{
+          latitude: 14.0583,// Trung tâm Việt Nam
+          longitude: 108.2772,
+          zoom: 1
+        }}
         mapStyle='mapbox://styles/mapbox/standard'
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
         style={{ width: '100%', height: '100%' }}
@@ -119,13 +123,6 @@ const ClusterMap = () => {
           }
         }}
       >
-        {filteredRescueHubPoints.map( point => (
-          <Marker
-            key={point._id}
-            longitude={point?.location_start?.lng}
-            latitude={point?.location_start?.lat}
-          />
-        ))}
 
         {clusters.map(cluster => {
           const { cluster: isCluster, point_count } = cluster.properties

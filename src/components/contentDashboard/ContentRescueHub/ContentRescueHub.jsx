@@ -1,4 +1,4 @@
-import { Container, Typography, Card, CardContent, CardMedia, Button, Box, Rating, Avatar } from '@mui/material'
+import { Container, Typography, Card, CardContent, CardMedia, Button, Box, Rating, Avatar, IconButton } from '@mui/material'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import { Navigation, Pagination } from 'swiper/modules'
@@ -9,12 +9,12 @@ import { useTheme } from '@mui/material/styles' // import useTheme
 import { useSelector, useDispatch } from 'react-redux'
 import { updateRescueHubPoint } from '~/redux/actions/rescueHubPoint'
 import { StarBorder } from '@mui/icons-material'
+import moment from 'moment'
 
 const ContentRescueHub = () => {
   const { filteredRescueHubPoints : filterdPoints } = useSelector (state => state.rescueHubPointReducer)
   const theme = useTheme()
   const dispatch = useDispatch()
-
   return (
     <Container sx={{ pb: '50px', position: 'relative', overflow: 'visible' }}>
       <Typography variant='h3' align='center'
@@ -88,11 +88,23 @@ const ContentRescueHub = () => {
 
               <CardContent sx={{ flexGrow: 1, px: 2, pt: 2, pb: 1 }}>
                 <Box display="flex" alignItems="center" gap={1} mb={1}>
+
                   <Avatar
                     src={item?.userInfor?.photoURL}
                     alt={item?.userInfor?.name}
-                    sx={{ width: 40, height: 40 }}
-                  />
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      fontSize: '16px',
+                      '& img': {
+                        width: '36px',
+                        height: '36px',
+                        objectFit: 'cover'  // đảm bảo ảnh đầy khung, không méo
+                      }
+                    }}
+                  >
+                    {item?.userInfor?.name?.charAt(0).toUpperCase()}
+                  </Avatar>
 
                   <Typography
                     variant="subtitle2"
@@ -142,10 +154,17 @@ const ContentRescueHub = () => {
                     fontSize="15px"
                     sx={{ flexShrink: 0 }}
                   >
-
-                    Ngày kết thúc: {item.end_time ? new Date(item.end_time).toLocaleDateString('vi-VN') : 'Không rõ'}
-
+                    {item.end_time ? (
+                      moment(item.end_time).isBefore(moment()) ? (
+                        'Đã hết hạn'
+                      ) : (
+                        `Ngày kết thúc: ${new Date(item.end_time).toLocaleDateString('vi-VN')}`
+                      )
+                    ) : (
+                      'Không rõ ngày kết thúc'
+                    )}
                   </Typography>
+
                 </Box>
 
 

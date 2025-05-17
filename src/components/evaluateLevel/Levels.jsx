@@ -200,8 +200,8 @@ export default function Level() {
                 .filter(c => currentUser.permissionEvaluation.includes(c.type))
                 .map(criterion => (
                   <Grid container item key={criterion.type} alignItems='center'>
-                    <Grid item xs={4}>
-                      <Typography>{criterion.name}</Typography>
+                    <Grid item xs={4} sx={{mr: 1}}>
+                      <Typography variant="body1" >{criterion.name}</Typography>
                     </Grid>
                     <Grid item xs={7}>
                       <Slider

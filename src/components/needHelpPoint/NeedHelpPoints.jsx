@@ -29,7 +29,8 @@ const NeedHelpPoints = ({ filterType = 'all' }) => {
   const dataNeedHelpPoit = () => {
     let result = [...filteredPoint] || []
     if (filterType === 'highlight') {
-      result = result.filter(point => point?.userInfor?.level !== 1 || point?.ratingCount > 5)
+      result = result.filter(point => point?.userInfor?.level !== 1 || point.ratingCount.length > 5)
+
     } else if (filterType === 'newest') {
       result = result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     }
@@ -59,6 +60,7 @@ const NeedHelpPoints = ({ filterType = 'all' }) => {
       >
         {currentData && currentData.length > 0 ? (
           currentData.map((point) => (
+
             <Card key={point._id} sx={{ border: '1px solid #ddd', borderRadius: '10px' }}>
               <ImageListItem sx={{ height: 'auto', borderRadius: '8px', boxShadow: 2 }}>
                 <Box sx={{ position: 'relative', borderRadius: '8px', overflow: 'hidden' }}>
@@ -161,7 +163,7 @@ const NeedHelpPoints = ({ filterType = 'all' }) => {
 
                   <Box display="flex" alignItems="center" justifyContent="space-between" mt={1}>
                     <Typography variant="body2" color="text.secondary" sx={{ p: 0 }} gutterBottom noWrap>
-                      Số lượt quan tâm: {point.validByUsers.length || 0}
+                      Số lượt quan tâm: {point.ratingCount.length || 0}
                     </Typography>
                     <Rating
                       name="needHelpPoint-rating"

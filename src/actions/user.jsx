@@ -14,7 +14,7 @@ export const UserRegister = async (user, dispatch ) => {
     dispatch(updateAlert({
       open: true,
       severity:'success',
-      message: 'Tài khoản của bạn đã đăng ký thành công!'
+      message: 'Đăng ký thành công'
     }))
   }
   dispatch(endLoading())
@@ -29,7 +29,7 @@ export const UserLogin = async (user, dispatch) => {
     dispatch(updateAlert({
       open:true,
       severity:'success',
-      message:'Đăng nhập thành công!'
+      message:'Đăng nhập thành công'
     }))
   }
   dispatch(endLoading())
@@ -37,8 +37,8 @@ export const UserLogin = async (user, dispatch) => {
 
 export const UpdateProfile = async ( currentUser, updatedFields, dispatch ) => {
   dispatch(startLoading())
-  const { name, file } = updatedFields
-  let body = { name, id: currentUser.id, photoURL: currentUser.photoURL }
+  const { name, file, phone, address } = updatedFields
+  let body = { name, id: currentUser.id, photoURL: currentUser.photoURL, phone, address }
 
   try {
     if ( file ) {
@@ -68,7 +68,7 @@ export const UpdateProfile = async ( currentUser, updatedFields, dispatch ) => {
       dispatch(updateAlert({
         open:true,
         severity:'success',
-        message: 'Your profile has beend updated successfully'
+        message: 'Cập nhật thành công'
       }))
       dispatch(updateProfile({
         open: false,
@@ -92,12 +92,19 @@ export const UpdateProfile = async ( currentUser, updatedFields, dispatch ) => {
 
 export const evaluatePoint = async (currentUser, data, dispatch) => {
 
-  return await fetchData({
+  const result = await fetchData({
     url: url + '/evaluate-infor',
     method:'PATCH',
     body:data,
     token: currentUser.token
   }, dispatch)
+  if (result) {
+    dispatch(updateAlert({
+      open:true,
+      severity:'success',
+      message:`${result.message}`
+    }))
+  }
 }
 
 export const GetEvaluateLevel = async ( currentUser, address, dispatch) => {
